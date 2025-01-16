@@ -1,7 +1,10 @@
-import { ScrollView } from 'react-native'
+import { Platform, ScrollView } from 'react-native'
 import React from 'react'
 import Background from '@/components/ui/background'
 import EventCard from '@/components/event/view/event-card'
+import CreateEventModal from '@/components/event/create/create-event-modal'
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker'
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 type Event = {
   id: number
@@ -33,7 +36,9 @@ const Index = () => {
             <EventCard key={curr.id} name={curr.name} date={curr.date} />
           )
         })}
+        
       </ScrollView>
+      <CreateEventModal/>
     </Background>
   )
 }
