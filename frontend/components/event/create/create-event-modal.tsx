@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { Modal, Portal, Text, Button } from 'react-native-paper';
-import CreateEventForm from '@/components/event/create/create-event-form';
+import React, { useState } from 'react'
+import { View } from 'react-native'
+import { Modal, Portal, Text, Button } from 'react-native-paper'
+import CreateEventForm from '@/components/event/create/create-event-form'
+import { useAppTheme } from '@/hooks/use-theme'
 
 const CreateEventModal = () => {
-    const [visible, setVisible] = useState(false);
-    const showModal = () => setVisible(true);
-    const hideModal = () => setVisible(false);
+    const theme = useAppTheme()
+    const [visible, setVisible] = useState(false)
+    const showModal = () => setVisible(true)
+    const hideModal = () => setVisible(false)
 
     return (
         <React.Fragment>
@@ -32,7 +34,7 @@ const CreateEventModal = () => {
                     bottom: 10,
                     right: 5,
                     alignItems: 'center',
-                    backgroundColor: 'red',
+                    backgroundColor: theme.colors.mainButton,
                     borderRadius: 30,
                     height: 60,
                     width: 40,
@@ -42,13 +44,14 @@ const CreateEventModal = () => {
                 <View
                     style={{
                         justifyContent: 'center',
-                        backgroundColor: '#000000',
                         height: '100%',
                     }}>
                     <Text
                         style={{
-                            textAlign: 'center',
-                            color: '#ffffff',
+                            fontSize: 40,
+                            lineHeight: 40,
+                            textAlignVertical: 'center',
+                            height: '100%',
                         }}>
                         +
                     </Text>
@@ -58,4 +61,4 @@ const CreateEventModal = () => {
     )
 }
 
-export default CreateEventModal;
+export default CreateEventModal

@@ -1,6 +1,7 @@
 import React from 'react'
+import { Card, Text } from 'react-native-paper'
 import { format } from 'date-fns'
-import { Card, Text, useTheme } from 'react-native-paper'
+import { useAppTheme } from '@/hooks/use-theme'
 
 type EventCardPropsType = {
   name: string
@@ -8,7 +9,7 @@ type EventCardPropsType = {
 }
 
 const EventCard = ({ name, date }: EventCardPropsType) => {
-  const theme = useTheme()
+  const theme = useAppTheme()
   const formattedDate = format(date, 'dd/MM/yy')
 
   return (
@@ -21,7 +22,7 @@ const EventCard = ({ name, date }: EventCardPropsType) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: theme.colors.primary
+        backgroundColor: theme.colors.main
       }}
     >
       <Card.Content>

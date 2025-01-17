@@ -49,9 +49,9 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                 keyboardShouldPersistTaps='handled'
             >
                 <View style={{
-                    flex: 1, 
-                    flexDirection: 'column', 
-                    gap: 20, 
+                    flex: 1,
+                    flexDirection: 'column',
+                    gap: 20,
                     padding: 10
                 }}
                 >
@@ -65,7 +65,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                         สร้าง Event ใหม่
                     </Text>
 
-                    <TextInput mode='outlined' label='ชื่อ Event' />
+                    <TextInput label='ชื่อ Event' />
 
                     {/* Event Date Picker */}
                     <Pressable onPress={() => setShowEventDate(true)}>
