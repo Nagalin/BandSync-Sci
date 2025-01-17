@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Modal, Portal, Text, Button } from 'react-native-paper';
-import CloseButton from '@/assets/icons/close-square'
 import CreateEventForm from '@/components/event/create/create-event-form';
 
 const CreateEventModal = () => {
     const [visible, setVisible] = useState(false);
-
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
 
@@ -14,21 +12,18 @@ const CreateEventModal = () => {
         <React.Fragment>
             <Portal>
                 <Modal
-                    // dismissable={false}
+                    dismissable={false}
                     visible={visible}
                     onDismiss={hideModal}
                     contentContainerStyle={{
                         backgroundColor: 'white',
                         margin: 10,
                         height: '80%',
-                     
                     }}
                 >
-
-<CreateEventForm/>
+                    <CreateEventForm hideModal={hideModal} />
                 </Modal>
             </Portal>
-
 
             <Button
                 style={{
@@ -41,7 +36,6 @@ const CreateEventModal = () => {
                     borderRadius: 30,
                     height: 60,
                     width: 40,
-
                 }}
                 onPress={showModal}
             >
