@@ -1,43 +1,50 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
     View,
     Text,
     Platform,
     KeyboardAvoidingView,
     ScrollView,
-    Pressable
-} from 'react-native'
-import DateTimePicker from '@react-native-community/datetimepicker'
-import TextInput from '@/components/ui/text-input'
-import Button from '@/components/ui/button'
-import CloseButton from '@/assets/icons/close-square'
+    Pressable,
+} from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import TextInput from '@/components/ui/text-input';
+import Button from '@/components/ui/button';
+import CloseButton from '@/assets/icons/close-square';
 
 type CreateEventFormPropsType = {
-    hideModal: () => void
-}
+    hideModal: () => void;
+};
+
+type FormValues = {
+    eventName: string;
+    eventDate: Date | undefined;
+    startTime: Date | undefined;
+    endTime: Date | undefined;
+    dressCode: string;
+    additionalDetails: string;
+};
 
 const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
-    const [showEventDate, setShowEventDate] = useState(false)
-    const [showStartTime, setShowStartTime] = useState(false)
-    const [showEndTime, setShowEndTime] = useState(false)
-    const [eventDate, setEventDate] = useState<Date | undefined>()
-    const [startTime, setStartTime] = useState<Date | undefined>()
-    const [endTime, setEndTime] = useState<Date | undefined>()
+    const [showEventDate, setShowEventDate] = useState(false);
+    const [showStartTime, setShowStartTime] = useState(false);
+    const [showEndTime, setShowEndTime] = useState(false);
 
-    const onDateChange = (event: any, selectedDate?: Date) => {
-        setShowEventDate(false)
-        if (selectedDate) setEventDate(selectedDate)
-    }
+    const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormValues>({
+        defaultValues: {
+            eventName: '',
+            eventDate: undefined,
+            startTime: undefined,
+            endTime: undefined,
+            dressCode: '',
+            additionalDetails: '',
+        },
+    });
 
-    const onStartTimeChange = (event: any, selectedTime?: Date) => {
-        setShowStartTime(false)
-        if (selectedTime) setStartTime(selectedTime)
-    }
-
-    const onEndTimeChange = (event: any, selectedTime?: Date) => {
-        setShowEndTime(false)
-        if (selectedTime) setEndTime(selectedTime)
-    }
+    const onSubmit = (data: FormValues) => {
+        console.log('Form Data:', data.startTime);
+    };
 
     return (
         <KeyboardAvoidingView
@@ -46,14 +53,15 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
         >
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1 }}
-                keyboardShouldPersistTaps='handled'
+                keyboardShouldPersistTaps="handled"
             >
-                <View style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                    gap: 20,
-                    padding: 10
-                }}
+                <View
+                    style={{
+                        flex: 1,
+                        flexDirection: 'column',
+                        gap: 20,
+                        padding: 10,
+                    }}
                 >
                     <CloseButton
                         onPress={hideModal}
@@ -65,75 +73,172 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                         สร้าง Event ใหม่
                     </Text>
 
-                    <TextInput label='ชื่อ Event' />
+                    {/* Event Name */}
+                    <Controller
+                        name="eventName"
+                        control={control}
+                        rules={{ required: 'Event name is required' }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <>
+                                <TextInput
+                                    label="ชื่อ Event"
+                                    onBlur={onBlur}
+                                    onChangeText={onChange}
+                                    value={value}
+                                />
+                                {errors.eventName && (
+                                    <Text style={{ color: 'red', fontSize: 12 }}>
+                                        {errors.eventName.message}
+                                    </Text>
+                                )}
+                            </>
+                        )}
+                    />
 
                     {/* Event Date Picker */}
                     <Pressable onPress={() => setShowEventDate(true)}>
-                        <TextInput
-                            label='วว/ดด/ปป'
-                            value={eventDate ? eventDate.toLocaleDateString() : ''}
-                            editable={false}
+                        <Controller
+                            name="eventDate"
+                            control={control}
+                            render={({ field: { value } }) => (
+                                <TextInput
+                                    label="วว/ดด/ปป"
+                                    value={value ? value.toLocaleDateString() : ''}
+                                    editable={false}
+                                />
+                            )}
                         />
                     </Pressable>
                     {showEventDate && (
                         <DateTimePicker
-                            value={eventDate || new Date()}
-                            mode='date'
-                            display='default'
-                            onChange={onDateChange}
+                            value={watch('eventDate') || new Date()}
+                            mode="date"
+                            display="default"
+                            onChange={(event, selectedDate) => {
+                                setShowEventDate(false);
+                                if (selectedDate) setValue('eventDate', selectedDate);
+                            }}
                         />
                     )}
 
-                    {/* Start Time Picker */}
+                    {/* Start and End Time Pickers */}
                     <View style={{ flexDirection: 'row', gap: 10 }}>
-
+                        {/* Start Time */}
                         <Pressable onPress={() => setShowStartTime(true)}>
-                            <TextInput
-                                style={{ width: 120 }}
-                                label='เวลาเริ่มต้น'
-                                value={startTime ? startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
-                                editable={false}
-                            />
-                        </Pressable>
+    <Controller
+        name="startTime"
+        control={control}
+        render={({ field: { value } }) => (
+            <TextInput
+                style={{ width: 120 }}
+                label="เวลาเริ่มต้น"
+                value={
+                    value
+                        ? new Date(value).toLocaleTimeString('th-TH', {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                          })
+                        : ''
+                }
+                editable={false}
+            />
+        )}
+    />
+</Pressable>
+{showStartTime && (
+    <DateTimePicker
+        value={watch('startTime') || new Date()}
+        mode="time"
+        display="default"
+        onChange={(event, selectedTime) => {
+            setShowStartTime(false);
+            if (selectedTime) setValue('startTime', selectedTime);
+        }}
+    />
+)}
+
                         {showStartTime && (
                             <DateTimePicker
-                                value={startTime || new Date()}
-                                mode='time'
-                                display='default'
-                                onChange={onStartTimeChange}
+                                value={watch('startTime') || new Date()}
+                                mode="time"
+                                display="default"
+                                onChange={(event, selectedTime) => {
+                                    setShowStartTime(false);
+                                    if (selectedTime) setValue('startTime', selectedTime);
+                                }}
                             />
                         )}
 
-                        {/* End Time Picker */}
+                        {/* End Time */}
                         <Pressable onPress={() => setShowEndTime(true)}>
-                            <TextInput
-                                style={{ width: 120 }}
-                                label='เวลาสิ้นสุด'
-                                value={endTime ? endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
-                                editable={false}
+                            <Controller
+                                name="endTime"
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <TextInput
+                                        style={{ width: 120 }}
+                                        label="เวลาสิ้นสุด"
+                                        value={
+                                            value
+                                                ? value.toLocaleTimeString([], {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                })
+                                                : ''
+                                        }
+                                        editable={false}
+                                    />
+                                )}
                             />
                         </Pressable>
                         {showEndTime && (
                             <DateTimePicker
-                                value={endTime || new Date()}
-                                mode='time'
-                                display='default'
-                                onChange={onEndTimeChange}
+                                value={watch('endTime') || new Date()}
+                                mode="time"
+                                display="default"
+                                onChange={(event, selectedTime) => {
+                                    setShowEndTime(false);
+                                    if (selectedTime) setValue('endTime', selectedTime);
+                                }}
                             />
                         )}
-
                     </View>
-                    <TextInput label='Dresscode' />
-                    <TextInput
-                        multiline
-                        label='รายละเอียดเพิ่มเติม'
-                        style={{ height: 80 }}
+
+                    {/* Dress Code */}
+                    <Controller
+                        name="dressCode"
+                        control={control}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <TextInput
+                                label="Dresscode"
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                            />
+                        )}
                     />
-                    <Button>ยืนยัน</Button>
+
+                    {/* Additional Details */}
+                    <Controller
+                        name="additionalDetails"
+                        control={control}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <TextInput
+                                multiline
+                                label="รายละเอียดเพิ่มเติม"
+                                style={{ height: 80 }}
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                            />
+                        )}
+                    />
+
+                    <Button onPress={handleSubmit(onSubmit)}>ยืนยัน</Button>
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
-    )
-}
+    );
+};
 
-export default CreateEventForm
+export default CreateEventForm;

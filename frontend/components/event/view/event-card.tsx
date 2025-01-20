@@ -2,18 +2,26 @@ import React from 'react'
 import { Card, Text } from 'react-native-paper'
 import { format } from 'date-fns'
 import { useAppTheme } from '@/hooks/use-theme'
+import { router } from 'expo-router'
 
 type EventCardPropsType = {
+  id: string
   name: string
   date: Date
 }
 
-const EventCard = ({ name, date }: EventCardPropsType) => {
+const EventCard = ({ id, name, date }: EventCardPropsType) => {
   const theme = useAppTheme()
   const formattedDate = format(date, 'dd/MM/yy')
 
   return (
     <Card
+      onPress={() => router.push({
+        pathname: '/event/detail/[id]',
+        params: {
+          id: id
+        }
+      })}
       mode='outlined'
       style={{
         width: '45%',

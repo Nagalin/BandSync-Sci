@@ -5,18 +5,18 @@ import EventCard from '@/components/event/view/event-card'
 import CreateEventModal from '@/components/event/create/create-event-modal'
 
 type Event = {
-  id: number
+  id: string
   name: string
   date: Date
 }
 
 const Index = () => {
   const mockedData: Event[] = [
-    { id: 1, name: 'Event 1', date: new Date('2064-01-10') },
-    { id: 2, name: 'Event 2', date: new Date('2066-01-12') },
-    { id: 3, name: 'Event 3', date: new Date('2067-01-15') },
-    { id: 4, name: 'Event 1', date: new Date('2064-01-10') },
-    { id: 5, name: 'Event 2', date: new Date('2066-01-12') },
+    { id: '1', name: 'Event 1', date: new Date('2064-01-10') },
+    { id: '2', name: 'Event 2', date: new Date('2066-01-12') },
+    { id: '3', name: 'Event 3', date: new Date('2067-01-15') },
+    { id: '4', name: 'Event 1', date: new Date('2064-01-10') },
+    { id: '5', name: 'Event 2', date: new Date('2066-01-12') },
   ]
   return (
     <Background>
@@ -31,7 +31,7 @@ const Index = () => {
       >
         {mockedData.map(curr => {
           return (
-            <EventCard key={curr.id} name={curr.name} date={curr.date} />
+            <EventCard key={curr.id} id={curr.id} name={curr.name} date={curr.date} />
           )
         })}
 
