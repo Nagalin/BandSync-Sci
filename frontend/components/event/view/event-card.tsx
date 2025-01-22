@@ -1,8 +1,11 @@
 import React from 'react'
-import { Card, Text } from 'react-native-paper'
+import { Card, Text, } from 'react-native-paper'
 import { format } from 'date-fns'
 import { useAppTheme } from '@/hooks/use-theme'
 import { router } from 'expo-router'
+import { View } from 'react-native'
+import Calender from '@/assets/icons/calender'
+import Clock from '@/assets/icons/clock'
 
 type EventCardPropsType = {
   id: string
@@ -24,6 +27,7 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
       })}
       mode='outlined'
       style={{
+        boxShadow: '8px 8px 8px rgba(0, 0, 0, 0.25)',
         width: '45%',
         marginTop: 15,
         height: 150,
@@ -43,17 +47,39 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
           {name}
         </Text>
 
-        <Text
-          variant='bodyMedium'
-          style={{
-            textAlign: 'center'
-          }}
-        >
-          {formattedDate}
-        </Text>
+
+        <View style={{ flexDirection: 'row', gap: 7, marginTop: 10, alignItems: 'center', width: 110 }}>
+          <Calender width={20} height={20} />
+          <Text
+            variant='bodyMedium'
+            style={{
+              textAlign: 'center'
+            }}
+          >
+            {formattedDate}
+          </Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', gap: 7, marginTop: 10, alignItems: 'center', width: 110 }}>
+
+
+          <Clock width={20} height={20} />
+
+
+          <Text
+            variant='bodyMedium'
+            style={{
+              textAlign: 'center'
+            }}
+          >
+            18.00-19.00
+          </Text>
+        </View>
+
       </Card.Content>
     </Card>
   )
 }
 
 export default EventCard
+
