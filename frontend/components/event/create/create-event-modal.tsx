@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View } from 'react-native'
+import { Alert, View } from 'react-native'
 import { Modal, Portal, Text, Button } from 'react-native-paper'
 import CreateEventForm from '@/components/event/create/create-event-form'
 import { useAppTheme } from '@/hooks/use-theme'
@@ -8,7 +8,15 @@ const CreateEventModal = () => {
     const theme = useAppTheme()
     const [visible, setVisible] = useState(false)
     const showModal = () => setVisible(true)
-    const hideModal = () => setVisible(false)
+    const hideModal = () => {
+        Alert.alert('คำเตือน', 'คุณต้องการยกเลิกการสร้าง event หรือไม่', [
+            {
+                text: 'Cancel',
+                style: 'cancel',
+            },
+            { text: 'OK', onPress: () => setVisible(false) },
+        ]);
+    }
 
     return (
         <React.Fragment>

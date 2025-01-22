@@ -77,7 +77,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                     <Controller
                         name="eventName"
                         control={control}
-                        rules={{ required: 'Event name is required' }}
+                        rules={{ required: 'กรุณากรอกชื่อ event' }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <>
                                 <TextInput
@@ -87,7 +87,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                     value={value}
                                 />
                                 {errors.eventName && (
-                                    <Text style={{ color: 'red', fontSize: 12 }}>
+                                    <Text style={{ color: 'red', fontSize: 12, marginTop: -10 }}>
                                         {errors.eventName.message}
                                     </Text>
                                 )}
@@ -98,14 +98,23 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                     {/* Event Date Picker */}
                     <Pressable onPress={() => setShowEventDate(true)}>
                         <Controller
+                            rules={{ required: 'กรุณากรอกวันเดือนปี' }}
                             name="eventDate"
                             control={control}
+
                             render={({ field: { value } }) => (
-                                <TextInput
-                                    label="วว/ดด/ปป"
-                                    value={value ? value.toLocaleDateString() : ''}
-                                    editable={false}
-                                />
+                                <>
+                                    <TextInput
+                                        label="วว/ดด/ปป"
+                                        value={value ? value.toLocaleDateString() : ''}
+                                        editable={false}
+                                    />
+                                    {errors.eventName && (
+                                        <Text style={{ color: 'red', fontSize: 12 }}>
+                                            {errors.eventDate?.message}
+                                        </Text>
+                                    )}
+                                </>
                             )}
                         />
                     </Pressable>
@@ -125,37 +134,45 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                     <View style={{ flexDirection: 'row', gap: 10 }}>
                         {/* Start Time */}
                         <Pressable onPress={() => setShowStartTime(true)}>
-    <Controller
-        name="startTime"
-        control={control}
-        render={({ field: { value } }) => (
-            <TextInput
-                style={{ width: 120 }}
-                label="เวลาเริ่มต้น"
-                value={
-                    value
-                        ? new Date(value).toLocaleTimeString('th-TH', {
-                              hour: '2-digit',
-                              minute: '2-digit',
-                          })
-                        : ''
-                }
-                editable={false}
-            />
-        )}
-    />
-</Pressable>
-{showStartTime && (
-    <DateTimePicker
-        value={watch('startTime') || new Date()}
-        mode="time"
-        display="default"
-        onChange={(event, selectedTime) => {
-            setShowStartTime(false);
-            if (selectedTime) setValue('startTime', selectedTime);
-        }}
-    />
-)}
+                            <Controller
+                                name="startTime"
+                                control={control}
+                                rules={{ required: 'กรุณากรอกเวลาเริ่มต้น' }}
+                                render={({ field: { value } }) => (
+                                    <>
+                                        <TextInput
+                                            style={{ width: 120 }}
+                                            label="เวลาเริ่มต้น"
+                                            value={
+                                                value
+                                                    ? new Date(value).toLocaleTimeString('th-TH', {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                    })
+                                                    : ''
+                                            }
+                                            editable={false}
+                                        />
+                                        {errors.eventName && (
+                                            <Text style={{ color: 'red', fontSize: 12 }}>
+                                                {errors.startTime?.message}
+                                            </Text>
+                                        )}
+                                    </>
+                                )}
+                            />
+                        </Pressable>
+                        {showStartTime && (
+                            <DateTimePicker
+                                value={watch('startTime') || new Date()}
+                                mode="time"
+                                display="default"
+                                onChange={(event, selectedTime) => {
+                                    setShowStartTime(false);
+                                    if (selectedTime) setValue('startTime', selectedTime);
+                                }}
+                            />
+                        )}
 
                         {showStartTime && (
                             <DateTimePicker
@@ -174,20 +191,26 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                             <Controller
                                 name="endTime"
                                 control={control}
+                                rules={{ required: 'กรุณากรอกเวลาสิ้นสุด' }}
                                 render={({ field: { value } }) => (
-                                    <TextInput
-                                        style={{ width: 120 }}
-                                        label="เวลาสิ้นสุด"
-                                        value={
-                                            value
-                                                ? value.toLocaleTimeString([], {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit',
-                                                })
-                                                : ''
-                                        }
-                                        editable={false}
-                                    />
+                                    <>
+                                        <TextInput
+                                            style={{ width: 120 }}
+                                            label="เวลาสิ้นสุด"
+                                            value={
+                                                value
+                                                    ? value.toLocaleTimeString([], {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                    })
+                                                    : ''
+                                            }
+                                            editable={false}
+                                        />
+                                        <Text style={{ color: 'red', fontSize: 12 }}>
+                                            {errors.endTime?.message}
+                                        </Text>
+                                    </>
                                 )}
                             />
                         </Pressable>
@@ -208,13 +231,20 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                     <Controller
                         name="dressCode"
                         control={control}
+                        rules={{ required: 'กรุณากรอก dresscode' }}
                         render={({ field: { onChange, onBlur, value } }) => (
-                            <TextInput
-                                label="Dresscode"
-                                onBlur={onBlur}
-                                onChangeText={onChange}
-                                value={value}
-                            />
+                            <>
+                                <TextInput
+                                    label="Dresscode"
+                                    onBlur={onBlur}
+                                    onChangeText={onChange}
+                                    value={value}
+                                />
+                                {errors.dressCode?.message && <Text style={{ color: 'red', fontSize: 12 }}>
+                                    {errors.dressCode.message}
+                                </Text>}
+
+                            </>
                         )}
                     />
 
@@ -225,7 +255,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextInput
                                 multiline
-                                label="รายละเอียดเพิ่มเติม"
+                                label="รายละเอียดเพิ่มเติม (optional)"
                                 style={{ height: 80 }}
                                 onBlur={onBlur}
                                 onChangeText={onChange}
