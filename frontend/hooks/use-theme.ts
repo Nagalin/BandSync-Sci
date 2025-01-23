@@ -2,7 +2,7 @@ import { useTheme } from 'react-native-paper'
 
 export const theme = {
     colors: {
-      background: '#F4F4FB',
+      background: '#ffffff',
       main: '#f1e0ce',
       mainButton : '#a2c5c9'
     }

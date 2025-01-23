@@ -1,3 +1,5 @@
+import 'react-native-reanimated'
+import 'react-native-gesture-handler'
 import { Link } from 'expo-router'
 import { Text, View } from 'react-native'
 
