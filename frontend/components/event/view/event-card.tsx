@@ -20,7 +20,7 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
   return (
     <Card
       onPress={() => router.push({
-        pathname: '/event/detail/[id]',
+        pathname: '/event/detail',
         params: {
           id: id
         }

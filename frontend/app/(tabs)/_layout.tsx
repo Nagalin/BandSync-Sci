@@ -15,6 +15,13 @@ const TabsLayout = () => {
         }}
       />
 
+      <Tabs.Screen
+        name='event/detail'
+        options={{
+          headerShown: false,
+          href: null
+        }}
+      />
     </Tabs>
   )
 }

@@ -9,10 +9,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import TextInput from '@/components/ui/text-input';
 import Button from '@/components/ui/button';
 import Background from '@/components/ui/background';
+import { Link, router } from 'expo-router';
+import ListIcon from '@/assets/icons/list';
 
-type CreateEventFormPropsType = {
-    hideModal: () => void;
-};
 
 type FormValues = {
     eventName: string;
@@ -30,11 +29,11 @@ const Index = () => {
 
     const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormValues>({
         defaultValues: {
-            eventName: '',
-            eventDate: undefined,
+            eventName: 'Event 1',
+            eventDate: new Date(),
             startTime: undefined,
             endTime: undefined,
-            dressCode: '',
+            dressCode: 'เสื้อเหลือง การเกงดำ',
             additionalDetails: '',
         },
     });
@@ -44,17 +43,12 @@ const Index = () => {
     };
 
     return (
-        <Background  style={{
-            flex: 1,
+        <Background style={{
+            marginTop: 20,
             flexDirection: 'column',
             gap: 20,
             padding: 10,
         }}>
-
-            <Text style={{ fontSize: 30}}>
-                สร้าง Event ใหม่
-            </Text>
-
             {/* Event Name */}
             <Controller
                 name="eventName"
@@ -216,11 +210,24 @@ const Index = () => {
                 )}
             />
 
-            <Button onPress={handleSubmit(onSubmit)}>ดูรายชื่อเพลง</Button>
+            <Button onPress={() => router.push('/song/queue')}>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    gap: 10,
+                    alignItems: 'center',
+                }}>
+
+                    <Text>
+                        ดูรายชื่อเพลง
+                    </Text>
+                    <ListIcon width={20} height={20} />
+                </View>
+            </Button>
             <Button onPress={handleSubmit(onSubmit)}>เริ่ม Event</Button>
 
         </Background>
-    );
-};
+    )
+}
 
 export default Index
