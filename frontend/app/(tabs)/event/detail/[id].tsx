@@ -11,7 +11,7 @@ import Button from '@/components/ui/button';
 import Background from '@/components/ui/background';
 import { Link, router } from 'expo-router';
 import ListIcon from '@/assets/icons/list';
-
+import EditIcon from '@/assets/icons/edit';
 
 type FormValues = {
     eventName: string;
@@ -44,11 +44,12 @@ const Index = () => {
 
     return (
         <Background style={{
-            marginTop: 20,
             flexDirection: 'column',
             gap: 20,
             padding: 10,
         }}>
+            <Text>(icon edit เฉพาะ backstage)</Text>
+            <EditIcon width={40} height={40} style={{alignSelf: 'flex-end', marginRight: 10,}}/>
             {/* Event Name */}
             <Controller
                 name="eventName"
@@ -57,6 +58,7 @@ const Index = () => {
                 render={({ field: { onChange, onBlur, value } }) => (
                     <>
                         <TextInput
+                            disabled
                             label="ชื่อ Event"
                             onBlur={onBlur}
                             onChangeText={onChange}
@@ -78,6 +80,7 @@ const Index = () => {
                     control={control}
                     render={({ field: { value } }) => (
                         <TextInput
+                            disabled
                             label="วว/ดด/ปป"
                             value={value ? value.toLocaleDateString() : ''}
                             editable={false}
@@ -100,12 +103,12 @@ const Index = () => {
             {/* Start and End Time Pickers */}
             <View style={{ flexDirection: 'row', gap: 10 }}>
                 {/* Start Time */}
-                <Pressable onPress={() => setShowStartTime(true)}>
                     <Controller
                         name="startTime"
                         control={control}
                         render={({ field: { value } }) => (
                             <TextInput
+                                disabled
                                 style={{ width: 120 }}
                                 label="เวลาเริ่มต้น"
                                 value={
@@ -116,11 +119,10 @@ const Index = () => {
                                         })
                                         : ''
                                 }
-                                editable={false}
+                                
                             />
                         )}
                     />
-                </Pressable>
                 {showStartTime && (
                     <DateTimePicker
                         value={watch('startTime') || new Date()}
@@ -146,12 +148,12 @@ const Index = () => {
                 )}
 
                 {/* End Time */}
-                <Pressable onPress={() => setShowEndTime(true)}>
                     <Controller
                         name="endTime"
                         control={control}
                         render={({ field: { value } }) => (
                             <TextInput
+                                disabled
                                 style={{ width: 120 }}
                                 label="เวลาสิ้นสุด"
                                 value={
@@ -166,7 +168,6 @@ const Index = () => {
                             />
                         )}
                     />
-                </Pressable>
                 {showEndTime && (
                     <DateTimePicker
                         value={watch('endTime') || new Date()}
@@ -186,6 +187,7 @@ const Index = () => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
+                        disabled
                         label="Dresscode"
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -200,6 +202,7 @@ const Index = () => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
+                        disabled
                         multiline
                         label="รายละเอียดเพิ่มเติม"
                         style={{ height: 80 }}
@@ -218,10 +221,10 @@ const Index = () => {
                     alignItems: 'center',
                 }}>
 
+                    <ListIcon width={20} height={20} />
                     <Text>
                         ดูรายชื่อเพลง
                     </Text>
-                    <ListIcon width={20} height={20} />
                 </View>
             </Button>
             <Button onPress={handleSubmit(onSubmit)}>เริ่ม Event</Button>

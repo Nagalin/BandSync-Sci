@@ -110,7 +110,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                         editable={false}
                                     />
                                     {errors.eventName && (
-                                        <Text style={{ color: 'red', fontSize: 12 }}>
+                                        <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>
                                             {errors.eventDate?.message}
                                         </Text>
                                     )}
@@ -154,7 +154,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                             editable={false}
                                         />
                                         {errors.eventName && (
-                                            <Text style={{ color: 'red', fontSize: 12 }}>
+                                            <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>
                                                 {errors.startTime?.message}
                                             </Text>
                                         )}
@@ -207,7 +207,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                             }
                                             editable={false}
                                         />
-                                        <Text style={{ color: 'red', fontSize: 12 }}>
+                                        <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>
                                             {errors.endTime?.message}
                                         </Text>
                                     </>
@@ -240,7 +240,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                     onChangeText={onChange}
                                     value={value}
                                 />
-                                {errors.dressCode?.message && <Text style={{ color: 'red', fontSize: 12 }}>
+                                {errors.dressCode?.message && <Text style={{ color: 'red', fontSize: 12, marginTop: -10 }}>
                                     {errors.dressCode.message}
                                 </Text>}
 
