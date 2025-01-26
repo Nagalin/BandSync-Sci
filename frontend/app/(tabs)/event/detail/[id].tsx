@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
     View,
-    Text,
     Pressable,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
@@ -12,6 +11,7 @@ import Background from '@/components/ui/background';
 import { Link, router } from 'expo-router';
 import ListIcon from '@/assets/icons/list';
 import EditIcon from '@/assets/icons/edit';
+import Text from '@/components/ui/text';
 
 type FormValues = {
     eventName: string;

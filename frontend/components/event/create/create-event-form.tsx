@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
     View,
-    Text,
     Platform,
     KeyboardAvoidingView,
     ScrollView,
@@ -12,6 +11,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import TextInput from '@/components/ui/text-input';
 import Button from '@/components/ui/button';
 import CloseButton from '@/assets/icons/close-square';
+import Text from '@/components/ui/text';
 
 type CreateEventFormPropsType = {
     hideModal: () => void;

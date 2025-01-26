@@ -1,11 +1,12 @@
 import React from 'react'
-import { Card, Text, } from 'react-native-paper'
+import { Card } from 'react-native-paper'
 import { format } from 'date-fns'
 import { useAppTheme } from '@/hooks/use-theme'
 import { router } from 'expo-router'
 import { View } from 'react-native'
 import Calender from '@/assets/icons/calender'
 import Clock from '@/assets/icons/clock'
+import Text from '@/components/ui/text'
 
 type EventCardPropsType = {
   id: string
@@ -39,7 +40,7 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
     >
       <Card.Content>
         <Text
-          variant='titleLarge'
+          // variant='titleLarge'
           style={{
             textAlign: 'center'
           }}
@@ -51,7 +52,7 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
         <View style={{ flexDirection: 'row', gap: 7, marginTop: 10, alignItems: 'center', width: 110 }}>
           <Calender width={20} height={20} />
           <Text
-            variant='bodyMedium'
+            // variant='bodyMedium'
             style={{
               textAlign: 'center'
             }}
@@ -67,7 +68,7 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
 
 
           <Text
-            variant='bodyMedium'
+            // variant='bodyMedium'
             style={{
               textAlign: 'center'
             }}
