@@ -213,7 +213,11 @@ const Index = () => {
                 )}
             />
 
-            <Button onPress={() => router.push('/song/queue')}>
+            <Link href="/song/queue" asChild>
+            <Pressable>
+
+
+            <Button >
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'center',
@@ -227,7 +231,9 @@ const Index = () => {
                     </Text>
                 </View>
             </Button>
-            <Button onPress={handleSubmit(onSubmit)}>เริ่ม Event</Button>
+                    </Pressable>
+                    </Link>
+            <Button onPress={handleSubmit(onSubmit)}>เริ่ม Event (เฉพาะ backstage)</Button>
 
         </Background>
     )

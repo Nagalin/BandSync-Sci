@@ -3,7 +3,7 @@ import { Stack } from 'expo-router'
 
 const Layout = () => {
   return (
-       <Stack screenOptions={{title: 'รายละเอียด event',}}/>
+       <Stack screenOptions={{title: 'รายละเอียด event',headerTitleStyle: {fontFamily: 'IBMPlexSans_400Regular'}}}/>
   )
 }
 

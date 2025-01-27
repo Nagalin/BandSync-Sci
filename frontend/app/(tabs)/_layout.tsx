@@ -4,10 +4,11 @@ import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 const TabsLayout = () => {
   return (
-    <Tabs>
+    <Tabs backBehavior='history'>
 
       <Tabs.Screen
         name='event/view'
+
         options={{
           title: 'View Event',
           headerShown: false,
@@ -17,6 +18,14 @@ const TabsLayout = () => {
 
       <Tabs.Screen
         name='event/detail'
+        options={{
+          headerShown: false,
+          href: null
+        }}
+      />
+
+      <Tabs.Screen
+        name='song/queue'
         options={{
           headerShown: false,
           href: null

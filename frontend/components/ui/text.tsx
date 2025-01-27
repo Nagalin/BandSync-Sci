@@ -1,4 +1,5 @@
-import { View, Text as RnText, TextProps } from 'react-native'
+import { View } from 'react-native'
+import { Text as RnText , TextProps } from 'react-native-paper'
 import React, { ReactNode } from 'react'
 import {
     useFonts,
@@ -20,7 +21,7 @@ import {
 
 type TextPropsType = {
     children: ReactNode
-} & TextProps
+} & TextProps<{}>
 
 const Text = ({ children, style, ...rest } : TextPropsType) => {
     let [fontsLoaded] = useFonts({

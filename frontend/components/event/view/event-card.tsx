@@ -21,14 +21,15 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
   return (
     <Card
       onPress={() => router.push({
-        pathname: '/event/detail',
+        pathname: '/event/detail/[id]',
         params: {
           id: id
         }
       })}
       mode='outlined'
       style={{
-        boxShadow: '8px 8px 8px rgba(0, 0, 0, 0.25)',
+        // boxShadow: '8px 8px 8px rgba(0, 0, 0, 0.25)',
+        borderStyle: 'solid',
         width: '45%',
         marginTop: 15,
         height: 150,
@@ -40,7 +41,7 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
     >
       <Card.Content>
         <Text
-          // variant='titleLarge'
+          variant='titleLarge'
           style={{
             textAlign: 'center'
           }}
@@ -52,7 +53,7 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
         <View style={{ flexDirection: 'row', gap: 7, marginTop: 10, alignItems: 'center', width: 110 }}>
           <Calender width={20} height={20} />
           <Text
-            // variant='bodyMedium'
+            variant='bodyMedium'
             style={{
               textAlign: 'center'
             }}
@@ -68,7 +69,7 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
 
 
           <Text
-            // variant='bodyMedium'
+            variant='bodyMedium'
             style={{
               textAlign: 'center'
             }}
