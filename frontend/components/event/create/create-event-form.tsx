@@ -9,10 +9,11 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import TextInput from '@/components/ui/text-input';
+import { TextInput as PaperTextInput } from 'react-native-paper';
 import Button from '@/components/ui/button';
 import CloseButton from '@/assets/icons/close-square';
 import Text from '@/components/ui/text';
-
+import Calender from '@/assets/icons/calender';
 type CreateEventFormPropsType = {
     hideModal: () => void;
 };
@@ -34,9 +35,9 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
     const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormValues>({
         defaultValues: {
             eventName: '',
-            eventDate: undefined,
-            startTime: undefined,
-            endTime: undefined,
+            eventDate: new Date(),
+            startTime: new Date(),
+            endTime: new Date(),
             dressCode: '',
             additionalDetails: '',
         },
@@ -108,6 +109,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                         label="วว/ดด/ปป"
                                         value={value ? value.toLocaleDateString() : ''}
                                         editable={false}
+                                        right={<PaperTextInput.Icon icon="calendar" />}
                                     />
                                     {errors.eventName && (
                                         <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>
@@ -141,8 +143,10 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                 render={({ field: { value } }) => (
                                     <>
                                         <TextInput
-                                            style={{ width: 120 }}
+                                            style={{ width: 140 }}
                                             label="เวลาเริ่มต้น"
+                                            right={<PaperTextInput.Icon icon="timer" />}
+
                                             value={
                                                 value
                                                     ? new Date(value).toLocaleTimeString('th-TH', {
@@ -195,8 +199,10 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                 render={({ field: { value } }) => (
                                     <>
                                         <TextInput
-                                            style={{ width: 120 }}
+                                            style={{ width: 140 }}
                                             label="เวลาสิ้นสุด"
+                                            right={<PaperTextInput.Icon icon="timer" />}
+
                                             value={
                                                 value
                                                     ? value.toLocaleTimeString([], {

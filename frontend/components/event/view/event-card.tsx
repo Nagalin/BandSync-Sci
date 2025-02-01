@@ -26,7 +26,7 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
           id: id
         }
       })}
-      mode='outlined'
+      // mode='outlined'
       style={{
         // boxShadow: '8px 8px 8px rgba(0, 0, 0, 0.25)',
         borderStyle: 'solid',
