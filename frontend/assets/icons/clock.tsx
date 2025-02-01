@@ -1,6 +1,6 @@
 import * as React from "react"
 import Svg, { SvgProps, Path } from "react-native-svg"
-const SvgComponent = (props: SvgProps) => (
+const Clock = (props: SvgProps) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width={800}
@@ -18,4 +18,4 @@ const SvgComponent = (props: SvgProps) => (
     />
   </Svg>
 )
-export default SvgComponent
+export default Clock

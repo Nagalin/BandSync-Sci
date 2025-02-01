@@ -1,51 +1,51 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react'
 import {
   View,
   StyleSheet,
   LayoutAnimation,
-} from 'react-native';
-import { Provider as PaperProvider, Card, Title, Paragraph, Button } from 'react-native-paper';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+} from 'react-native'
+import { Provider as PaperProvider, Card, Title, Button } from 'react-native-paper'
+import Animated, { useAnimatedStyle } from 'react-native-reanimated'
 import SwipeableItem, {
   useSwipeableItemParams,
   OpenDirection,
-} from 'react-native-swipeable-item';
+} from 'react-native-swipeable-item'
 import DraggableFlatList, {
   RenderItemParams,
   ScaleDecorator,
-} from 'react-native-draggable-flatlist';
+} from 'react-native-draggable-flatlist'
 
-const OVERSWIPE_DIST = 20;
-const NUM_ITEMS = 20;
+const OVERSWIPE_DIST = 20
+const NUM_ITEMS = 20
 
 type Item = {
-  key: string;
-  order: number;
-  songName: string;
-};
+  key: string
+  order: number
+  songName: string
+}
 
 const initialData: Item[] = [...Array(NUM_ITEMS)].map((_, index) => ({
   key: `song-${index}`,
   order: index + 1,
   songName: `Song ${index + 1}`,
-}));
+}))
 
 function App() {
-  const [data, setData] = useState(initialData);
-  const itemRefs = useRef(new Map());
+  const [data, setData] = useState(initialData)
+  const itemRefs = useRef(new Map())
 
   const renderItem = useCallback((params: RenderItemParams<Item>) => {
     const onPressDelete = () => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
       setData((prev) => {
-        return prev.filter((item) => item !== params.item);
-      });
-    };
+        return prev.filter((item) => item !== params.item)
+      })
+    }
 
     return (
       <RowItem {...params} itemRefs={itemRefs} onPressDelete={onPressDelete} />
-    );
-  }, []);
+    )
+  }, [])
 
   return (
     <PaperProvider>
@@ -59,17 +59,17 @@ function App() {
         />
       </View>
     </PaperProvider>
-  );
+  )
 }
 
-export default App;
+export default App
 
 type RowItemProps = {
-  item: Item;
-  drag: () => void;
-  onPressDelete: () => void;
-  itemRefs: React.MutableRefObject<Map<any, any>>;
-};
+  item: Item
+  drag: () => void
+  onPressDelete: () => void
+  itemRefs: React.MutableRefObject<Map<any, any>>
+}
 
 function RowItem({ item, itemRefs, drag, onPressDelete }: RowItemProps) {
   return (
@@ -78,15 +78,15 @@ function RowItem({ item, itemRefs, drag, onPressDelete }: RowItemProps) {
       item={item}
       ref={(ref) => {
         if (ref && !itemRefs.current.get(item.key)) {
-          itemRefs.current.set(item.key, ref);
+          itemRefs.current.set(item.key, ref)
         }
       }}
       onChange={({ openDirection }) => {
         if (openDirection !== OpenDirection.NONE) {
           // Close all other open items
           [...itemRefs.current.entries()].forEach(([key, ref]) => {
-            if (key !== item.key && ref) ref.close();
-          });
+            if (key !== item.key && ref) ref.close()
+          })
         }
       }}
       overSwipe={OVERSWIPE_DIST}
@@ -102,23 +102,23 @@ function RowItem({ item, itemRefs, drag, onPressDelete }: RowItemProps) {
         </Card.Content>
       </Card>
     </SwipeableItem>
-  );
+  )
 }
 
 const UnderlayLeft = ({
   drag,
   onPressDelete,
 }: {
-  drag: () => void;
-  onPressDelete: () => void;
+  drag: () => void
+  onPressDelete: () => void
 }) => {
-  const { item, percentOpen } = useSwipeableItemParams<Item>();
+  const { item, percentOpen } = useSwipeableItemParams<Item>()
   const animStyle = useAnimatedStyle(
     () => ({
       opacity: percentOpen.value,
     }),
     [percentOpen]
-  );
+  )
 
   return (
     <Animated.View style={[styles.underlayLeft, animStyle]}>
@@ -126,18 +126,18 @@ const UnderlayLeft = ({
         Delete
       </Button>
     </Animated.View>
-  );
-};
+  )
+}
 
 function UnderlayRight() {
-  const { close } = useSwipeableItemParams<Item>();
+  const { close } = useSwipeableItemParams<Item>()
   return (
     <Animated.View style={styles.underlayRight}>
       <Button icon="close" onPress={() => close()} color="white">
         Close
       </Button>
     </Animated.View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -160,4 +160,4 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-});
+})

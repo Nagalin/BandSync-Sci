@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { Alert, View } from 'react-native'
 import { Modal, Portal, Button } from 'react-native-paper'
 import CreateEventForm from '@/components/event/create/create-event-form'
-import { useAppTheme } from '@/hooks/use-theme'
 import Text from '@/components/ui/text'
+import { useAppTheme } from '@/hooks/use-theme'
 
 const CreateEventModal = () => {
     const theme = useAppTheme()
@@ -16,7 +16,7 @@ const CreateEventModal = () => {
                 style: 'cancel',
             },
             { text: 'OK', onPress: () => setVisible(false) },
-        ]);
+        ])
     }
 
     return (

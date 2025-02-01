@@ -8,7 +8,6 @@ const TabsLayout = () => {
 
       <Tabs.Screen
         name='event/view'
-
         options={{
           title: 'View Event',
           headerShown: false,

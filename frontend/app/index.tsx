@@ -1,7 +1,7 @@
 import 'react-native-reanimated'
 import 'react-native-gesture-handler'
 import { Link } from 'expo-router'
-import {  View } from 'react-native'
+import { View } from 'react-native'
 import Text from '@/components/ui/text'
 
 export default function Index() {

@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
     View,
     Pressable,
-} from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import TextInput from '@/components/ui/text-input';
-import Button from '@/components/ui/button';
-import Background from '@/components/ui/background';
-import { Link, router } from 'expo-router';
-import ListIcon from '@/assets/icons/list';
-import EditIcon from '@/assets/icons/edit';
-import Text from '@/components/ui/text';
+} from 'react-native'
+import { useForm, Controller } from 'react-hook-form'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import TextInput from '@/components/ui/text-input'
+import Button from '@/components/ui/button'
+import Background from '@/components/ui/background'
+import { Link } from 'expo-router'
+import ListIcon from '@/assets/icons/list'
+import EditIcon from '@/assets/icons/edit'
+import Text from '@/components/ui/text'
 
 type FormValues = {
-    eventName: string;
-    eventDate: Date | undefined;
-    startTime: Date | undefined;
-    endTime: Date | undefined;
-    dressCode: string;
-    additionalDetails: string;
-};
+    eventName: string
+    eventDate: Date | undefined
+    startTime: Date | undefined
+    endTime: Date | undefined
+    dressCode: string
+    additionalDetails: string
+}
 
 const Index = () => {
-    const [showEventDate, setShowEventDate] = useState(false);
-    const [showStartTime, setShowStartTime] = useState(false);
-    const [showEndTime, setShowEndTime] = useState(false);
+    const [showEventDate, setShowEventDate] = useState(false)
+    const [showStartTime, setShowStartTime] = useState(false)
+    const [showEndTime, setShowEndTime] = useState(false)
 
     const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormValues>({
         defaultValues: {
@@ -36,11 +36,11 @@ const Index = () => {
             dressCode: 'เสื้อเหลือง การเกงดำ',
             additionalDetails: '',
         },
-    });
+    })
 
     const onSubmit = (data: FormValues) => {
-        console.log('Form Data:', data.startTime);
-    };
+        console.log('Form Data:', data.startTime)
+    }
 
     return (
         <Background style={{
@@ -49,7 +49,7 @@ const Index = () => {
             padding: 10,
         }}>
             <Text>(icon edit เฉพาะ backstage)</Text>
-            <EditIcon width={40} height={40} style={{alignSelf: 'flex-end', marginRight: 10,}}/>
+            <EditIcon width={40} height={40} style={{ alignSelf: 'flex-end', marginRight: 10, }} />
             {/* Event Name */}
             <Controller
                 name="eventName"
@@ -94,8 +94,8 @@ const Index = () => {
                     mode="date"
                     display="default"
                     onChange={(event, selectedDate) => {
-                        setShowEventDate(false);
-                        if (selectedDate) setValue('eventDate', selectedDate);
+                        setShowEventDate(false)
+                        if (selectedDate) setValue('eventDate', selectedDate)
                     }}
                 />
             )}
@@ -103,34 +103,34 @@ const Index = () => {
             {/* Start and End Time Pickers */}
             <View style={{ flexDirection: 'row', gap: 10 }}>
                 {/* Start Time */}
-                    <Controller
-                        name="startTime"
-                        control={control}
-                        render={({ field: { value } }) => (
-                            <TextInput
-                                disabled
-                                style={{ width: 120 }}
-                                label="เวลาเริ่มต้น"
-                                value={
-                                    value
-                                        ? new Date(value).toLocaleTimeString('th-TH', {
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })
-                                        : ''
-                                }
-                                
-                            />
-                        )}
-                    />
+                <Controller
+                    name="startTime"
+                    control={control}
+                    render={({ field: { value } }) => (
+                        <TextInput
+                            disabled
+                            style={{ width: 120 }}
+                            label="เวลาเริ่มต้น"
+                            value={
+                                value
+                                    ? new Date(value).toLocaleTimeString('th-TH', {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    })
+                                    : ''
+                            }
+
+                        />
+                    )}
+                />
                 {showStartTime && (
                     <DateTimePicker
                         value={watch('startTime') || new Date()}
                         mode="time"
                         display="default"
                         onChange={(event, selectedTime) => {
-                            setShowStartTime(false);
-                            if (selectedTime) setValue('startTime', selectedTime);
+                            setShowStartTime(false)
+                            if (selectedTime) setValue('startTime', selectedTime)
                         }}
                     />
                 )}
@@ -141,41 +141,41 @@ const Index = () => {
                         mode="time"
                         display="default"
                         onChange={(event, selectedTime) => {
-                            setShowStartTime(false);
-                            if (selectedTime) setValue('startTime', selectedTime);
+                            setShowStartTime(false)
+                            if (selectedTime) setValue('startTime', selectedTime)
                         }}
                     />
                 )}
 
                 {/* End Time */}
-                    <Controller
-                        name="endTime"
-                        control={control}
-                        render={({ field: { value } }) => (
-                            <TextInput
-                                disabled
-                                style={{ width: 120 }}
-                                label="เวลาสิ้นสุด"
-                                value={
-                                    value
-                                        ? value.toLocaleTimeString([], {
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })
-                                        : ''
-                                }
-                                editable={false}
-                            />
-                        )}
-                    />
+                <Controller
+                    name="endTime"
+                    control={control}
+                    render={({ field: { value } }) => (
+                        <TextInput
+                            disabled
+                            style={{ width: 120 }}
+                            label="เวลาสิ้นสุด"
+                            value={
+                                value
+                                    ? value.toLocaleTimeString([], {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    })
+                                    : ''
+                            }
+                            editable={false}
+                        />
+                    )}
+                />
                 {showEndTime && (
                     <DateTimePicker
                         value={watch('endTime') || new Date()}
                         mode="time"
                         display="default"
                         onChange={(event, selectedTime) => {
-                            setShowEndTime(false);
-                            if (selectedTime) setValue('endTime', selectedTime);
+                            setShowEndTime(false)
+                            if (selectedTime) setValue('endTime', selectedTime)
                         }}
                     />
                 )}
@@ -214,25 +214,25 @@ const Index = () => {
             />
 
             <Link href="/song/queue" asChild>
-            <Pressable>
+                <Pressable>
 
 
-            <Button >
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    gap: 10,
-                    alignItems: 'center',
-                }}>
+                    <Button >
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            gap: 10,
+                            alignItems: 'center',
+                        }}>
 
-                    <ListIcon width={20} height={20} />
-                    <Text>
-                        ดูรายชื่อเพลง
-                    </Text>
-                </View>
-            </Button>
-                    </Pressable>
-                    </Link>
+                            <ListIcon width={20} height={20} />
+                            <Text>
+                                ดูรายชื่อเพลง
+                            </Text>
+                        </View>
+                    </Button>
+                </Pressable>
+            </Link>
             <Button onPress={handleSubmit(onSubmit)}>เริ่ม Event (เฉพาะ backstage)</Button>
 
         </Background>

@@ -1,38 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
     View,
     Platform,
     KeyboardAvoidingView,
     ScrollView,
     Pressable,
-} from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import TextInput from '@/components/ui/text-input';
-import { TextInput as PaperTextInput } from 'react-native-paper';
-import Button from '@/components/ui/button';
-import CloseButton from '@/assets/icons/close-square';
-import Text from '@/components/ui/text';
-import Calender from '@/assets/icons/calender';
+} from 'react-native'
+import { useForm, Controller } from 'react-hook-form'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { TextInput as PaperTextInput } from 'react-native-paper'
+import TextInput from '@/components/ui/text-input'
+import Button from '@/components/ui/button'
+import CloseButton from '@/assets/icons/close-square'
+import Text from '@/components/ui/text'
+
 type CreateEventFormPropsType = {
-    hideModal: () => void;
-};
+    hideModal: () => void
+}
 
 type FormValues = {
-    eventName: string;
-    eventDate: Date | undefined;
-    startTime: Date | undefined;
-    endTime: Date | undefined;
-    dressCode: string;
-    additionalDetails: string;
-};
+    eventName: string
+    eventDate: Date | undefined
+    startTime: Date | undefined
+    endTime: Date | undefined
+    dressCode: string
+    additionalDetails: string
+}
 
 const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
-    const [showEventDate, setShowEventDate] = useState(false);
-    const [showStartTime, setShowStartTime] = useState(false);
-    const [showEndTime, setShowEndTime] = useState(false);
-
-    const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormValues>({
+    const [showEventDate, setShowEventDate] = useState(false)
+    const [showStartTime, setShowStartTime] = useState(false)
+    const [showEndTime, setShowEndTime] = useState(false)
+    const {
+        control,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: { errors }
+    } = useForm<FormValues>({
         defaultValues: {
             eventName: '',
             eventDate: new Date(),
@@ -41,11 +46,11 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
             dressCode: '',
             additionalDetails: '',
         },
-    });
+    })
 
     const onSubmit = (data: FormValues) => {
-        console.log('Form Data:', data.startTime);
-    };
+        console.log('Form Data:', data.startTime)
+    }
 
     return (
         <KeyboardAvoidingView
@@ -88,7 +93,13 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                     value={value}
                                 />
                                 {errors.eventName && (
-                                    <Text style={{ color: 'red', fontSize: 12, marginTop: -10 }}>
+                                    <Text
+                                        style={{
+                                            color: 'red',
+                                            fontSize: 12,
+                                            marginTop: -10
+                                        }}
+                                    >
                                         {errors.eventName.message}
                                     </Text>
                                 )}
@@ -112,7 +123,13 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                         right={<PaperTextInput.Icon icon="calendar" />}
                                     />
                                     {errors.eventName && (
-                                        <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>
+                                        <Text
+                                            style={{
+                                                color: 'red',
+                                                fontSize: 12,
+                                                marginTop: 5
+                                            }}
+                                        >
                                             {errors.eventDate?.message}
                                         </Text>
                                     )}
@@ -126,8 +143,8 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                             mode="date"
                             display="default"
                             onChange={(event, selectedDate) => {
-                                setShowEventDate(false);
-                                if (selectedDate) setValue('eventDate', selectedDate);
+                                setShowEventDate(false)
+                                if (selectedDate) setValue('eventDate', selectedDate)
                             }}
                         />
                     )}
@@ -158,7 +175,13 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                             editable={false}
                                         />
                                         {errors.eventName && (
-                                            <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>
+                                            <Text
+                                                style={{
+                                                    color: 'red',
+                                                    fontSize: 12,
+                                                    marginTop: 5
+                                                }}
+                                            >
                                                 {errors.startTime?.message}
                                             </Text>
                                         )}
@@ -172,8 +195,8 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                 mode="time"
                                 display="default"
                                 onChange={(event, selectedTime) => {
-                                    setShowStartTime(false);
-                                    if (selectedTime) setValue('startTime', selectedTime);
+                                    setShowStartTime(false)
+                                    if (selectedTime) setValue('startTime', selectedTime)
                                 }}
                             />
                         )}
@@ -184,8 +207,8 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                 mode="time"
                                 display="default"
                                 onChange={(event, selectedTime) => {
-                                    setShowStartTime(false);
-                                    if (selectedTime) setValue('startTime', selectedTime);
+                                    setShowStartTime(false)
+                                    if (selectedTime) setValue('startTime', selectedTime)
                                 }}
                             />
                         )}
@@ -202,7 +225,6 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                             style={{ width: 140 }}
                                             label="เวลาสิ้นสุด"
                                             right={<PaperTextInput.Icon icon="timer" />}
-
                                             value={
                                                 value
                                                     ? value.toLocaleTimeString([], {
@@ -213,7 +235,12 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                             }
                                             editable={false}
                                         />
-                                        <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>
+                                        <Text style={{
+                                            color: 'red',
+                                            fontSize: 12,
+                                            marginTop: 5
+                                        }}
+                                        >
                                             {errors.endTime?.message}
                                         </Text>
                                     </>
@@ -226,8 +253,8 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                 mode="time"
                                 display="default"
                                 onChange={(event, selectedTime) => {
-                                    setShowEndTime(false);
-                                    if (selectedTime) setValue('endTime', selectedTime);
+                                    setShowEndTime(false)
+                                    if (selectedTime) setValue('endTime', selectedTime)
                                 }}
                             />
                         )}
@@ -246,9 +273,10 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                     onChangeText={onChange}
                                     value={value}
                                 />
-                                {errors.dressCode?.message && <Text style={{ color: 'red', fontSize: 12, marginTop: -10 }}>
-                                    {errors.dressCode.message}
-                                </Text>}
+                                {errors.dressCode?.message &&
+                                    <Text style={{ color: 'red', fontSize: 12, marginTop: -10 }}>
+                                        {errors.dressCode.message}
+                                    </Text>}
 
                             </>
                         )}
@@ -274,7 +302,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
-    );
-};
+    )
+}
 
-export default CreateEventForm;
+export default CreateEventForm
