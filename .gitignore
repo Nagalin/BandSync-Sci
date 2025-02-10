@@ -11,6 +11,7 @@ backend/pnpm-debug.log*
 backend/yarn-debug.log*
 backend/yarn-error.log*
 backend/lerna-debug.log*
+backend/prisma/migrations
 
 # OS
 backend/.DS_Store
