@@ -55,7 +55,7 @@ backend/*.pid.lock
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 backend/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
+backend/prisma/migrations/migration_lock.toml
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
 # dependencies

@@ -1,27 +1,32 @@
 import { ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Background from '@/components/ui/background'
 import EventCard from '@/components/event/detail/event-card'
 import CreateEventModal from '@/components/event/create/modal'
 import { Snackbar } from 'react-native-paper'
+import { useQuery } from '@tanstack/react-query'
+import axios from '@/lib/axios'
+import EventLoadingCard from '@/components/event/detail/event-loading-card'
 
-type Event = {
+type APIResponse = {
   id: string
-  name: string
-  date: Date
+  eventName: string
+  eventDate: Date
+  startTime: string
+  endTime: string
 }
 
 const Index = () => {
   const [visible, setVisible] = React.useState(true)
+  const { data: mockedData, isFetching } = useQuery<APIResponse[]>({
+    queryKey: ['events'],
+    queryFn: async () => (await axios.get('/events')).data
+  })
+
+  if (isFetching) return <EventLoadingCard />
 
   const onDismissSnackBar = () => setVisible(false)
-  const mockedData: Event[] = [
-    { id: '1', name: 'Event 1', date: new Date('2064-01-10') },
-    { id: '2', name: 'Event 2', date: new Date('2066-01-12') },
-    { id: '3', name: 'Event 3', date: new Date('2067-01-15') },
-    { id: '4', name: 'Event 1', date: new Date('2064-01-10') },
-    { id: '5', name: 'Event 2', date: new Date('2066-01-12') },
-  ]
+
   return (
     <Background>
       <ScrollView
@@ -33,9 +38,17 @@ const Index = () => {
           paddingHorizontal: 15
         }}
       >
-        {mockedData.map(curr => {
+        {mockedData?.map(curr => {
+          console.log(curr)
           return (
-            <EventCard key={curr.id} id={curr.id} name={curr.name} date={curr.date} />
+            <EventCard
+              key={curr.id}
+              id={curr.id}
+              eventName={curr.eventName}
+              eventDate={curr.eventDate}
+              startTime={curr.startTime}
+              endTime={curr.endTime}
+            />
           )
         })}
 

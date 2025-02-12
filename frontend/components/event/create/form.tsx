@@ -280,7 +280,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                         )}
                     /> */}
 
-                    <Button onPress={handleSubmit(onSubmit)}>ยืนยัน</Button>
+                    <Button onPress={onSubmit}>ยืนยัน</Button>
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

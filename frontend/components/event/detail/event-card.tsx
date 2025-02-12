@@ -10,13 +10,18 @@ import { useAppTheme } from '@/hooks/use-theme'
 
 type EventCardPropsType = {
   id: string
-  name: string
-  date: Date
+  eventName: string
+  eventDate: Date
+  startTime: string
+  endTime: string
 }
 
-const EventCard = ({ id, name, date }: EventCardPropsType) => {
+const EventCard = ({ id, eventName, eventDate, startTime, endTime }: EventCardPropsType) => {
   const theme = useAppTheme()
-  const formattedDate = format(date, 'dd/MM/yy')
+  const formattedDate = format(eventDate, 'dd/MM/yy')
+  const formattedStartTime = format(new Date(startTime), 'HH:mm')
+  const formattedEndTime = format(new Date(endTime), 'HH:mm')
+
 
   return (
     <Card
@@ -44,7 +49,7 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
             textAlign: 'center'
           }}
         >
-          {name}
+          {eventName}
         </Text>
 
         <View
@@ -84,7 +89,7 @@ const EventCard = ({ id, name, date }: EventCardPropsType) => {
               textAlign: 'center'
             }}
           >
-            18.00-19.00
+            {formattedStartTime}-{formattedEndTime}
           </Text>
 
         </View>

@@ -1,4 +1,5 @@
 import axios from "@/lib/axios"
+import { useMutation } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { Alert } from "react-native"
 
@@ -11,9 +12,7 @@ type FormValues = {
     // additionalDetails: string
 }
 
-
 const useCreateEvent = () => {
-  
     const {
         control,
         handleSubmit,
@@ -31,21 +30,26 @@ const useCreateEvent = () => {
         },
     })
 
-    const onSubmit = async (data: FormValues) => {
-        console.log('Form Data:', data)
-        try {
-            const res = await axios.post('/events', data)
-            Alert.alert('สำเร็จ', 'สร้าง Event สำเร็จ', [
-
-                { text: 'OK', },
-            ])
-
-        } catch (error: any) {
-            console.error(error.response?.data?.message)
+    const { mutate: createEvent} = useMutation({
+        mutationFn: async (data: FormValues) => {
+            console.log('Form Data:', data)
+            try {
+                const res = await axios.post('/events', data)
+                Alert.alert('สำเร็จ', 'สร้าง Event สำเร็จ', [
+    
+                    { text: 'OK', },
+                ])
+    
+            } catch (error: any) {
+                console.error(error.response?.data?.message)
+    
+            }
+    
 
         }
+    })
 
-    }
+    const onSubmit = handleSubmit(data => createEvent(data))
 
     return {
         control,
