@@ -89,6 +89,8 @@ frontend/*.pem
 
 # local env files
 frontend/.env*.local
+frontend/.env
+
 
 # typescript
 frontend/*.tsbuildinfo

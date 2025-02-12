@@ -6,26 +6,19 @@ import {
     ScrollView,
     Pressable,
 } from 'react-native'
-import { useForm, Controller } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { TextInput as PaperTextInput } from 'react-native-paper'
 import TextInput from '@/components/ui/text-input'
 import Button from '@/components/ui/button'
 import CloseButton from '@/assets/icons/close-square'
 import Text from '@/components/ui/text'
+import useCreateEvent from './useCreateEvent'
 
 type CreateEventFormPropsType = {
     hideModal: () => void
 }
 
-type FormValues = {
-    eventName: string
-    eventDate: Date | undefined
-    startTime: Date | undefined
-    endTime: Date | undefined
-    dressCode: string
-    additionalDetails: string
-}
 
 const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
     const [showEventDate, setShowEventDate] = useState(false)
@@ -36,21 +29,10 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
         handleSubmit,
         setValue,
         watch,
-        formState: { errors }
-    } = useForm<FormValues>({
-        defaultValues: {
-            eventName: '',
-            eventDate: new Date(),
-            startTime: new Date(),
-            endTime: new Date(),
-            dressCode: '',
-            additionalDetails: '',
-        },
-    })
-
-    const onSubmit = (data: FormValues) => {
-        console.log('Form Data:', data.startTime)
-    }
+        errors,
+        onSubmit
+    } = useCreateEvent()
+    
 
     return (
         <KeyboardAvoidingView
@@ -283,7 +265,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                     />
 
                     {/* Additional Details */}
-                    <Controller
+                    {/* <Controller
                         name="additionalDetails"
                         control={control}
                         render={({ field: { onChange, onBlur, value } }) => (
@@ -296,7 +278,7 @@ const CreateEventForm = ({ hideModal }: CreateEventFormPropsType) => {
                                 value={value}
                             />
                         )}
-                    />
+                    /> */}
 
                     <Button onPress={handleSubmit(onSubmit)}>ยืนยัน</Button>
                 </View>

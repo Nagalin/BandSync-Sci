@@ -2,7 +2,7 @@ import { ScrollView } from 'react-native'
 import React from 'react'
 import Background from '@/components/ui/background'
 import EventCard from '@/components/event/detail/event-card'
-import CreateEventModal from '@/components/event/create/create-event-modal'
+import CreateEventModal from '@/components/event/create/modal'
 import { Snackbar } from 'react-native-paper'
 
 type Event = {
