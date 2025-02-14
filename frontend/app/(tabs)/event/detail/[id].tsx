@@ -4,13 +4,15 @@ import {
     View,
 } from 'react-native'
 import { TextInput as PaperTextInput } from 'react-native-paper'
-import { Link } from 'expo-router'
+import { Link, useLocalSearchParams } from 'expo-router'
 import TextInput from '@/components/ui/text-input'
 import Button from '@/components/ui/button'
 import Background from '@/components/ui/background'
 import ListIcon from '@/assets/icons/list'
 import EditIcon from '@/assets/icons/edit'
 import Text from '@/components/ui/text'
+import { useQuery } from '@tanstack/react-query'
+import axios from '@/lib/axios'
 
 type FormValues = {
     eventName: string
@@ -21,13 +23,38 @@ type FormValues = {
     additionalDetails: string
 }
 
+type APIResponse = {
+    dressCode: string;
+    endTime:   string; // Change to string
+    eventDate: string; // Change to string
+    eventName: string;
+    id:        string;
+    startTime: string; // Change to string
+    status:    string;
+}
+
 const Index = () => {
+    const { id } = useLocalSearchParams()
+
+    console.log(id)
+    const { data: event } = useQuery<APIResponse>({
+        queryKey: ['event-detail'],
+        queryFn: async () => {
+            return (await axios.get(`/events/${id}`)).data
+        }
+    })
+
+    // Parse the date strings into Date objects
+    const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined;
+    const startTime = event?.startTime ? new Date(event.startTime) : undefined;
+    const endTime = event?.endTime ? new Date(event.endTime) : undefined;
+
     const formValues: FormValues = {
-        eventName: 'Event 1',
-        eventDate: new Date(),
-        startTime: new Date(),
-        endTime: new Date(),
-        dressCode: 'เสื้อเหลือง การเกงดำ',
+        eventName: event?.eventName!,
+        eventDate: eventDate,
+        startTime: startTime,
+        endTime: endTime,
+        dressCode: event?.dressCode!,
         additionalDetails: '',
     }
 
@@ -52,7 +79,6 @@ const Index = () => {
                 disabled
                 label="วว/ดด/ปป"
                 right={<PaperTextInput.Icon icon="calendar" />}
-
                 value={formValues.eventDate ? formValues.eventDate.toLocaleDateString() : ''}
             />
 
