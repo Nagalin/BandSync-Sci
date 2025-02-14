@@ -7,24 +7,17 @@ const TabsLayout = () => {
     <Tabs backBehavior='history'>
 
       <Tabs.Screen
-        name='event/view'
+        name='event'
         options={{
-          title: 'View Event',
           headerShown: false,
           tabBarIcon: ({ color }) => <FontAwesome size={28} name='eye' color={color} />
         }}
       />
 
-      <Tabs.Screen
-        name='event/detail'
-        options={{
-          headerShown: false,
-          href: null
-        }}
-      />
+
 
       <Tabs.Screen
-        name='song/queue'
+        name='song'
         options={{
           headerShown: false,
           href: null

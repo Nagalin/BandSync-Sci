@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import Simple from './simple'
+import Simple from '../../../components/song/simple'
 import Text from '@/components/ui/text'
 import Background from '@/components/ui/background'
 

@@ -13,7 +13,7 @@ export default function Index() {
         alignItems: 'center',
       }}
     >
-      <Link href='/event/view'>
+      <Link href='/event'>
         <Text> Login </Text>
       </Link>
     </View>

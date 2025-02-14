@@ -133,7 +133,7 @@ const Index = () => {
                 value={formValues.additionalDetails}
             />
 
-            <Link href="/song/queue" asChild>
+            <Link href="/song" asChild>
                 <Pressable>
                     <Button >
                         <View style={{
