@@ -13,6 +13,7 @@ import EditIcon from '@/assets/icons/edit'
 import Text from '@/components/ui/text'
 import { useQuery } from '@tanstack/react-query'
 import axios from '@/lib/axios'
+import Form from '@/components/event/form'
 
 type FormValues = {
     eventName: string
@@ -24,19 +25,18 @@ type FormValues = {
 }
 
 type APIResponse = {
-    dressCode: string;
-    endTime:   string; // Change to string
-    eventDate: string; // Change to string
-    eventName: string;
-    id:        string;
-    startTime: string; // Change to string
-    status:    string;
+    dressCode: string
+    endTime: string
+    eventDate: string
+    eventName: string
+    id: string
+    startTime: string
+    status: string
 }
 
 const Index = () => {
     const { id } = useLocalSearchParams()
 
-    console.log(id)
     const { data: event } = useQuery<APIResponse>({
         queryKey: ['event-detail'],
         queryFn: async () => {
@@ -45,9 +45,9 @@ const Index = () => {
     })
 
     // Parse the date strings into Date objects
-    const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined;
-    const startTime = event?.startTime ? new Date(event.startTime) : undefined;
-    const endTime = event?.endTime ? new Date(event.endTime) : undefined;
+    const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined
+    const startTime = event?.startTime ? new Date(event.startTime) : undefined
+    const endTime = event?.endTime ? new Date(event.endTime) : undefined
 
     const formValues: FormValues = {
         eventName: event?.eventName!,
@@ -64,75 +64,20 @@ const Index = () => {
             gap: 20,
             padding: 10,
         }}>
-            <Text>(icon edit เฉพาะ backstage)</Text>
-            <EditIcon width={40} height={40} style={{ alignSelf: 'flex-end', marginRight: 10, }} />
+            {/* <Text>(icon edit เฉพาะ backstage)</Text>
+            <EditIcon width={40} height={40} style={{ alignSelf: 'flex-end', marginRight: 10, }} /> */}
 
-            {/* Event Name */}
-            <TextInput
-                disabled
-                label="ชื่อ Event"
-                value={formValues.eventName}
+            <Form
+                event={{
+                    eventId: event?.id!,
+                    eventName: event?.eventName!,
+                    eventDate: eventDate!,
+                    startTime: startTime!,
+                    endTime: endTime!,
+                    dressCode: event?.dressCode!
+                }}
+
             />
-
-            {/* Event Date */}
-            <TextInput
-                disabled
-                label="วว/ดด/ปป"
-                right={<PaperTextInput.Icon icon="calendar" />}
-                value={formValues.eventDate ? formValues.eventDate.toLocaleDateString() : ''}
-            />
-
-            {/* Start and End Time */}
-            <View style={{ flexDirection: 'row', gap: 10 }}>
-                {/* Start Time */}
-                <TextInput
-                    disabled
-                    label="เวลาเริ่มต้น"
-                    style={{ width: 140 }}
-                    right={<PaperTextInput.Icon icon="timer" />}
-                    value={
-                        formValues.startTime
-                            ? formValues.startTime.toLocaleTimeString('th-TH', {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                            })
-                            : ''
-                    }
-                />
-
-                {/* End Time */}
-                <TextInput
-                    disabled
-                    label="เวลาสิ้นสุด"
-                    style={{ width: 140 }}
-                    right={<PaperTextInput.Icon icon="timer" />}
-                    value={
-                        formValues.endTime
-                            ? formValues.endTime.toLocaleTimeString([], {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                            })
-                            : ''
-                    }
-                />
-            </View>
-
-            {/* Dress Code */}
-            <TextInput
-                disabled
-                label="Dresscode"
-                value={formValues.dressCode}
-            />
-
-            {/* Additional Details */}
-            <TextInput
-                disabled
-                multiline
-                label="รายละเอียดเพิ่มเติม"
-                style={{ height: 80 }}
-                value={formValues.additionalDetails}
-            />
-
             <Link href="/song" asChild>
                 <Pressable>
                     <Button >

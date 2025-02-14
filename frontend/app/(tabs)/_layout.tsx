@@ -14,8 +14,6 @@ const TabsLayout = () => {
         }}
       />
 
-
-
       <Tabs.Screen
         name='song'
         options={{
@@ -23,6 +21,7 @@ const TabsLayout = () => {
           href: null
         }}
       />
+      
     </Tabs>
   )
 }

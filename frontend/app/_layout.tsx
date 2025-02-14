@@ -11,11 +11,11 @@ const queryClient = new QueryClient()
 export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
-    <PaperProvider theme={theme}>
-      <Stack>
-        <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-      </Stack>
-    </PaperProvider>
-      </QueryClientProvider>
+      <PaperProvider theme={theme}>
+        <Stack>
+          <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+        </Stack>
+      </PaperProvider>
+    </QueryClientProvider>
   )
 }

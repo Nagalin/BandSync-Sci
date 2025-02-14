@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Alert, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
 import { Modal, Portal, Button } from 'react-native-paper'
-import CreateEventForm from '@/components/event/create/form'
+import CreateEventForm from '@/components/event/form'
 import Text from '@/components/ui/text'
 import { useAppTheme } from '@/hooks/use-theme'
+import CloseButton from '@/assets/icons/close-square';
 
 const CreateEventModal = () => {
     const theme = useAppTheme()
@@ -32,7 +33,22 @@ const CreateEventModal = () => {
                         height: '80%',
                     }}
                 >
-                    <CreateEventForm hideModal={hideModal} />
+                    <CloseButton
+                        onPress={hideModal}
+                        style={{ alignSelf: 'flex-end' }}
+                        width={60}
+                        height={130}
+                    />
+                    <KeyboardAvoidingView
+                                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                                style={{ flex: 1 }}
+                            >
+                                <ScrollView
+                                    contentContainerStyle={{ flexGrow: 1 }}
+                                    keyboardShouldPersistTaps="handled">
+                    <CreateEventForm/>
+                                </ScrollView>
+                                </KeyboardAvoidingView>
                 </Modal>
             </Portal>
 

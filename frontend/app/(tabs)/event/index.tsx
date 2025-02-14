@@ -1,5 +1,5 @@
 import { ScrollView } from 'react-native'
-import React, { useEffect } from 'react'
+import React from 'react'
 import Background from '@/components/ui/background'
 import EventCard from '@/components/event/detail/event-card'
 import CreateEventModal from '@/components/event/create/modal'
@@ -39,7 +39,6 @@ const Index = () => {
         }}
       >
         {mockedData?.map(curr => {
-          console.log(curr)
           return (
             <EventCard
               key={curr.id}
@@ -62,7 +61,6 @@ const Index = () => {
         action={{
           label: 'Try again',
           onPress: () => {
-            console.log('clicked')
           },
         }}>
         Something went wrong

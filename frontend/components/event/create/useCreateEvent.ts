@@ -5,6 +5,7 @@ import { Alert } from "react-native"
 
 type FormValues = {
     eventName: string
+    eventId: string
     eventDate: Date | undefined
     startTime: Date | undefined
     endTime: Date | undefined
@@ -12,7 +13,7 @@ type FormValues = {
     // additionalDetails: string
 }
 
-const useCreateEvent = () => {
+const useCreateEvent = (event?: FormValues) => {
     const {
         control,
         handleSubmit,
@@ -21,45 +22,56 @@ const useCreateEvent = () => {
         formState: { errors }
     } = useForm<FormValues>({
         defaultValues: {
-            eventName: '',
-            eventDate: new Date(),
-            startTime: new Date(),
-            endTime: new Date(),
-            dressCode: '',
-            // additionalDetails: '',
+            eventName: event?.eventName || '',
+            eventDate: event?.eventDate || new Date(),
+            startTime: event?.startTime || new Date(),
+            endTime: event?.endTime || new Date(),
+            dressCode: event?.dressCode || '',
+            // additionalDetails: event?.additionalDetails || '',
         },
     })
 
-    const { mutate: createEvent} = useMutation({
+    const { mutate: createEvent } = useMutation({
         mutationFn: async (data: FormValues) => {
-            console.log('Form Data:', data)
             try {
                 const res = await axios.post('/events', data)
                 Alert.alert('สำเร็จ', 'สร้าง Event สำเร็จ', [
-    
-                    { text: 'OK', },
+                    { text: 'OK' },
                 ])
-    
             } catch (error: any) {
                 console.error(error.response?.data?.message)
-    
             }
-    
-
         }
     })
 
-    const onSubmit = handleSubmit(data => createEvent(data))
+    const { mutate: updateEvent } = useMutation({
+        mutationFn: async (data: FormValues) => {
+            try {
+                const res = await axios.put(`/events/${event?.eventId}`, data)
+                Alert.alert('สำเร็จ', 'อัปเดต Event สำเร็จ', [
+                    { text: 'OK' },
+                ])
+            } catch (error: any) {
+                console.error(error.response?.data?.message)
+            }
+        }
+    })
+
+    const onSubmit = handleSubmit(data => {
+        if (event) {
+            updateEvent(data)
+        } else {
+            createEvent(data)
+        }
+    })
 
     return {
         control,
-        handleSubmit,
         setValue,
         watch,
         errors,
         onSubmit
     }
-
 }
 
 export default useCreateEvent

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Stack } from 'expo-router';
+import React from 'react'
+import { Stack } from 'expo-router'
 
 const Layout = () => {
   return (
@@ -20,7 +20,7 @@ const Layout = () => {
         }}
       />
     </Stack>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout
