@@ -19,6 +19,7 @@ const CreateEventModal = () => {
             { text: 'OK', onPress: () => setVisible(false) },
         ])
     }
+    const closeModal = () => setVisible(false)
 
     return (
         <React.Fragment>
@@ -46,7 +47,7 @@ const CreateEventModal = () => {
                                 <ScrollView
                                     contentContainerStyle={{ flexGrow: 1 }}
                                     keyboardShouldPersistTaps="handled">
-                    <CreateEventForm/>
+                    <CreateEventForm closeModal={closeModal}/>
                                 </ScrollView>
                                 </KeyboardAvoidingView>
                 </Modal>

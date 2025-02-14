@@ -13,7 +13,7 @@ type FormValues = {
     // additionalDetails: string
 }
 
-const useCreateEvent = (event?: FormValues) => {
+const useCreateEvent = ( closeModal?: () => void, event?: FormValues) => {
     const {
         control,
         handleSubmit,
@@ -36,7 +36,7 @@ const useCreateEvent = (event?: FormValues) => {
             try {
                 const res = await axios.post('/events', data)
                 Alert.alert('สำเร็จ', 'สร้าง Event สำเร็จ', [
-                    { text: 'OK' },
+                    { text: 'OK', onPress: closeModal },
                 ])
             } catch (error: any) {
                 console.error(error.response?.data?.message)

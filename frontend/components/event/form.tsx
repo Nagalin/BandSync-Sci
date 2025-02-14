@@ -16,6 +16,7 @@ import Text from '@/components/ui/text';
 import useCreateEvent from '@/components/event/create/useCreateEvent';
 
 type CreateEventFormPropsType = {
+    closeModal?: () => void
     event?: {
         eventId: string
         eventName: string;
@@ -28,6 +29,7 @@ type CreateEventFormPropsType = {
 };
 
 const Form = ({
+    closeModal,
     event
 }: CreateEventFormPropsType) => {
     const [showEventDate, setShowEventDate] = useState(false);
@@ -40,7 +42,7 @@ const Form = ({
         watch,
         errors,
         onSubmit,
-    } = useCreateEvent(event);
+    } = useCreateEvent(closeModal,event);
 
     // Initialize form values with props if provided
     useEffect(() => {
