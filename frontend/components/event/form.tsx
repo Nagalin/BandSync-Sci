@@ -6,7 +6,7 @@ import { TextInput as PaperTextInput } from 'react-native-paper'
 import TextInput from '@/components/ui/text-input'
 import Button from '@/components/ui/button'
 import Text from '@/components/ui/text'
-import useCreateEvent from '@/components/event/create/use-create-event'
+import useCreateEvent from '@/components/event/use-form-event'
 
 type FormPropsType = {
     closeModalImmediately?: () => void
@@ -31,6 +31,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
         watch,
         errors,
         onSubmit,
+        deleteEvent
     } = useCreateEvent(closeModalImmediately, event)
 
     return (
@@ -87,6 +88,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                                 label="วว/ดด/ปป"
                                 value={value?.toLocaleDateString()}
                                 right={<PaperTextInput.Icon icon="calendar" />}
+                                editable={false}
                             />
                             {errors.eventDate && (
                                 <Text
@@ -133,6 +135,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                                         hour: '2-digit',
                                         minute: '2-digit',
                                     })}
+                                    editable={false}
                                 />
                                 {errors.startTime && (
                                     <Text
@@ -178,6 +181,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                                         hour: '2-digit',
                                         minute: '2-digit',
                                     })}
+                                    editable={false}
                                 />
                                 {errors.endTime && (
                                     <Text
@@ -238,8 +242,11 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
 
             {/* Submit Button */}
             <Button onPress={onSubmit}>
-                {event?.eventName ? 'อัปเดต' : 'สร้าง'}
+                {event ? 'อัปเดต' : 'สร้าง'}
             </Button>
+
+            {event && <Button onPress={() => deleteEvent()}> ลบ Event </Button>}
+
         </View>
 
     )
