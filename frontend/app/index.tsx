@@ -1,21 +1,92 @@
-import 'react-native-reanimated'
-import 'react-native-gesture-handler'
-import { Link } from 'expo-router'
-import { View } from 'react-native'
+import React from 'react'
+import Background from '@/components/ui/background'
+import EventCard from '@/components/event/view/event-card'
+import { Card } from 'react-native-paper'
 import Text from '@/components/ui/text'
+import { View } from 'react-native'
+import { useAppTheme } from '@/hooks/use-theme'
+import { router } from 'expo-router'
 
-export default function Index() {
+
+const Index = () => {
+  const theme = useAppTheme()
+
+
+
+
   return (
-    <View
+    <Background
       style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Link href='/event'>
-        <Text> Login </Text>
-      </Link>
-    </View>
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        paddingHorizontal: 15
+      }}>
+
+      <Card
+        onPress={() => router.push({
+          pathname: '/event',
+          
+        })}
+        style={{
+          borderStyle: 'solid',
+          width: '45%',
+          marginTop: 15,
+          height: 150,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: theme.colors.main
+        }}
+      >
+        <Card.Content>
+          <Text
+            variant='titleLarge'
+            style={{
+              textAlign: 'center'
+            }}
+          >
+            Event
+          </Text>
+
+
+
+        </Card.Content>
+      </Card>
+      <Card
+        onPress={() => router.push({
+          pathname: '/event',
+        })}
+        style={{
+          borderStyle: 'solid',
+          width: '45%',
+          marginTop: 15,
+          height: 150,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: theme.colors.main
+        }}
+      >
+        <Card.Content>
+          <Text
+            variant='titleLarge'
+            style={{
+              textAlign: 'center'
+            }}
+          >
+            Event
+          </Text>
+
+
+
+        </Card.Content>
+      </Card>
+
+
+    </Background>
   )
 }
+
+export default Index

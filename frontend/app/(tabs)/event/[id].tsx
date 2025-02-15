@@ -8,6 +8,7 @@ import Background from '@/components/ui/background'
 import Text from '@/components/ui/text'
 import Form from '@/components/event/form'
 import ListIcon from '@/assets/icons/list'
+import DetailLoading from '@/components/event/view/detail-loading'
 
 type APIResponse = {
     dressCode: string
@@ -29,7 +30,7 @@ const Index = () => {
         }
     })
 
-    if(isFetching) return
+    if(isFetching) return <DetailLoading/>
 
     const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined
     const startTime = event?.startTime ? new Date(event.startTime) : undefined
