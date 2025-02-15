@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
-import { Modal, Portal, Button } from 'react-native-paper'
+import { Modal as RnModal, Portal, Button } from 'react-native-paper'
 import CreateEventForm from '@/components/event/form'
 import Text from '@/components/ui/text'
 import { useAppTheme } from '@/hooks/use-theme'
 import CloseButton from '@/assets/icons/close-square';
 
-const CreateEventModal = () => {
+const Modal = () => {
     const theme = useAppTheme()
     const [visible, setVisible] = useState(false)
     const showModal = () => setVisible(true)
-    const hideModal = () => {
+    const confirmCloseModal = () => {
         Alert.alert('คำเตือน', 'คุณต้องการยกเลิกการสร้าง event หรือไม่', [
             {
                 text: 'Cancel',
@@ -19,15 +19,15 @@ const CreateEventModal = () => {
             { text: 'OK', onPress: () => setVisible(false) },
         ])
     }
-    const closeModal = () => setVisible(false)
+    const closeModalImmediately = () => setVisible(false)
 
     return (
         <React.Fragment>
             <Portal>
-                <Modal
+                <RnModal
                     dismissable={false}
                     visible={visible}
-                    onDismiss={hideModal}
+                    onDismiss={confirmCloseModal}
                     contentContainerStyle={{
                         backgroundColor: 'white',
                         margin: 10,
@@ -35,22 +35,22 @@ const CreateEventModal = () => {
                     }}
                 >
                     <CloseButton
-                        onPress={hideModal}
+                        onPress={confirmCloseModal}
                         style={{ alignSelf: 'flex-end' }}
                         width={60}
                         height={130}
                     />
                     <KeyboardAvoidingView
-                                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                                style={{ flex: 1 }}
-                            >
-                                <ScrollView
-                                    contentContainerStyle={{ flexGrow: 1 }}
-                                    keyboardShouldPersistTaps="handled">
-                    <CreateEventForm closeModal={closeModal}/>
-                                </ScrollView>
-                                </KeyboardAvoidingView>
-                </Modal>
+                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                        style={{ flex: 1 }}
+                    >
+                        <ScrollView
+                            contentContainerStyle={{ flexGrow: 1 }}
+                            keyboardShouldPersistTaps="handled">
+                            <CreateEventForm closeModalImmediately={closeModalImmediately} />
+                        </ScrollView>
+                    </KeyboardAvoidingView>
+                </RnModal>
             </Portal>
 
             <Button
@@ -87,4 +87,4 @@ const CreateEventModal = () => {
     )
 }
 
-export default CreateEventModal
+export default Modal

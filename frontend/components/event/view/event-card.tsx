@@ -3,10 +3,10 @@ import { Card } from 'react-native-paper'
 import { format } from 'date-fns'
 import { router } from 'expo-router'
 import { View } from 'react-native'
-import Calender from '@/assets/icons/calender'
-import Clock from '@/assets/icons/clock'
 import Text from '@/components/ui/text'
 import { useAppTheme } from '@/hooks/use-theme'
+import Calender from '@/assets/icons/calender'
+import Clock from '@/assets/icons/clock'
 
 type EventCardPropsType = {
   id: string

@@ -1,12 +1,12 @@
 import { ScrollView } from 'react-native'
 import React from 'react'
 import Background from '@/components/ui/background'
-import EventCard from '@/components/event/detail/event-card'
+import EventCard from '@/components/event/view/event-card'
 import CreateEventModal from '@/components/event/create/modal'
 import { Snackbar } from 'react-native-paper'
 import { useQuery } from '@tanstack/react-query'
 import axios from '@/lib/axios'
-import EventLoadingCard from '@/components/event/detail/event-loading-card'
+import EventLoadingCard from '@/components/event/view/event-loading-card'
 
 type APIResponse = {
   id: string

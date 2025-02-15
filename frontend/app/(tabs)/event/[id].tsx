@@ -1,28 +1,13 @@
 import React from 'react'
-import {
-    Pressable,
-    View,
-} from 'react-native'
-import { TextInput as PaperTextInput } from 'react-native-paper'
+import { Pressable,View } from 'react-native'
 import { Link, useLocalSearchParams } from 'expo-router'
-import TextInput from '@/components/ui/text-input'
-import Button from '@/components/ui/button'
-import Background from '@/components/ui/background'
-import ListIcon from '@/assets/icons/list'
-import EditIcon from '@/assets/icons/edit'
-import Text from '@/components/ui/text'
 import { useQuery } from '@tanstack/react-query'
 import axios from '@/lib/axios'
+import Button from '@/components/ui/button'
+import Background from '@/components/ui/background'
+import Text from '@/components/ui/text'
 import Form from '@/components/event/form'
-
-type FormValues = {
-    eventName: string
-    eventDate: Date | undefined
-    startTime: Date | undefined
-    endTime: Date | undefined
-    dressCode: string
-    additionalDetails: string
-}
+import ListIcon from '@/assets/icons/list'
 
 type APIResponse = {
     dressCode: string
@@ -37,26 +22,18 @@ type APIResponse = {
 const Index = () => {
     const { id } = useLocalSearchParams()
 
-    const { data: event } = useQuery<APIResponse>({
+    const { data: event, isFetching } = useQuery<APIResponse>({
         queryKey: ['event-detail'],
         queryFn: async () => {
             return (await axios.get(`/events/${id}`)).data
         }
     })
 
-    // Parse the date strings into Date objects
+    if(isFetching) return
+
     const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined
     const startTime = event?.startTime ? new Date(event.startTime) : undefined
     const endTime = event?.endTime ? new Date(event.endTime) : undefined
-
-    const formValues: FormValues = {
-        eventName: event?.eventName!,
-        eventDate: eventDate,
-        startTime: startTime,
-        endTime: endTime,
-        dressCode: event?.dressCode!,
-        additionalDetails: '',
-    }
 
     return (
         <Background style={{

@@ -1,7 +1,7 @@
-import axios from "@/lib/axios"
-import { useMutation } from "@tanstack/react-query"
-import { useForm } from "react-hook-form"
-import { Alert } from "react-native"
+import { Alert } from 'react-native'
+import { useForm } from 'react-hook-form'
+import { useMutation } from '@tanstack/react-query'
+import axios from '@/lib/axios'
 
 type FormValues = {
     eventName: string
@@ -13,7 +13,7 @@ type FormValues = {
     // additionalDetails: string
 }
 
-const useCreateEvent = ( closeModal?: () => void, event?: FormValues) => {
+const useCreateEvent = ( closeModalImmediately?: () => void, event?: FormValues) => {
     const {
         control,
         handleSubmit,
@@ -34,9 +34,9 @@ const useCreateEvent = ( closeModal?: () => void, event?: FormValues) => {
     const { mutate: createEvent } = useMutation({
         mutationFn: async (data: FormValues) => {
             try {
-                const res = await axios.post('/events', data)
+                await axios.post('/events', data)
                 Alert.alert('สำเร็จ', 'สร้าง Event สำเร็จ', [
-                    { text: 'OK', onPress: closeModal },
+                    { text: 'OK', onPress: closeModalImmediately },
                 ])
             } catch (error: any) {
                 console.error(error.response?.data?.message)
@@ -47,7 +47,7 @@ const useCreateEvent = ( closeModal?: () => void, event?: FormValues) => {
     const { mutate: updateEvent } = useMutation({
         mutationFn: async (data: FormValues) => {
             try {
-                const res = await axios.put(`/events/${event?.eventId}`, data)
+                await axios.put(`/events/${event?.eventId}`, data)
                 Alert.alert('สำเร็จ', 'อัปเดต Event สำเร็จ', [
                     { text: 'OK' },
                 ])
