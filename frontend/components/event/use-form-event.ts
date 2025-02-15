@@ -70,7 +70,7 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) 
                         text: 'ok', onPress: async () => {
                             await axios.delete(`/events/${event?.eventId}`)
                             Alert.alert('สำเร็จ', 'ลบ Event สำเร็จ')
-                            router.navigate('/event');
+                            router.navigate('/event')
                         },
                     }
                 ])

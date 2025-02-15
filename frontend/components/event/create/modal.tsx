@@ -4,7 +4,7 @@ import { Modal as RnModal, Portal, Button } from 'react-native-paper'
 import CreateEventForm from '@/components/event/form'
 import Text from '@/components/ui/text'
 import { useAppTheme } from '@/hooks/use-theme'
-import CloseButton from '@/assets/icons/close-square';
+import CloseButton from '@/assets/icons/close-square'
 
 const Modal = () => {
     const theme = useAppTheme()

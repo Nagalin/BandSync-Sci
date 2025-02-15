@@ -4,14 +4,32 @@ import { useAppTheme } from '@/hooks/use-theme'
 
 type ButtonPropsType = {
   children: ReactNode
+  variant?: 'primary' | 'danger'
 } & ButtonProps
 
-const Button = ({ children, style, ...props }: ButtonPropsType) => {
+const Button = ({ variant = 'primary', children, style, ...props }: ButtonPropsType) => {
   const theme = useAppTheme()
+
+  // Define styles for each variant
+  const variantStyle = {
+    primary: {
+      backgroundColor: theme.colors.mainButton,
+      textColor: 'black',
+    },
+    danger: {
+      backgroundColor: theme.colors.dangerButton, 
+      textColor: 'black',
+    },
+  }
+
+  const { backgroundColor, textColor } = variantStyle[variant]
+
   return (
     <RnButton
-      textColor='black'
-      style={[{ backgroundColor: theme.colors.mainButton }, style]}
+      mode='contained'
+      buttonColor={backgroundColor}
+      textColor={textColor}
+      style={[style]}
       {...props}
     >
       {children}

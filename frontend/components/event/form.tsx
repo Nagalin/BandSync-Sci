@@ -49,13 +49,13 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
 
             {/* Event Name */}
             <Controller
-                name="eventName"
+                name='eventName'
                 control={control}
                 rules={{ required: 'กรุณากรอกชื่อ event' }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <>
                         <TextInput
-                            label="ชื่อ Event"
+                            label='ชื่อ Event'
                             onBlur={onBlur}
                             onChangeText={onChange}
                             value={value}
@@ -79,15 +79,15 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
             <Pressable onPress={() => setShowEventDate(true)}>
                 <Controller
                     rules={{ required: 'กรุณากรอกวันเดือนปี' }}
-                    name="eventDate"
+                    name='eventDate'
                     control={control}
                     defaultValue={event?.eventDate || new Date()}
                     render={({ field: { value } }) => (
                         <>
                             <TextInput
-                                label="วว/ดด/ปป"
+                                label='วว/ดด/ปป'
                                 value={value?.toLocaleDateString()}
-                                right={<PaperTextInput.Icon icon="calendar" />}
+                                right={<PaperTextInput.Icon icon='calendar' />}
                                 editable={false}
                             />
                             {errors.eventDate && (
@@ -108,8 +108,8 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
             {showEventDate && (
                 <DateTimePicker
                     value={watch('eventDate') || new Date()}
-                    mode="date"
-                    display="default"
+                    mode='date'
+                    display='default'
                     onChange={(event, selectedDate) => {
                         setShowEventDate(false)
                         if (selectedDate) setValue('eventDate', selectedDate)
@@ -121,7 +121,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
             <View style={{ flexDirection: 'row', gap: 10 }}>
                 <Pressable onPress={() => setShowStartTime(true)}>
                     <Controller
-                        name="startTime"
+                        name='startTime'
                         control={control}
                         rules={{ required: 'กรุณากรอกเวลาเริ่มต้น' }}
                         defaultValue={event?.startTime || new Date()}
@@ -129,8 +129,8 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                             <>
                                 <TextInput
                                     style={{ width: 140 }}
-                                    label="เวลาเริ่มต้น"
-                                    right={<PaperTextInput.Icon icon="timer" />}
+                                    label='เวลาเริ่มต้น'
+                                    right={<PaperTextInput.Icon icon='timer' />}
                                     value={value?.toLocaleTimeString('th-TH', {
                                         hour: '2-digit',
                                         minute: '2-digit',
@@ -155,8 +155,8 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                 {showStartTime && (
                     <DateTimePicker
                         value={watch('startTime') || new Date()}
-                        mode="time"
-                        display="default"
+                        mode='time'
+                        display='default'
                         onChange={(event, selectedTime) => {
                             setShowStartTime(false)
                             if (selectedTime) setValue('startTime', selectedTime)
@@ -167,7 +167,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                 {/* End Time */}
                 <Pressable onPress={() => setShowEndTime(true)}>
                     <Controller
-                        name="endTime"
+                        name='endTime'
                         control={control}
                         rules={{ required: 'กรุณากรอกเวลาสิ้นสุด' }}
                         defaultValue={event?.endTime || new Date()}
@@ -175,8 +175,8 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                             <>
                                 <TextInput
                                     style={{ width: 140 }}
-                                    label="เวลาสิ้นสุด"
-                                    right={<PaperTextInput.Icon icon="timer" />}
+                                    label='เวลาสิ้นสุด'
+                                    right={<PaperTextInput.Icon icon='timer' />}
                                     value={value?.toLocaleTimeString('th-TH', {
                                         hour: '2-digit',
                                         minute: '2-digit',
@@ -201,8 +201,8 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                 {showEndTime && (
                     <DateTimePicker
                         value={watch('endTime') || new Date()}
-                        mode="time"
-                        display="default"
+                        mode='time'
+                        display='default'
                         onChange={(event, selectedTime) => {
                             setShowEndTime(false)
                             if (selectedTime) setValue('endTime', selectedTime)
@@ -213,14 +213,14 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
 
             {/* Dress Code */}
             <Controller
-                name="dressCode"
+                name='dressCode'
                 control={control}
                 rules={{ required: 'กรุณากรอก dresscode' }}
                 defaultValue={event?.dressCode || ''}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <>
                         <TextInput
-                            label="Dresscode"
+                            label='Dresscode'
                             onBlur={onBlur}
                             onChangeText={onChange}
                             value={value}
@@ -245,7 +245,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                 {event ? 'อัปเดต' : 'สร้าง'}
             </Button>
 
-            {event && <Button onPress={() => deleteEvent()}> ลบ Event </Button>}
+            {event && <Button variant='danger' onPress={() => deleteEvent()}> ลบ Event </Button>}
 
         </View>
 
