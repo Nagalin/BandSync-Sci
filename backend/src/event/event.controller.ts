@@ -2,6 +2,7 @@ import { Controller, Get, Post, Put, Delete, Param, Body, BadRequestException } 
 import { EventService } from './event.service';
 import { Prisma } from '@prisma/client';
 import { CreateEventDto } from './dto/create-event.dto';
+import { ConflictException } from '@nestjs/common';
 
 @Controller('events')
 export class EventController {
@@ -18,11 +19,11 @@ export class EventController {
   }
 
   @Post()
-  async create(@Body() eventData: CreateEventDto) {
-    const existingEvent = await this.eventService.findByEventName(eventData.eventName);
+async create(@Body() eventData: CreateEventDto) {
+  const existingEvent = await this.eventService.findByEventName(eventData.eventName);
     if (existingEvent) {
-      throw new BadRequestException('ชื่อEventนี้มีอยู่แล้ว');
-    }
+      throw new ConflictException('ชื่อ Event นี้มีอยู่แล้ว');
+  }
 
     return this.eventService.create(eventData); 
   }

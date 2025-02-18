@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, Matches, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, Matches } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class CreateEventDto {
@@ -11,21 +11,24 @@ export class CreateEventDto {
     { message: 'กรุณากรอกวันที่ในรูปแบบ yyyy-MM-dd' },
   )
   @Transform(({ value }) => {
-    // แปลง string "2025-05-01" เป็น Date โดยให้เวลาเป็น "00:00:00"
-    const [year, month, day] = value.split('-');
-    return new Date(`${year}-${month}-${day}T00:00:00.000Z`);
+    if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return value;  // คืนค่าเป็น string ที่เป็น 'yyyy-MM-dd'
+    }
+    throw new Error('eventDate must be a valid string in the format yyyy-MM-dd');
   })
-  eventDate: Date;
+  eventDate: string;
 
-  @IsString({ message: 'เวลาเริ่มต้นต้องเป็นข้อความ' })
   @IsNotEmpty({ message: 'เวลาเริ่มต้นไม่สามารถเป็นค่าว่างได้' })
-  startTime: string;
+  @Matches(/^\d{2}:\d{2}$/, { message: 'กรุณากรอกเวลาเริ่มต้นในรูปแบบ HH:mm' })
+  startTime: string;  // รูปแบบ "HH:mm"
 
-  @IsString({ message: 'เวลาสิ้นสุดต้องเป็นข้อความ' })
   @IsNotEmpty({ message: 'เวลาสิ้นสุดไม่สามารถเป็นค่าว่างได้' })
-  endTime: string;
+  @Matches(/^\d{2}:\d{2}$/, { message: 'กรุณากรอกเวลาสิ้นสุดในรูปแบบ HH:mm' })
+  endTime: string;    // รูปแบบ "HH:mm"
 
-  @IsOptional()
   @IsString({ message: 'Dress code ต้องเป็นข้อความ' })
-  dressCode?: string;
+  dressCode: string;
+
+  @IsString({ message: 'รายละเอียดเพิ่มเติมต้องเป็นข้อความ' })
+  additionalDetails: string;
 }
