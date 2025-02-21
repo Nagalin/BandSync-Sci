@@ -13,6 +13,9 @@ const TextInput = ({ style, label, ...props }: TextInputProps) => {
         </Text>
       }
       contentStyle={{ fontFamily: 'IBMPlexSans_400Regular' }}
+      theme={{colors: {
+        primary: 'black'
+      }}}
       {...props}
     />
   )

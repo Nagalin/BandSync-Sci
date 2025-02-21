@@ -20,7 +20,7 @@ const Card = ({  children }: CardPropsType) => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.colors.main
+      backgroundColor: theme.colors.primary
     }}
   >
     <RnCard.Content>

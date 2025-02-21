@@ -5,6 +5,7 @@ import CreateEventForm from '@/components/event/form'
 import Text from '@/components/ui/text'
 import { useAppTheme } from '@/hooks/use-theme'
 import CloseButton from '@/assets/icons/close-square'
+import Form from '@/components/song/form'
 
 const Modal = () => {
     const theme = useAppTheme()
@@ -47,7 +48,7 @@ const Modal = () => {
                         <ScrollView
                             // contentContainerStyle={{ flexGrow: 1 }}
                             keyboardShouldPersistTaps="handled">
-                            <CreateEventForm closeModalImmediately={closeModalImmediately} />
+                            <Form  />
                         </ScrollView>
                     </KeyboardAvoidingView>
                 </RnModal>

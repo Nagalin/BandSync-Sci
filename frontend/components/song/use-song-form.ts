@@ -12,6 +12,7 @@ type FormValues = {
     endTime: Date | undefined
     dressCode: string
     additionalDetails: string
+    dropdownField: any
 }
 
 const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) => {

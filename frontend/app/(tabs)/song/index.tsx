@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Simple from '../../../components/song/simple'
 import Text from '@/components/ui/text'
 import Background from '@/components/ui/background'
+import CreateEventModal from '@/components/song/create/modal';
 
 if (Platform.OS === 'android') {
   UIManager.setLayoutAnimationEnabledExperimental &&
@@ -23,6 +24,7 @@ function Index() {
         <SafeAreaProvider>
           <Text style={{fontSize: 30}}>งานเปิดบ้าน</Text>
           <Simple />
+          <CreateEventModal/>
         </SafeAreaProvider>
       </GestureHandlerRootView>
     </Background>

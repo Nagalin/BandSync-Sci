@@ -1,5 +1,5 @@
 import React from 'react'
-import { Pressable,View } from 'react-native'
+import { Pressable, View } from 'react-native'
 import { Link, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import axios from '@/lib/axios'
@@ -18,6 +18,7 @@ type APIResponse = {
     id: string
     startTime: string
     status: string
+    additionalDetails: string
 }
 
 const Index = () => {
@@ -30,7 +31,7 @@ const Index = () => {
         }
     })
 
-    if(isFetching) return <DetailLoading/>
+    if (isFetching) return <DetailLoading />
 
     const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined
     const startTime = event?.startTime ? new Date(event.startTime) : undefined
@@ -39,31 +40,40 @@ const Index = () => {
     return (
         <Background style={{
             flexDirection: 'column',
+            justifyContent: 'flex-start',
             gap: 20,
             padding: 10,
         }}>
-            {/* <Text>(icon edit เฉพาะ backstage)</Text>
-            <EditIcon width={40} height={40} style={{ alignSelf: 'flex-end', marginRight: 10, }} /> */}
 
-            <Form
-                event={{
-                    eventId: event?.id!,
-                    eventName: event?.eventName!,
-                    eventDate: eventDate!,
-                    startTime: startTime!,
-                    endTime: endTime!,
-                    dressCode: event?.dressCode!
-                }}
+            <View style={{ marginTop: -60 }}>
+                <Form
+                    event={{
+                        eventId: event?.id!,
+                        eventName: event?.eventName!,
+                        eventDate: eventDate!,
+                        startTime: startTime!,
+                        endTime: endTime!,
+                        dressCode: event?.dressCode!,
+                        additionalDetails: event?.additionalDetails!
+                    }}
+                />
+            </View>
 
-            />
-            <Link href="/song" asChild>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+
+
+            <Button  style={{width: '90%'}}>เริ่ม Event </Button>
+            </View>
+            <Link href="/song" asChild  style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <Pressable>
-                    <Button >
+                    <Button style={{width: '90%'}}>
                         <View style={{
                             flexDirection: 'row',
                             justifyContent: 'center',
                             gap: 10,
                             alignItems: 'center',
+                            
+
                         }}>
                             <ListIcon width={20} height={20} />
                             <Text>
@@ -73,7 +83,6 @@ const Index = () => {
                     </Button>
                 </Pressable>
             </Link>
-            <Button>เริ่ม Event (เฉพาะ backstage)</Button>
         </Background>
     )
 }

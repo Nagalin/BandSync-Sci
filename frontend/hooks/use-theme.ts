@@ -3,8 +3,8 @@ import { useTheme } from 'react-native-paper'
 export const theme = {
   colors: {
     background: '#ffffff',
-    main: '#afafd3',
-    mainButton: '#e2bfbf',
+    primary: '#a4acd3',
+    mainButton: '#92a692',
     dangerButton: '#d9534f'
   }
 }

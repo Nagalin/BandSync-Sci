@@ -21,7 +21,7 @@ const Index = () => {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        paddingHorizontal: 15
+        paddingHorizontal: 15,
       }}>
 
       <Card
@@ -37,7 +37,7 @@ const Index = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: theme.colors.main
+          backgroundColor: theme.colors.primary
         }}
       >
         <Card.Content>
@@ -66,7 +66,7 @@ const Index = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: theme.colors.main
+          backgroundColor: theme.colors.primary
         }}
       >
         <Card.Content>

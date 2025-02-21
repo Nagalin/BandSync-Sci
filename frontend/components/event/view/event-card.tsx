@@ -39,7 +39,7 @@ const EventCard = ({ id, eventName, eventDate, startTime, endTime }: EventCardPr
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: theme.colors.main
+        backgroundColor: theme.colors.primary
       }}
     >
       <Card.Content>
