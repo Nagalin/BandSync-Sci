@@ -30,4 +30,38 @@ enum Status {
   COMPLETED
 }
 
+model Song {
+  id                String    @id @default(uuid())
+  songName          String    @unique
+  songDescription   String?
+  songOrder         Int       @default(1)
+  songKey           key
+  songReference     String
+  songVocalist      Int? 
+  songGuitarist     Int?
+  songDrummer       Int?
+  songBassist       Int?
+  songKeyboardist   Int?
+  songExtra         Int?
+  songPercussionist Int?
+}
 
+enum key {
+  C
+  CSharp
+  Db
+  D
+  DSharp
+  Eb
+  E
+  F
+  FSharp
+  Gb
+  G
+  GSharp
+  Ab
+  A
+  ASharp
+  Bb
+  b
+}
