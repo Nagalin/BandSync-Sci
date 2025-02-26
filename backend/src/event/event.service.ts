@@ -9,42 +9,12 @@ export class EventService {
 
   // ฟังก์ชันสร้าง Event
   async create(eventData: Prisma.EventCreateInput) {
-    let eventDate: DateTime;
-
-    if (typeof eventData.eventDate === 'string') {
-      eventDate = DateTime.fromISO(eventData.eventDate);
-      if (!eventDate.isValid) {
-        throw new Error('Invalid eventDate format. Expected yyyy-MM-dd');
-      }
-    } else if (eventData.eventDate instanceof Date) {
-      eventDate = DateTime.fromJSDate(eventData.eventDate);
-    } else {
-      throw new Error('eventDate must be a valid string or Date');
-    }
-
-    let startTime: DateTime;
-    let endTime: DateTime;
-
-    if (typeof eventData.startTime === 'string') {
-      const [startHour, startMinute] = eventData.startTime.split(':');
-      startTime = eventDate.set({ hour: Number(startHour), minute: Number(startMinute) });
-    } else {
-      throw new Error('startTime must be a valid string in HH:mm format');
-    }
-
-    if (typeof eventData.endTime === 'string') {
-      const [endHour, endMinute] = eventData.endTime.split(':');
-      endTime = eventDate.set({ hour: Number(endHour), minute: Number(endMinute) });
-    } else {
-      throw new Error('endTime must be a valid string in HH:mm format');
-    }
-
     return this.prisma.event.create({
       data: {
         eventName: eventData.eventName,
-        eventDate: eventDate.toJSDate(),
-        startTime: startTime.toJSDate(),
-        endTime: endTime.toJSDate(),
+        eventDate: eventData.eventDate,
+        startTime: eventData.startTime,
+        endTime: eventData.endTime,
         dressCode: eventData.dressCode,
         additionalDetails: eventData.additionalDetails,
       },
