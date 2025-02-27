@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { View, Pressable } from 'react-native'
+import { TextInput as PaperTextInput } from 'react-native-paper'
 import { Controller } from 'react-hook-form'
 import DateTimePicker from '@react-native-community/datetimepicker'
-import { TextInput as PaperTextInput } from 'react-native-paper'
 import TextInput from '@/components/ui/text-input'
 import Button from '@/components/ui/button'
 import Text from '@/components/ui/text'
@@ -35,12 +35,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
     } = useCreateEvent(closeModalImmediately, event)
 
     return (
-        <View
-            style={{
-                gap: 20,
-                padding: 10,
-            }}
-        >
+        <View style={{ gap: 20, padding: 10 }}>
 
             <Text style={{ fontSize: 30 }}>
                 {event?.eventName ? '' : 'สร้าง Event ใหม่'}
@@ -239,7 +234,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                 )}
             />
 
-            {/* Dress Code */}
+            {/* additional detail */}
             <Controller
                 name='additionalDetails'
                 control={control}
@@ -257,19 +252,21 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
             />
 
             {/* Submit Button */}
-            <View style={{flexDirection: 'column', alignItems: 'center', width: '100%', gap: 20}}>
+            <View style={{ flexDirection: 'column', alignItems: 'center', width: '100%', gap: 20 }}>
 
-            <Button onPress={onSubmit} style={{width: '90%'}}>
-                {event ? 'อัปเดต' : 'สร้าง'}
-            </Button>
-           
-            {/* {event &&  <Button  style={{width: '90%'}}>เริ่ม Event </Button>} */}
+                <Button onPress={onSubmit} style={{ width: '90%' }}>
+                    {event ? 'อัปเดต' : 'สร้าง'}
+                </Button>
 
-            {event && <Button  style={{width: '90%'}} variant='danger' onPress={() => deleteEvent()}> ลบ Event </Button>}
+                {event &&
+                    <Button
+                        style={{ width: '90%' }}
+                        variant='danger'
+                        onPress={() => deleteEvent()}>
+                        ลบ Event
+                    </Button>}
             </View>
-
         </View>
-
     )
 }
 

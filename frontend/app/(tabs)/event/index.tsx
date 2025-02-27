@@ -1,43 +1,43 @@
-import { ScrollView } from 'react-native';
-import React, { useState, useEffect } from 'react'; // Add useEffect
-import Background from '@/components/ui/background';
-import EventCard from '@/components/event/view/event-card';
-import CreateEventModal from '@/components/event/create/modal';
-import { Snackbar } from 'react-native-paper';
-import { useQuery } from '@tanstack/react-query';
-import axios from '@/lib/axios';
-import EventLoadingCard from '@/components/event/view/event-loading-card';
+import React, { useState, useEffect } from 'react'
+import { ScrollView, View } from 'react-native'
+import { Snackbar } from 'react-native-paper'
+import { Skeleton } from 'moti/skeleton'
+import { useQuery } from '@tanstack/react-query'
+import Background from '@/components/ui/background'
+import EventCard from '@/components/event/view/event-list'
+import CreateEventModal from '@/components/event/create/modal'
+import axios from '@/lib/axios'
 
 type APIResponse = {
-  id: string;
-  eventName: string;
-  eventDate: Date;
-  startTime: string;
-  endTime: string;
-};
+  id: string
+  eventName: string
+  eventDate: Date
+  startTime: string
+  endTime: string
+}
 
 const Index = () => {
-  const [visible, setVisible] = useState(false); // Initialize as false
+  const [snackbarVisible, setSnackbarVisible] = useState(false)
 
   const {
-    data: mockedData,
+    data: events,
     isFetching,
     error,
     refetch,
   } = useQuery<APIResponse[]>({
     queryKey: ['events'],
     queryFn: async () => (await axios.get('/events')).data,
-  });
+  })
 
   useEffect(() => {
     if (error) {
-      setVisible(true); // Set visible to true when there's an error
+      setSnackbarVisible(true)
     }
-  }, [error]);
+  }, [error])
 
-  if (isFetching) return <EventLoadingCard />;
+  if (isFetching) return <EventLoadingCard />
 
-  const onDismissSnackBar = () => setVisible(false);
+  const onDismissSnackBar = () => setSnackbarVisible(false)
 
   return (
     <Background>
@@ -50,7 +50,7 @@ const Index = () => {
           paddingHorizontal: 15,
         }}
       >
-        {mockedData?.map((curr) => {
+        {events?.map((curr) => {
           return (
             <EventCard
               key={curr.id}
@@ -60,7 +60,7 @@ const Index = () => {
               startTime={curr.startTime}
               endTime={curr.endTime}
             />
-          );
+          )
         })}
       </ScrollView>
 
@@ -70,20 +70,66 @@ const Index = () => {
         <Snackbar
           style={{ backgroundColor: 'red' }}
           duration={9999}
-          visible={visible}
+          visible={snackbarVisible}
           onDismiss={onDismissSnackBar}
           action={{
             label: 'Try again',
             onPress: () => {
-              refetch(); // Trigger a refetch of the data
-            },
+              refetch()
+            }
           }}
         >
           Something went wrong
         </Snackbar>
       )}
     </Background>
-  );
-};
+  )
+}
 
-export default Index;
+const EventLoadingCard = () => {
+  return (
+      <Background
+          style={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              paddingHorizontal: 15
+          }}>
+
+          <View style={{ marginTop: 15, width: '45%' }}>
+              <Skeleton colorMode="light" width={'100%'} height={150} />
+          </View>
+
+          <View style={{ marginTop: 15, width: '45%' }}>
+              <Skeleton colorMode="light" width={'100%'} height={150} />
+          </View>
+
+          <View style={{ marginTop: 15, width: '45%' }}>
+              <Skeleton colorMode="light" width={'100%'} height={150} />
+          </View>
+
+          <View style={{ marginTop: 15, width: '45%' }}>
+              <Skeleton colorMode="light" width={'100%'} height={150} />
+          </View>
+
+          <View style={{ marginTop: 15, width: '45%' }}>
+              <Skeleton colorMode="light" width={'100%'} height={150} />
+          </View>
+
+          <View style={{ marginTop: 15, width: '45%' }}>
+              <Skeleton colorMode="light" width={'100%'} height={150} />
+          </View>
+
+          <View style={{ marginTop: 15, width: '45%' }}>
+              <Skeleton colorMode="light" width={'100%'} height={150} />
+          </View>
+
+          <View style={{ marginTop: 15, width: '45%' }}>
+              <Skeleton colorMode="light" width={'100%'} height={150} />
+          </View>
+      </Background>
+  )
+}
+
+export default Index

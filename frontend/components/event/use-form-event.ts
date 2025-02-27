@@ -30,7 +30,7 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) 
             endTime: event?.endTime || new Date(),
             dressCode: event?.dressCode || '',
             additionalDetails: event?.additionalDetails || '',
-        },
+        }
     })
 
     const { mutate: createEvent } = useMutation({

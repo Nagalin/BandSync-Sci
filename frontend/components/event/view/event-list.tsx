@@ -1,14 +1,14 @@
 import React from 'react'
-import { Card } from 'react-native-paper'
-import { format } from 'date-fns'
-import { router } from 'expo-router'
 import { View } from 'react-native'
+import { Card } from 'react-native-paper'
+import { router } from 'expo-router'
+import { format } from 'date-fns'
 import Text from '@/components/ui/text'
 import { useAppTheme } from '@/hooks/use-theme'
 import Calender from '@/assets/icons/calender'
 import Clock from '@/assets/icons/clock'
 
-type EventCardPropsType = {
+type EventListPropsType = {
   id: string
   eventName: string
   eventDate: Date
@@ -16,12 +16,11 @@ type EventCardPropsType = {
   endTime: string
 }
 
-const EventCard = ({ id, eventName, eventDate, startTime, endTime }: EventCardPropsType) => {
+const EventList = ({ id, eventName, eventDate, startTime, endTime }: EventListPropsType) => {
   const theme = useAppTheme()
   const formattedDate = format(eventDate, 'dd/MM/yy')
   const formattedStartTime = format(new Date(startTime), 'HH:mm')
   const formattedEndTime = format(new Date(endTime), 'HH:mm')
-
 
   return (
     <Card
@@ -98,5 +97,4 @@ const EventCard = ({ id, eventName, eventDate, startTime, endTime }: EventCardPr
   )
 }
 
-export default EventCard
-
+export default EventList
