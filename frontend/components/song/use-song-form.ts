@@ -5,17 +5,20 @@ import axios from '@/lib/axios'
 import { router } from 'expo-router'
 
 type FormValues = {
-    eventName: string
-    eventId: string
-    eventDate: Date | undefined
-    startTime: Date | undefined
-    endTime: Date | undefined
-    dressCode: string
+    songName: string
+    songId: string
+    songRef: string
+    key: string
     additionalDetails: string
-    dropdownField: any
+    singerCount: string
+    guitarCount: string
+    drumCount: string
+    keyboardCount: string
+    extraCount: string
+    percussionCount: string
 }
 
-const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) => {
+const useSong = (song?: FormValues) => {
     const queryClient = useQueryClient()
     const {
         control,
@@ -25,23 +28,34 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) 
         formState: { errors }
     } = useForm<FormValues>({
         defaultValues: {
-            eventName: event?.eventName || '',
-            eventDate: event?.eventDate || new Date(),
-            startTime: event?.startTime || new Date(),
-            endTime: event?.endTime || new Date(),
-            dressCode: event?.dressCode || '',
-            additionalDetails: event?.additionalDetails || '',
+            songName: song?.songName || '',
+            songId: song?.songId || '',
+            key: song?.key || '',
+            additionalDetails: song?.additionalDetails || '',
+            singerCount: song?.singerCount || '0',
+            guitarCount: song?.singerCount || '0',
+            drumCount: song?.singerCount || '0',
+            keyboardCount: song?.singerCount || '0',
+            extraCount: song?.singerCount || '0',
+            percussionCount: song?.singerCount || '0',
+
         },
     })
 
-    const { mutate: createEvent } = useMutation({
+    const { mutate: createSong } = useMutation({
         mutationFn: async (data: FormValues) => {
+            console.log(data)
             try {
-                await axios.post('/events', data)
-                Alert.alert('สำเร็จ', 'สร้าง Event สำเร็จ', [
-                    { text: 'OK', onPress: closeModalImmediately },
+                await axios.post('/songs', {
+                    songName: data.songName,
+                    songDescription: data.additionalDetails,
+                    songKey: data.key,
+                    songReference: data.songRef
+                })
+                Alert.alert('สำเร็จ', 'สร้าง Song สำเร็จ', [
+                    { text: 'OK' },
                 ])
-                queryClient.invalidateQueries({ queryKey: ['events'] })
+                queryClient.invalidateQueries({ queryKey: ['songs'] })
 
             } catch (error: any) {
                 console.error(error.response?.data?.message)
@@ -49,11 +63,11 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) 
         }
     })
 
-    const { mutate: updateEvent } = useMutation({
+    const { mutate: updateSong } = useMutation({
         mutationFn: async (data: FormValues) => {
             try {
-                await axios.put(`/events/${event?.eventId}`, data)
-                Alert.alert('สำเร็จ', 'อัปเดต Event สำเร็จ', [
+                await axios.put(`/songs/${song?.songId}`, data)
+                Alert.alert('สำเร็จ', 'อัปเดต Song สำเร็จ', [
                     { text: 'OK' },
                 ])
             } catch (error: any) {
@@ -62,16 +76,16 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) 
         }
     })
 
-    const { mutate: deleteEvent } = useMutation({
+    const { mutate: deleteSong } = useMutation({
         mutationFn: async () => {
             try {
-                Alert.alert('คำเตือน', 'ต้องการลบ Event หรือไม่', [
+                Alert.alert('คำเตือน', 'ต้องการลบ Song หรือไม่', [
                     { text: 'cancel' },
                     {
                         text: 'ok', onPress: async () => {
-                            await axios.delete(`/events/${event?.eventId}`)
-                            Alert.alert('สำเร็จ', 'ลบ Event สำเร็จ')
-                            router.navigate('/event')
+                            await axios.delete(`/songs/${song?.songId}`)
+                            Alert.alert('สำเร็จ', 'ลบ Song สำเร็จ')
+                            router.navigate('/song')
                         },
                     }
                 ])
@@ -82,10 +96,10 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) 
     })
 
     const onSubmit = handleSubmit(data => {
-        if (event) {
-            updateEvent(data)
+        if (song) {
+            updateSong(data)
         } else {
-            createEvent(data)
+            createSong(data)
         }
     })
 
@@ -95,8 +109,8 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) 
         watch,
         errors,
         onSubmit,
-        deleteEvent
+        deleteSong
     }
 }
 
-export default useCreateEvent
+export default useSong
