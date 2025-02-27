@@ -3,7 +3,7 @@ import { Platform, Pressable, UIManager, View } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import Simple from '../../../components/song/simple'
+import Simple from '../../../components/song/song-card'
 import Text from '@/components/ui/text'
 import Background from '@/components/ui/background'
 import { Link, useNavigation, useRouter } from 'expo-router'
@@ -23,13 +23,10 @@ function Index() {
     <Background>
 
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaProvider>
           <Text style={{ fontSize: 30 }}>งานเปิดบ้าน</Text>
-          {/* <Simple /> */}
-          {/* <CreateEventModal/> */}
+          <Simple />
 
 
-        </SafeAreaProvider>
       </GestureHandlerRootView>
       <Button
         style={{
