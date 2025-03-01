@@ -5,21 +5,25 @@ import axios from '@/lib/axios'
 import { router } from 'expo-router'
 
 type FormValues = {
-    songName: string
-    songId: string
-    songRef: string
-    key: string
-    additionalDetails: string
-    singerCount: string
-    guitarCount: string
-    drumCount: string
-    keyboardCount: string
-    extraCount: string
-    percussionCount: string
+    id: string,
+    songName: string,
+    songDescription: string,
+    songOrder: string,
+    songKey: string,
+    songReference: string,
+    songVocalist: string,
+    songGuitarist: string,
+    songDrummer: string,
+    songBassist: string,
+    songKeyboardist: string,
+    songExtra: string,
+    songPercussionist: string
 }
 
 const useSong = (song?: FormValues) => {
     const queryClient = useQueryClient()
+console.log(song)
+
     const {
         control,
         handleSubmit,
@@ -29,29 +33,35 @@ const useSong = (song?: FormValues) => {
     } = useForm<FormValues>({
         defaultValues: {
             songName: song?.songName || '',
-            songId: song?.songId || '',
-            key: song?.key || '',
-            additionalDetails: song?.additionalDetails || '',
-            singerCount: song?.singerCount || '0',
-            guitarCount: song?.singerCount || '0',
-            drumCount: song?.singerCount || '0',
-            keyboardCount: song?.singerCount || '0',
-            extraCount: song?.singerCount || '0',
-            percussionCount: song?.singerCount || '0',
+            songKey: song?.songKey || '',
+            songReference: song?.songReference || '',
+            songDescription: song?.songDescription || '',
+            songVocalist: song?.songVocalist ||'0',
+            songGuitarist: song?.songGuitarist ||'0',
+            songDrummer: song?.songDrummer  ||'0',
+            songKeyboardist: song?.songKeyboardist ||'0',
+            songExtra: song?.songExtra ||'0',
+            songPercussionist: song?.songPercussionist || '0',
 
         },
     })
 
     const { mutate: createSong } = useMutation({
+        
         mutationFn: async (data: FormValues) => {
             console.log(data)
+            const formattedData = {
+                ...data,
+                songVocalist: Number(data.songVocalist) || 0,
+                songGuitarist: Number(data.songGuitarist) || 0,
+                songDrummer: Number(data.songDrummer) || 0,
+                songBassist: Number(data.songBassist) || 0,
+                songKeyboardist: Number(data.songKeyboardist) || 0,
+                songExtra: Number(data.songExtra) || 0,
+                songPercussionist: Number(data.songPercussionist) || 0,
+            };
             try {
-                await axios.post('/songs', {
-                    songName: data.songName,
-                    songDescription: data.additionalDetails,
-                    songKey: data.key,
-                    songReference: data.songRef
-                })
+                await axios.post('/songs', formattedData)
                 Alert.alert('สำเร็จ', 'สร้าง Song สำเร็จ', [
                     { text: 'OK' },
                 ])
@@ -64,9 +74,20 @@ const useSong = (song?: FormValues) => {
     })
 
     const { mutate: updateSong } = useMutation({
+        
         mutationFn: async (data: FormValues) => {
+            const formattedData = {
+                ...data,
+                songVocalist: Number(data.songVocalist) || 0,
+                songGuitarist: Number(data.songGuitarist) || 0,
+                songDrummer: Number(data.songDrummer) || 0,
+                songBassist: Number(data.songBassist) || 0,
+                songKeyboardist: Number(data.songKeyboardist) || 0,
+                songExtra: Number(data.songExtra) || 0,
+                songPercussionist: Number(data.songPercussionist) || 0,
+            };
             try {
-                await axios.put(`/songs/${song?.songId}`, data)
+                await axios.put(`/songs/${song?.id}`, formattedData)
                 Alert.alert('สำเร็จ', 'อัปเดต Song สำเร็จ', [
                     { text: 'OK' },
                 ])
@@ -83,7 +104,7 @@ const useSong = (song?: FormValues) => {
                     { text: 'cancel' },
                     {
                         text: 'ok', onPress: async () => {
-                            await axios.delete(`/songs/${song?.songId}`)
+                            await axios.delete(`/songs/${song?.id}`)
                             Alert.alert('สำเร็จ', 'ลบ Song สำเร็จ')
                             router.navigate('/song')
                         },

@@ -8,12 +8,7 @@ import Text from '@/components/ui/text'
 import Background from '@/components/ui/background'
 import { Link, useNavigation, useRouter } from 'expo-router'
 import Button from '@/components/ui/button'
-import { useAppTheme } from '@/hooks/use-theme'
 
-// if (Platform.OS === 'android') {
-//   UIManager.setLayoutAnimationEnabledExperimental &&
-//     UIManager.setLayoutAnimationEnabledExperimental(true)
-// }
 
 
 function Index() {

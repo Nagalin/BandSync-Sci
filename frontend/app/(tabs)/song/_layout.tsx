@@ -11,6 +11,21 @@ const Layout = () => {
           headerTitleStyle: { fontFamily: 'IBMPlexSans_400Regular' },
         }}
       />
+
+      <Stack.Screen
+        name="create"
+        options={{
+          headerShown: false
+        }}
+      />
+
+      <Stack.Screen
+        name="[id]"
+        options={{
+          title: 'รายละเอียดเพลง',
+          headerTitleStyle: { fontFamily: 'IBMPlexSans_400Regular' },
+        }}
+      />
     </Stack>
   )
 }

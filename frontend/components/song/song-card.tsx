@@ -1,11 +1,8 @@
 import axios from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
 import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import DraggableFlatList, {
-  RenderItemParams,
-  ScaleDecorator,
-} from "react-native-draggable-flatlist";
+import { Text, View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 
 type APIResponseType = {
   id: string;
@@ -14,29 +11,28 @@ type APIResponseType = {
 };
 
 export default function App() {
+  const router = useRouter()
   const { data: songs = [], isFetching } = useQuery<APIResponseType[]>({
     queryKey: ["songs"],
     queryFn: async () => (await axios.get("/songs")).data,
   });
 
-  const renderItem = ({ item, drag, isActive }: RenderItemParams<APIResponseType>) => (
-    <ScaleDecorator>
-      <TouchableOpacity
-        onLongPress={drag}
-        disabled={isActive}
-        style={[styles.rowItem, { backgroundColor: isActive ? "red" : "blue" }]}
-      >
-        <Text style={styles.text}>{`${item.songName} (${item.songKey})`}</Text>
-      </TouchableOpacity>
-    </ScaleDecorator>
+  const renderItem = ({ item }: { item: APIResponseType }) => (
+    <View style={styles.rowItem} >
+      <Text onPress={() => router.push({
+        pathname: '/song/[id]',
+        params: {
+          id: item.id
+        }
+      })} style={styles.text}>{`${item.songName} (${item.songKey})`}</Text>
+    </View>
   );
 
   return (
-    <DraggableFlatList
+    <FlatList
       data={songs}
       keyExtractor={(item) => item.id}
       renderItem={renderItem}
-      onDragEnd={() => {console.log('something')}}
     />
   );
 }
@@ -48,6 +44,7 @@ const styles = StyleSheet.create({
     alignSelf: "center", // Centers the item
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "blue", // Default background color
     borderRadius: 10, // Rounded corners
     padding: 10, // Adds some internal spacing
     marginBottom: 10, // Adds space between each song
@@ -59,6 +56,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-
-
-

@@ -5,13 +5,34 @@ import { Controller } from 'react-hook-form';
 import { View, StatusBar, FlatList, TouchableOpacity, Text, Keyboard } from 'react-native';
 import { TextInput as RnTextInput } from 'react-native-paper';
 import useSong from '../use-song-form';
+import { useQuery } from '@tanstack/react-query';
+import axios from '@/lib/axios';
 
-const App = () => {
+type FormPropsType = {
+    song?: {
+        id: string,
+        songName: string,
+        songDescription: string,
+        songOrder: string,
+        songKey: string,
+        songReference: string,
+        songVocalist: string,
+        songGuitarist: string,
+        songDrummer: string,
+        songBassist: string,
+        songKeyboardist: string,
+        songExtra: string,
+        songPercussionist: string
+
+    }
+}
+const Form = ({ song }: FormPropsType) => {
     const {
         control,
         setValue,
-        onSubmit
-    } = useSong()
+        onSubmit,
+        deleteSong
+    } = useSong(song)
     const [show, setShow] = useState(false);
     const openPicker = useCallback(
         () => {
@@ -24,7 +45,7 @@ const App = () => {
     const hidePicker = useCallback(
         (item: any) => {
             setShow(false)
-            setValue('key', item)
+            setValue('songKey', item)
         },
         [show]
     );
@@ -59,14 +80,14 @@ const App = () => {
 
                 <Controller
                     control={control}
-                    name='key'
+                    name='songKey'
                     render={({ field: { onBlur, onChange, value } }) => (
                         <TextInput
                             label={'key'}
                             onChangeText={onChange}
                             editable={false}
                             value={value}
-                            right={<RnTextInput.Icon onPress={openPicker} icon="chevron-down" size={20} />}
+                            right={<RnTextInput.Icon onPress={openPicker} icon='chevron-down' size={20} />}
                         />
                     )}
                 />
@@ -93,7 +114,7 @@ const App = () => {
 
             <Controller
                 control={control}
-                name='songRef'
+                name='songReference'
                 render={({ field: { onBlur, onChange, value } }) => (
                     <TextInput
                         style={{ width: 150 }}
@@ -107,7 +128,7 @@ const App = () => {
 
             <Controller
                 control={control}
-                name='additionalDetails'
+                name='songDescription'
                 render={({ field: { onBlur, onChange, value } }) => (
                     <TextInput value={value} onChangeText={onChange} label='รายละเอียดเพิ่มเติม (optional)' />
 
@@ -126,12 +147,12 @@ const App = () => {
                 }>
                     <Controller
                         control={control}
-                        name='singerCount'
+                        name='songVocalist'
                         render={({ field: { onBlur, onChange, value } }) => (
                             <TextInput
                                 keyboardType='numeric'
                                 // style={{ width: 150 }}
-                                label='ชื่อเพลง'
+                                label='จำนวนนักร้อง'
                                 // onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
@@ -141,7 +162,7 @@ const App = () => {
 
                     <Controller
                         control={control}
-                        name='guitarCount'
+                        name='songGuitarist'
                         render={({ field: { onBlur, onChange, value } }) => (
                             <TextInput value={value} onChangeText={onChange} keyboardType='numeric' style={{ width: 150 }} label='จำนวนกีตาร์' />
 
@@ -158,7 +179,7 @@ const App = () => {
                 }>
                     <Controller
                         control={control}
-                        name='drumCount'
+                        name='songDrummer'
                         render={({ field: { onBlur, onChange, value } }) => (
                             <TextInput value={value} onChangeText={onChange} keyboardType='numeric' style={{ width: 150 }} label='จำนวนกลอง' />
 
@@ -167,9 +188,9 @@ const App = () => {
 
                     <Controller
                         control={control}
-                        name='guitarCount'
+                        name='songKeyboardist'
                         render={({ field: { onBlur, onChange, value } }) => (
-                            <TextInput  value={value} onChangeText={onChange} keyboardType='numeric' style={{ width: 150 }} label='จำนวนคีย์บอร์ด' />
+                            <TextInput value={value} onChangeText={onChange} keyboardType='numeric' style={{ width: 150 }} label='จำนวนคีย์บอร์ด' />
 
                         )}
                     />
@@ -184,18 +205,18 @@ const App = () => {
 
                     <Controller
                         control={control}
-                        name='drumCount'
+                        name='songExtra'
                         render={({ field: { onBlur, onChange, value } }) => (
-                            <TextInput  value={value} onChangeText={onChange} keyboardType='numeric' style={{ width: 150 }} label='จำนวน extra' />
+                            <TextInput value={value} onChangeText={onChange} keyboardType='numeric' style={{ width: 150 }} label='จำนวน extra' />
 
                         )}
                     />
 
                     <Controller
                         control={control}
-                        name='percussionCount'
+                        name='songPercussionist'
                         render={({ field: { onBlur, onChange, value } }) => (
-                            <TextInput  value={value} onChangeText={onChange} keyboardType='numeric' style={{ width: 150 }} label='จำนวน percussion' />
+                            <TextInput value={value} onChangeText={onChange} keyboardType='numeric' style={{ width: 150 }} label='จำนวน percussion' />
 
                         )}
                     />
@@ -203,13 +224,15 @@ const App = () => {
             </View>
 
 
-            <Button onPress={onSubmit}>
-                ถัดไป
-            </Button>
+            <Button onPress={onSubmit} style={{ width: '90%' }}>
+                    {song ? 'อัปเดต' : 'สร้าง'}
+                </Button>
+
+                {song && <Button onPress={() => deleteSong()} variant='danger'>ลบ</Button>}
 
 
         </View>
     );
 };
 
-export default App;
+export default Form;
