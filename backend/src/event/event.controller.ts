@@ -26,11 +26,18 @@ export class EventController {
       if (existingEvent) {
         throw new ConflictException('ชื่อ Event นี้มีอยู่แล้ว');
       }
-
+  
       // หากไม่มี Event ที่ชื่อเดียวกัน ให้ทำการสร้าง Event ใหม่
       return await this.eventService.create(eventData);
     } catch (error) {
-      console.error(error)
+      console.error(error);
+  
+      // ตรวจสอบว่า error เป็น instance ของ ConflictException หรือไม่
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+  
+      // จัดการข้อผิดพลาดอื่น ๆ
       throw new InternalServerErrorException('เกิดข้อผิดพลาดในการสร้าง Event');
     }
   }

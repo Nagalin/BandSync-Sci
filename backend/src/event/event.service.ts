@@ -18,7 +18,7 @@ export class EventService {
       additionalDetails
     } = eventData
 
-    this.prisma.event.create({
+    await this.prisma.event.create({
       data: {
         eventName: eventName,
         eventDate: eventDate,
