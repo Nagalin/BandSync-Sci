@@ -11,12 +11,12 @@ import axios from '@/lib/axios'
 import ListIcon from '@/assets/icons/list'
 
 type APIResponse = {
-    dressCode: string
-    endTime: string
-    eventDate: string
-    eventName: string
     id: string
-    startTime: string
+    eventName: string
+    dressCode: string
+    eventDate: Date
+    startTime: Date
+    endTime: Date
     status: string
     additionalDetails: string
 }
@@ -26,12 +26,10 @@ const Index = () => {
 
     const { data: event, isFetching } = useQuery<APIResponse>({
         queryKey: ['event-detail'],
-        queryFn: async () => {
-            return (await axios.get(`/events/${id}`)).data
-        }
+        queryFn: async () => (await axios.get(`/events/${id}`)).data
     })
 
-    if (isFetching) return <DetailLoading />
+    if (isFetching) return <DetailLoading/>
 
     const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined
     const startTime = event?.startTime ? new Date(event.startTime) : undefined
@@ -64,7 +62,7 @@ const Index = () => {
             </View>
 
             <Link
-                href="/song"
+                href='/song'
                 asChild
                 style={{
                     flexDirection: 'row',

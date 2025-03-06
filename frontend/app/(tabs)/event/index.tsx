@@ -4,16 +4,17 @@ import { Snackbar } from 'react-native-paper'
 import { Skeleton } from 'moti/skeleton'
 import { useQuery } from '@tanstack/react-query'
 import Background from '@/components/ui/background'
-import EventCard from '@/components/event/view/event-list'
+import EventCard from '@/components/event/view/event-card'
 import Modal from '@/components/event/create/modal'
 import axios from '@/lib/axios'
+import Text from '@/components/ui/text'
 
 type APIResponse = {
   id: string
   eventName: string
   eventDate: Date
-  startTime: string
-  endTime: string
+  startTime: Date
+  endTime: Date
 }
 
 const Index = () => {
@@ -26,7 +27,7 @@ const Index = () => {
     refetch,
   } = useQuery<APIResponse[]>({
     queryKey: ['events'],
-    queryFn: async () => (await axios.get('/events')).data,
+    queryFn: async () => (await axios.get('/events')).data
   })
 
   useEffect(() => {
@@ -50,8 +51,12 @@ const Index = () => {
           paddingHorizontal: 15,
         }}
       >
-        {events?.map((curr) => {
-          return (
+        {events?.length === 0 ? (
+          <View style={{ marginTop: 15 }}>
+            <Text style={{fontSize: 20}}> ไม่มี Event ขณะนี้.....</Text>
+          </View>
+        ) : (
+          events?.map(curr => (
             <EventCard
               key={curr.id}
               id={curr.id}
@@ -60,11 +65,11 @@ const Index = () => {
               startTime={curr.startTime}
               endTime={curr.endTime}
             />
-          )
-        })}
-      </ScrollView>
+          ))
+        )}
 
-      <Modal/>
+      </ScrollView>
+      <Modal />
 
       {error && (
         <Snackbar
@@ -88,47 +93,47 @@ const Index = () => {
 
 const EventLoadingCard = () => {
   return (
-      <Background
-          style={{
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-              paddingHorizontal: 15
-          }}>
+    <Background
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        paddingHorizontal: 15
+      }}>
 
-          <View style={{ marginTop: 15, width: '45%' }}>
-              <Skeleton colorMode="light" width={'100%'} height={150} />
-          </View>
+      <View style={{ marginTop: 15, width: '45%' }}>
+        <Skeleton colorMode='light' width={'100%'} height={150} />
+      </View>
 
-          <View style={{ marginTop: 15, width: '45%' }}>
-              <Skeleton colorMode="light" width={'100%'} height={150} />
-          </View>
+      <View style={{ marginTop: 15, width: '45%' }}>
+        <Skeleton colorMode='light' width={'100%'} height={150} />
+      </View>
 
-          <View style={{ marginTop: 15, width: '45%' }}>
-              <Skeleton colorMode="light" width={'100%'} height={150} />
-          </View>
+      <View style={{ marginTop: 15, width: '45%' }}>
+        <Skeleton colorMode='light' width={'100%'} height={150} />
+      </View>
 
-          <View style={{ marginTop: 15, width: '45%' }}>
-              <Skeleton colorMode="light" width={'100%'} height={150} />
-          </View>
+      <View style={{ marginTop: 15, width: '45%' }}>
+        <Skeleton colorMode='light' width={'100%'} height={150} />
+      </View>
 
-          <View style={{ marginTop: 15, width: '45%' }}>
-              <Skeleton colorMode="light" width={'100%'} height={150} />
-          </View>
+      <View style={{ marginTop: 15, width: '45%' }}>
+        <Skeleton colorMode='light' width={'100%'} height={150} />
+      </View>
 
-          <View style={{ marginTop: 15, width: '45%' }}>
-              <Skeleton colorMode="light" width={'100%'} height={150} />
-          </View>
+      <View style={{ marginTop: 15, width: '45%' }}>
+        <Skeleton colorMode='light' width={'100%'} height={150} />
+      </View>
 
-          <View style={{ marginTop: 15, width: '45%' }}>
-              <Skeleton colorMode="light" width={'100%'} height={150} />
-          </View>
+      <View style={{ marginTop: 15, width: '45%' }}>
+        <Skeleton colorMode='light' width={'100%'} height={150} />
+      </View>
 
-          <View style={{ marginTop: 15, width: '45%' }}>
-              <Skeleton colorMode="light" width={'100%'} height={150} />
-          </View>
-      </Background>
+      <View style={{ marginTop: 15, width: '45%' }}>
+        <Skeleton colorMode='light' width={'100%'} height={150} />
+      </View>
+    </Background>
   )
 }
 

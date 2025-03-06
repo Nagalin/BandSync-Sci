@@ -8,15 +8,15 @@ import { useAppTheme } from '@/hooks/use-theme'
 import Calender from '@/assets/icons/calender'
 import Clock from '@/assets/icons/clock'
 
-type EventListPropsType = {
+type EventCardPropsType = {
   id: string
   eventName: string
   eventDate: Date
-  startTime: string
-  endTime: string
+  startTime: Date
+  endTime: Date
 }
 
-const EventList = ({ id, eventName, eventDate, startTime, endTime }: EventListPropsType) => {
+const EventCard = ({ id, eventName, eventDate, startTime, endTime }: EventCardPropsType) => {
   const theme = useAppTheme()
   const formattedDate = format(eventDate, 'dd/MM/yy')
   const formattedStartTime = format(new Date(startTime), 'HH:mm')
@@ -97,4 +97,4 @@ const EventList = ({ id, eventName, eventDate, startTime, endTime }: EventListPr
   )
 }
 
-export default EventList
+export default EventCard
