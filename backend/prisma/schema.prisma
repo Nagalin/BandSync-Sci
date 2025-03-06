@@ -22,6 +22,7 @@ model Event {
   dressCode  String
   status     Status  @default(UPCOMING)
   additionalDetails String 
+  songs     Song[] 
 }
 
 enum Status {
@@ -31,9 +32,9 @@ enum Status {
 }
 
 model Song {
-  id                String    @id @default(uuid())
-  songName          String    @unique
-  songDescription   String?
+  id               String    @id @default(uuid())
+  songName          String    
+  songDescription   String
   songOrder         Int       @default(1)
   songKey           String
   songReference     String
@@ -44,6 +45,8 @@ model Song {
   songKeyboardist   Int       @default(0)
   songExtra         Int       @default(0)
   songPercussionist Int       @default(0)
+  eventId           String
+  event             Event    @relation(fields: [eventId], references: [id])
 }
 
 
