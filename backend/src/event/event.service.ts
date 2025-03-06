@@ -62,7 +62,7 @@ export class EventService {
 
   // ฟังก์ชันอัพเดต Event
   async update(id: string, eventData: Prisma.EventUpdateInput) {
-    return this.prisma.event.update({
+    return await this.prisma.event.update({
       where: { id },
       data: eventData,
     });
@@ -70,7 +70,7 @@ export class EventService {
 
   // ฟังก์ชันลบ Event
   async remove(id: string) {
-    return this.prisma.event.delete({
+    return await this.prisma.event.delete({
       where: { id },
     });
   }

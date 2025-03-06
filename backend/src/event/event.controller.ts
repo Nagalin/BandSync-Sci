@@ -57,29 +57,51 @@ export class EventController {
       if (existingEvent) {
         throw new ConflictException('ชื่อ Event นี้มีอยู่แล้ว');
       }
-  
+
       // หากไม่มี Event ที่ชื่อเดียวกัน ให้ทำการสร้าง Event ใหม่
       return await this.eventService.create(eventData);
     } catch (error) {
       console.error(error);
-  
+
       // ตรวจสอบว่า error เป็น instance ของ ConflictException หรือไม่
       if (error instanceof ConflictException) {
         throw error;
       }
-  
+
       // จัดการข้อผิดพลาดอื่น ๆ
       throw new InternalServerErrorException('เกิดข้อผิดพลาดในการสร้าง Event');
     }
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() eventData: Prisma.EventUpdateInput) {
-    return this.eventService.update(id, eventData);
+  async update(@Param('id') id: string, @Body() eventData: Prisma.EventUpdateInput) {
+    try {
+      // เรียกใช้ service เพื่ออัปเดตข้อมูลกิจกรรมตาม id
+      const updatedEvent = await this.eventService.update(id, eventData);
+    } catch (error) {
+      // จัดการข้อผิดพลาด
+      console.error(error);
+      // หากเป็นข้อผิดพลาดอื่นๆ เช่นการเชื่อมต่อฐานข้อมูล หรือข้อผิดพลาดในการประมวลผล
+      throw new HttpException(
+        'เกิดข้อผิดพลาดในการอัปเดตกิจกรรม',
+        HttpStatus.INTERNAL_SERVER_ERROR, // 500 Internal Server Error
+      );
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.eventService.remove(id);
+  async remove(@Param('id') id: string) {
+    try {
+      // เรียกใช้ service เพื่อทำการลบข้อมูลกิจกรรมตาม id
+      await this.eventService.remove(id);
+    } catch (error) {
+      // จัดการข้อผิดพลาด
+      console.error(error);
+      // หากเป็นข้อผิดพลาดอื่นๆ เช่นการเชื่อมต่อฐานข้อมูล หรือข้อผิดพลาดในการประมวลผล
+      throw new HttpException(
+        'เกิดข้อผิดพลาดในการลบข้อมูลกิจกรรม',
+        HttpStatus.INTERNAL_SERVER_ERROR, // 500 Internal Server Error
+      );
+    }
   }
 }
