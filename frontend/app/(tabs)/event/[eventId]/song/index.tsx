@@ -1,14 +1,11 @@
 import React from 'react'
-import { Platform, Pressable, UIManager, View } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import Simple from '../../../components/song/song-card'
+import Simple from '../../../../../components/song/song-card'
 import Text from '@/components/ui/text'
 import Background from '@/components/ui/background'
-import { Link, useNavigation, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import Button from '@/components/ui/button'
-
 
 
 function Index() {
@@ -18,8 +15,8 @@ function Index() {
     <Background>
 
       <GestureHandlerRootView style={{ flex: 1 }}>
-          <Text style={{ fontSize: 30 }}>งานเปิดบ้าน</Text>
-          <Simple />
+        <Text style={{ fontSize: 30 }}>งานเปิดบ้าน</Text>
+        <Simple />
 
 
       </GestureHandlerRootView>
@@ -32,13 +29,13 @@ function Index() {
           justifyContent: 'center',
 
           right: 5,
-        
+
           borderRadius: 30,
           height: 60,
           width: 40,
         }}
 
-        onPress={() => router.navigate('/song/create')}
+        onPress={() => router.navigate('/event/[eventId]/song/create')}
       >
         <View style={{
           flexDirection: 'row',
@@ -47,15 +44,15 @@ function Index() {
 
         }}>
 
-        <Text style={{
-          lineHeight: 40,
-          width: 40,
-          textAlign: 'center',
+          <Text style={{
+            lineHeight: 40,
+            width: 40,
+            textAlign: 'center',
 
 
-          height: '100%',
-          fontSize: 40
-        }}>+</Text>
+            height: '100%',
+            fontSize: 40
+          }}>+</Text>
         </View>
 
       </Button>

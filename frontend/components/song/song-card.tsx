@@ -20,9 +20,10 @@ export default function App() {
   const renderItem = ({ item }: { item: APIResponseType }) => (
     <View style={styles.rowItem} >
       <Text onPress={() => router.push({
-        pathname: '/song/[id]',
+        pathname: '/event/[eventId]/song/[songId]',
         params: {
-          id: item.id
+          eventId: item.id,
+          songId: item.id
         }
       })} style={styles.text}>{`${item.songName} (${item.songKey})`}</Text>
     </View>

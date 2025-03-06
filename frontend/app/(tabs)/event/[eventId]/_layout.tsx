@@ -7,10 +7,11 @@ const Layout = () => {
       <Stack.Screen
         name="index"
         options={{
-          title: 'Event ทั้งหมด',
+          title: 'รายละเอียด event',
           headerTitleStyle: { fontFamily: 'IBMPlexSans_400Regular' },
         }}
       />
+      
     </Stack>
   )
 }

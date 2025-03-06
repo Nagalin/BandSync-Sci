@@ -22,11 +22,11 @@ type APIResponse = {
 }
 
 const Index = () => {
-    const { id } = useLocalSearchParams()
+    const { eventId } = useLocalSearchParams()
 
     const { data: event, isFetching } = useQuery<APIResponse>({
         queryKey: ['event-detail'],
-        queryFn: async () => (await axios.get(`/events/${id}`)).data
+        queryFn: async () => (await axios.get(`/events/${eventId}`)).data
     })
 
     if (isFetching) return <DetailLoading/>
@@ -62,7 +62,12 @@ const Index = () => {
             </View>
 
             <Link
-                href='/song'
+                href={{
+                    pathname: '/event/[eventId]/song',
+                    params: {
+                        eventId: eventId as string,
+                    }
+                }}
                 asChild
                 style={{
                     flexDirection: 'row',
