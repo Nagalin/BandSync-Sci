@@ -21,7 +21,7 @@ model Event {
   endTime    DateTime
   dressCode  String
   status     Status  @default(UPCOMING)
-  additionalDetails String?
+  additionalDetails String 
 }
 
 enum Status {
@@ -35,33 +35,16 @@ model Song {
   songName          String    @unique
   songDescription   String?
   songOrder         Int       @default(1)
-  songKey           key
+  songKey           String
   songReference     String
-  songVocalist      Int? 
-  songGuitarist     Int?
-  songDrummer       Int?
-  songBassist       Int?
-  songKeyboardist   Int?
-  songExtra         Int?
-  songPercussionist Int?
+  songVocalist      Int       @default(0)
+  songGuitarist     Int       @default(0)
+  songDrummer       Int       @default(0)
+  songBassist       Int       @default(0)
+  songKeyboardist   Int       @default(0)
+  songExtra         Int       @default(0)
+  songPercussionist Int       @default(0)
 }
 
-enum key {
-  C
-  CSharp
-  Db
-  D
-  DSharp
-  Eb
-  E
-  F
-  FSharp
-  Gb
-  G
-  GSharp
-  Ab
-  A
-  ASharp
-  Bb
-  b
-}
+
+

@@ -5,19 +5,28 @@ import { DateTime } from 'luxon';
 
 @Injectable()
 export class EventService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   // ฟังก์ชันสร้าง Event
   async create(eventData: Prisma.EventCreateInput) {
-    return this.prisma.event.create({
+    const {
+      eventName,
+      eventDate,
+      startTime,
+      endTime,
+      dressCode,
+      additionalDetails
+    } = eventData
+
+    this.prisma.event.create({
       data: {
-        eventName: eventData.eventName,
-        eventDate: eventData.eventDate,
-        startTime: eventData.startTime,
-        endTime: eventData.endTime,
-        dressCode: eventData.dressCode,
-        additionalDetails: eventData.additionalDetails,
-      },
+        eventName: eventName,
+        eventDate: eventDate,
+        startTime: startTime,
+        endTime: endTime,
+        dressCode: dressCode,
+        additionalDetails: additionalDetails ? additionalDetails : "-"
+      }
     });
   }
 

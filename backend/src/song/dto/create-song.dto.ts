@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, IsOptional, Matches, IsInt, IsEnum } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { key } from '@prisma/client';  // Enum key สำหรับเพลง
+
 
 export class CreateSongDto {
   @IsString({ message: 'ชื่อเพลงต้องเป็นข้อความ' })
@@ -15,8 +15,8 @@ export class CreateSongDto {
   @IsNotEmpty({ message: 'ลำดับเพลงไม่สามารถเป็นค่าว่างได้' })
   songOrder: number;
 
-  @IsEnum(key, { message: 'คีย์เพลงต้องเป็นหนึ่งในคีย์ที่กำหนดไว้' })  // ตรวจสอบคีย์เพลง
-  songKey: key;
+  @IsEnum( { message: 'คีย์เพลงต้องเป็นหนึ่งในคีย์ที่กำหนดไว้' })  // ตรวจสอบคีย์เพลง
+  songKey: string;
 
   @IsString({ message: 'URL เพลงต้องเป็นข้อความ' })
   @IsNotEmpty({ message: 'URL เพลงไม่สามารถเป็นค่าว่างได้' })
