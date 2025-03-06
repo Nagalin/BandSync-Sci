@@ -11,7 +11,7 @@ import useEventForm from '@/components/event/use-event-form'
 type FormPropsType = {
     closeModalImmediately?: () => void
     event?: {
-        eventId: string
+        id: string
         eventName: string
         eventDate: Date
         startTime: Date

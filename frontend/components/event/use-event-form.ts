@@ -4,9 +4,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from '@/lib/axios'
 import { router } from 'expo-router'
 
-type FormValues = {
+type FormValue = {
+    id: string
     eventName: string
-    eventId: string
     eventDate: Date
     startTime: Date
     endTime: Date
@@ -14,7 +14,7 @@ type FormValues = {
     additionalDetails: string
 }
 
-const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) => {
+const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValue) => {
     const queryClient = useQueryClient()
     const {
         control,
@@ -22,7 +22,7 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) 
         setValue,
         watch,
         formState: { errors }
-    } = useForm<FormValues>({
+    } = useForm<FormValue>({
         defaultValues: {
             eventName: event?.eventName || '',
             eventDate: event?.eventDate || new Date(),
@@ -34,7 +34,7 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) 
     })
 
     const { mutate: createEvent } = useMutation({
-        mutationFn: async (data: FormValues) => {
+        mutationFn: async (data: FormValue) => {
             try {
                 await axios.post('/events', data)
                 Alert.alert('สำเร็จ', 'สร้าง Event สำเร็จ', [
@@ -49,9 +49,9 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) 
     })
 
     const { mutate: updateEvent } = useMutation({
-        mutationFn: async (data: FormValues) => {
+        mutationFn: async (data: FormValue) => {
             try {
-                await axios.put(`/events/${event?.eventId}`, data)
+                await axios.put(`/events/${event?.id}`, data)
                 Alert.alert('สำเร็จ', 'อัปเดต Event สำเร็จ', [
                     { text: 'OK' },
                 ])
@@ -68,10 +68,10 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) 
                     { text: 'cancel' },
                     {
                         text: 'ok', onPress: async () => {
-                            await axios.delete(`/events/${event?.eventId}`)
+                            await axios.delete(`/events/${event?.id}`)
                             Alert.alert('สำเร็จ', 'ลบ Event สำเร็จ')
                             router.navigate('/event')
-                        },
+                        }
                     }
                 ])
             } catch (error: any) {

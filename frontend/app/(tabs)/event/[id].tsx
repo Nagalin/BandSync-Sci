@@ -46,7 +46,7 @@ const Index = () => {
             <View style={{ marginTop: -60 }}>
                 <Form
                     event={{
-                        eventId: event?.id!,
+                        id: event?.id!,
                         eventName: event?.eventName!,
                         eventDate: eventDate!,
                         startTime: startTime!,
