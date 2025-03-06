@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
 import { Modal as RnModal, Portal, Button } from 'react-native-paper'
-import CreateEventForm from '@/components/event/form'
+import Form from '@/components/event/form'
 import Text from '@/components/ui/text'
 import { useAppTheme } from '@/hooks/use-theme'
 import CloseButton from '@/assets/icons/close-square'
@@ -16,7 +16,7 @@ const Modal = () => {
                 text: 'Cancel',
                 style: 'cancel',
             },
-            { text: 'OK', onPress: () => setVisible(false) },
+            { text: 'OK', onPress: () => setVisible(false) }
         ])
     }
     const closeModalImmediately = () => setVisible(false)
@@ -42,12 +42,13 @@ const Modal = () => {
                     />
                     <KeyboardAvoidingView
                         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                        // style={{ flex: 1 }}
                     >
                         <ScrollView
-                            // contentContainerStyle={{ flexGrow: 1 }}
-                            keyboardShouldPersistTaps="handled">
-                            <CreateEventForm closeModalImmediately={closeModalImmediately} />
+                            keyboardShouldPersistTaps='handled'
+                        >
+                            <Form
+                                closeModalImmediately={closeModalImmediately}
+                            />
                         </ScrollView>
                     </KeyboardAvoidingView>
                 </RnModal>

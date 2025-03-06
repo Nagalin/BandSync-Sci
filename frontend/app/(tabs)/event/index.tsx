@@ -5,7 +5,7 @@ import { Skeleton } from 'moti/skeleton'
 import { useQuery } from '@tanstack/react-query'
 import Background from '@/components/ui/background'
 import EventCard from '@/components/event/view/event-list'
-import CreateEventModal from '@/components/event/create/modal'
+import Modal from '@/components/event/create/modal'
 import axios from '@/lib/axios'
 
 type APIResponse = {
@@ -64,7 +64,7 @@ const Index = () => {
         })}
       </ScrollView>
 
-      <CreateEventModal />
+      <Modal/>
 
       {error && (
         <Snackbar

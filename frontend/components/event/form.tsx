@@ -6,7 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import TextInput from '@/components/ui/text-input'
 import Button from '@/components/ui/button'
 import Text from '@/components/ui/text'
-import useCreateEvent from '@/components/event/use-form-event'
+import useEventForm from '@/components/event/use-event-form'
 
 type FormPropsType = {
     closeModalImmediately?: () => void
@@ -32,7 +32,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
         errors,
         onSubmit,
         deleteEvent
-    } = useCreateEvent(closeModalImmediately, event)
+    } = useEventForm(closeModalImmediately, event)
 
     return (
         <View style={{ gap: 20, padding: 10 }}>
@@ -252,7 +252,13 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
             />
 
             {/* Submit Button */}
-            <View style={{ flexDirection: 'column', alignItems: 'center', width: '100%', gap: 20 }}>
+            <View style={{
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '100%',
+                gap: 20
+            }}
+            >
 
                 <Button onPress={onSubmit} style={{ width: '90%' }}>
                     {event ? 'อัปเดต' : 'สร้าง'}
@@ -271,3 +277,4 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
 }
 
 export default Form
+

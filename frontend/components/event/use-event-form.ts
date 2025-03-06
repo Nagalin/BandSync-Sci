@@ -7,9 +7,9 @@ import { router } from 'expo-router'
 type FormValues = {
     eventName: string
     eventId: string
-    eventDate: Date | undefined
-    startTime: Date | undefined
-    endTime: Date | undefined
+    eventDate: Date
+    startTime: Date
+    endTime: Date
     dressCode: string
     additionalDetails: string
 }
@@ -29,7 +29,7 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValues) 
             startTime: event?.startTime || new Date(),
             endTime: event?.endTime || new Date(),
             dressCode: event?.dressCode || '',
-            additionalDetails: event?.additionalDetails || '',
+            additionalDetails: event?.additionalDetails || ''
         }
     })
 
