@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, BadRequestException, InternalServerErrorException, HttpException, HttpStatus } from '@nestjs/common';
 import { EventService } from './event.service';
 import { Prisma } from '@prisma/client';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -9,13 +9,44 @@ export class EventController {
   constructor(private readonly eventService: EventService) { }
 
   @Get()
-  findAll() {
-    return this.eventService.findAll();
+  async findAll() {
+    try {
+      // เรียกใช้ service เพื่อดึงข้อมูล
+      return await this.eventService.findAll();
+    } catch (error) {
+      // จัดการข้อผิดพลาดและส่งข้อความที่เหมาะสม
+      console.error(error);
+      throw new InternalServerErrorException('เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม');
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.eventService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    try {
+      // เรียกใช้ service เพื่อดึงข้อมูลกิจกรรมตาม id
+      const event = await this.eventService.findOne(id);
+
+      // ถ้าไม่พบข้อมูลกิจกรรม
+      if (!event) {
+        throw new HttpException(
+          'ไม่พบข้อมูลกิจกรรมที่มี id: ' + id,
+          HttpStatus.NOT_FOUND, // 404 Not Found
+        );
+      }
+
+      // ถ้าพบข้อมูลกิจกรรม
+      return event;
+    } catch (error) {
+      // จัดการข้อผิดพลาด
+      console.error(error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม',
+        HttpStatus.INTERNAL_SERVER_ERROR, // 500 Internal Server Error
+      );
+    }
   }
 
   @Post()

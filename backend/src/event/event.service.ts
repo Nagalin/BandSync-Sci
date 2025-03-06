@@ -32,13 +32,24 @@ export class EventService {
 
   // ฟังก์ชันค้นหาทุก Event
   async findAll() {
-    return this.prisma.event.findMany();
+    // ค้นหาข้อมูลทั้งหมดจากฐานข้อมูล
+    return await this.prisma.event.findMany({
+      select: {
+        id: true,
+        eventName: true,     // ชื่อกิจกรรม
+        eventDate: true,          // วันที่
+        startTime: true,           // เวลา
+        endTime: true
+      }
+    });
   }
 
   // ฟังก์ชันค้นหา Event ด้วย id
   async findOne(id: string) {
-    return this.prisma.event.findUnique({
-      where: { id },
+    return await this.prisma.event.findUnique({
+      where: { 
+         id
+      }
     });
   }
 
