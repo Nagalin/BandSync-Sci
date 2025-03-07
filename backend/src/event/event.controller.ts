@@ -20,16 +20,16 @@ export class EventController {
     }
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Get(':eventId')
+  async findOne(@Param('eventId') eventId: string) {
     try {
       // เรียกใช้ service เพื่อดึงข้อมูลกิจกรรมตาม id
-      const event = await this.eventService.findOne(id);
+      const event = await this.eventService.findOne(eventId);
 
       // ถ้าไม่พบข้อมูลกิจกรรม
       if (!event) {
         throw new HttpException(
-          'ไม่พบข้อมูลกิจกรรมที่มี id: ' + id,
+          'ไม่พบข้อมูลกิจกรรมที่มี id: ' + eventId,
           HttpStatus.NOT_FOUND, // 404 Not Found
         );
       }
@@ -73,11 +73,11 @@ export class EventController {
     }
   }
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() eventData: Prisma.EventUpdateInput) {
+  @Put(':eventId')
+  async update(@Param('eventId') eventId: string, @Body() eventData: Prisma.EventUpdateInput) {
     try {
       // เรียกใช้ service เพื่ออัปเดตข้อมูลกิจกรรมตาม id
-      const updatedEvent = await this.eventService.update(id, eventData);
+      const updatedEvent = await this.eventService.update(eventId, eventData);
     } catch (error) {
       // จัดการข้อผิดพลาด
       console.error(error);
@@ -89,11 +89,11 @@ export class EventController {
     }
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
+  @Delete(':eventId')
+  async remove(@Param('eventId') eventId: string) {
     try {
       // เรียกใช้ service เพื่อทำการลบข้อมูลกิจกรรมตาม id
-      await this.eventService.remove(id);
+      await this.eventService.remove(eventId);
     } catch (error) {
       // จัดการข้อผิดพลาด
       console.error(error);

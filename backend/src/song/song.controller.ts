@@ -1,5 +1,5 @@
 // song.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, InternalServerErrorException, HttpException, HttpStatus } from '@nestjs/common';
 import { SongService } from './song.service';
 import { Prisma } from '@prisma/client';
 import { CreateSongDto } from './dto/create-song.dto';
@@ -11,17 +11,47 @@ export class SongController {
 
   // ดึงข้อมูลเพลงทั้งหมด
   @Get()
-  async findAll(@Param('id') eventId: string) {
-    // ดึงเพลงทั้งหมดที่เกี่ยวข้องกับ eventId
-    return this.songService.findByEventId(eventId);
+  async findAll(@Param('eventId') eventId: string) {
+    try {
+      // เรียกใช้ service เพื่อดึงข้อมูลที่เชื่อมโยงกับ eventId
+      const songs = await this.songService.findAll(eventId);
+      return songs;
+    } catch (error) {
+      // จัดการข้อผิดพลาดและส่งข้อความที่เหมาะสม
+      console.error(error);
+      throw new InternalServerErrorException('เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม');
+    }
   }
 
   // ดึงข้อมูลเพลงตาม id
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.songService.findOne(id);
-  }
+  @Get(':songId')
+  async findOne(@Param('id') songId: string) {
+    try {
+      // เรียกใช้ service เพื่อดึงข้อมูลเพลงตาม id
+      const event = await this.songService.findOne(songId);
 
+      // ถ้าไม่พบข้อมูลเพลง
+      if (!event) {
+        throw new HttpException(
+          'ไม่พบข้อมูลเพลงที่มี id: ' + songId,
+          HttpStatus.NOT_FOUND, // 404 Not Found
+        );
+      }
+
+      // ถ้าพบข้อมูลเพลง
+      return event;
+    } catch (error) {
+      // จัดการข้อผิดพลาด
+      console.error(error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม',
+        HttpStatus.INTERNAL_SERVER_ERROR, // 500 Internal Server Error
+      );
+    }
+  }
   // สร้างเพลงใหม่
   @Post()
   async create(@Param('eventId') eventId: string, @Body() songData: CreateSongDto) {
@@ -45,15 +75,37 @@ export class SongController {
     }
   }
 
-// อัพเดตเพลง
-@Put(':id')
-update(@Param('id') id: string, @Body() songData: Prisma.SongUpdateInput) {
-  return this.songService.update(id, songData);
-}
+  // อัพเดตเพลง
+  @Put(':songId')
+    async update(@Param('songId') songId: string, @Body() songData: Prisma.SongUpdateInput) {
+    try {
+      // เรียกใช้ service เพื่ออัปเดตข้อมูลเพลงตาม id
+      const updatedSong = await this.songService.update(songId,songData);
+    } catch (error) {
+      // จัดการข้อผิดพลาด
+      console.error(error);
+      // หากเป็นข้อผิดพลาดอื่นๆ เช่นการเชื่อมต่อฐานข้อมูล หรือข้อผิดพลาดในการประมวลผล
+      throw new HttpException(
+        'เกิดข้อผิดพลาดในการอัปเดตเพลง',
+        HttpStatus.INTERNAL_SERVER_ERROR, // 500 Internal Server Error
+      );
+    }
+  }
 
-// ลบเพลง
-@Delete(':id')
-remove(@Param('id') id: string) {
-  return this.songService.remove(id);
-}
+  // ลบเพลง
+  @Delete(':songId')
+  async remove(@Param('songId') songId: string) {
+    try {
+      // เรียกใช้ service เพื่อทำการลบข้อมูลเพลงตาม id
+      await this.songService.remove(songId);
+    } catch (error) {
+      // จัดการข้อผิดพลาด
+      console.error(error);
+      // หากเป็นข้อผิดพลาดอื่นๆ เช่นการเชื่อมต่อฐานข้อมูล หรือข้อผิดพลาดในการประมวลผล
+      throw new HttpException(
+        'เกิดข้อผิดพลาดในการลบข้อมูลกิจกรรม',
+        HttpStatus.INTERNAL_SERVER_ERROR, // 500 Internal Server Error
+      );
+    }
+  }
 }

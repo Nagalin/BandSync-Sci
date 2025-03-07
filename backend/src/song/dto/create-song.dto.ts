@@ -3,11 +3,11 @@ export class CreateSongDto {
   songDescription: string;
   songKey: string;
   songReference: string;  
-  songVocalist: string;
-  songGuitarist: string;
-  songDrummer: string;
-  songBassist: string;
-  songKeyboardist: string;
-  songExtra: string;
-  songPercussionist: string;
+  currentVocalist: string;
+  currentGuitarist: string;
+  currentDrummer: string;
+  currentBassist: string;
+  currentKeyboardist: string;
+  currentExtra: string;
+  currentPercussionist: string;
 }

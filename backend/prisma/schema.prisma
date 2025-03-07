@@ -14,15 +14,15 @@ generator client {
 }
 
 model Event {
-  id         String      @id @default(uuid()) //uuid
-  eventName  String      @unique
-  eventDate  DateTime
-  startTime  DateTime
-  endTime    DateTime
-  dressCode  String
-  status     Status  @default(UPCOMING)
-  additionalDetails String 
-  songs     Song[] 
+  eventId           String   @id @default(uuid()) //uuid
+  eventName         String   @unique
+  eventDate         DateTime
+  startTime         DateTime
+  endTime           DateTime
+  dressCode         String
+  status            Status   @default(UPCOMING)
+  additionalDetails String
+  songs             Song[]
 }
 
 enum Status {
@@ -32,22 +32,28 @@ enum Status {
 }
 
 model Song {
-  id               String    @id @default(uuid())
-  songName          String    
-  songDescription   String
-  songOrder         Int       @default(1)
-  songKey           String
-  songReference     String
-  songVocalist      Int       @default(0)
-  songGuitarist     Int       @default(0)
-  songDrummer       Int       @default(0)
-  songBassist       Int       @default(0)
-  songKeyboardist   Int       @default(0)
-  songExtra         Int       @default(0)
-  songPercussionist Int       @default(0)
-  eventId           String
-  event             Event    @relation(fields: [eventId], references: [id])
+  songId               String @id @default(uuid())
+  songName             String
+  songDescription      String
+  songOrder            Int    @default(1)
+  songKey              String
+  songReference        String
+  totalVocalist        Int    @default(0)
+  currentVocalList     Int    @default(0)
+  totalGuitarist       Int    @default(0)
+  currentGuitarist     Int    @default(0)
+  totalDrummer         Int    @default(0)
+  currentDrummer       Int    @default(0)
+  totalBassist         Int    @default(0)
+  currentBassist       Int    @default(0)
+  totalKeyboardist     Int    @default(0)
+  currentKeyboardist   Int    @default(0)
+  totalExtra           Int    @default(0)
+  currentExtra         Int    @default(0)
+  totalPercussionist   Int    @default(0)
+  currentPercussionist Int    @default(0)
+  totalCount           Int    @default(0)
+  currentCount         Int    @default(0)
+  eventId              String
+  event                Event  @relation(fields: [eventId], references: [eventId])
 }
-
-
-

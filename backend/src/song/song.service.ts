@@ -8,14 +8,25 @@ export class SongService {
   constructor(private prisma: PrismaService) { }
 
   // ดึงข้อมูลเพลงทั้งหมด
-  async findAll() {
-    return this.prisma.song.findMany();
+  async findAll(eventId: string) {
+    // ค้นหาข้อมูลทั้งหมดจากฐานข้อมูล
+    return await this.prisma.song.findMany({
+      select: {
+        songId: true,
+        songName: true,      
+        songKey: true,        
+      },
+      where: {
+        eventId
+      }
+    });
   }
+  
 
   // ดึงข้อมูลเพลงตาม id
-  async findOne(id: string) {
-    return this.prisma.song.findUnique({
-      where: { id },
+  async findOne(songId: string) {
+    return await this.prisma.song.findUnique({
+      where: { songId },
     });
   }
 
@@ -43,24 +54,24 @@ export class SongService {
       songDescription,
       songName,
       songReference,
-      songBassist,
-      songDrummer,
-      songExtra,
-      songGuitarist,
-      songKeyboardist,
-      songPercussionist,
-      songVocalist,
+      currentBassist,
+      currentDrummer,
+      currentExtra,
+      currentGuitarist,
+      currentKeyboardist,
+      currentPercussionist,
+      currentVocalist,
     } = createSongDto;
   
     // Convert the string fields to numbers
     const convertedData = {
-      songBassist: Number(songBassist),
-      songDrummer: Number(songDrummer),
-      songExtra: Number(songExtra),
-      songGuitarist: Number(songGuitarist),
-      songKeyboardist: Number(songKeyboardist),
-      songPercussionist: Number(songPercussionist),
-      songVocalist: Number(songVocalist),
+      currentBassist: Number(currentBassist),
+      currentDrummer: Number(currentDrummer),
+      currentExtra: Number(currentExtra),
+      currentGuitarist: Number(currentGuitarist),
+      currentKeyboardist: Number(currentKeyboardist),
+      currentPercussionist: Number(currentPercussionist),
+      currentVocalist: Number(currentVocalist),
       songKey,
       songDescription,
       songReference,
@@ -83,7 +94,7 @@ export class SongService {
         songOrder: nextSongOrder,  // ตั้งค่า songOrder ใหม่
         event: {
           connect: {
-            id: eventId,  // เชื่อมโยงเพลงกับ Event ด้วย eventId
+            eventId: eventId,  // เชื่อมโยงเพลงกับ Event ด้วย eventId
           },
         },
       },
@@ -93,17 +104,17 @@ export class SongService {
   }
 
   // อัพเดตเพลง
-  async update(id: string, data: Prisma.SongUpdateInput) {
-    return this.prisma.song.update({
-      where: { id },
-      data,
+  async update(songId: string, songdata: Prisma.SongUpdateInput) {
+    return await this.prisma.song.update({
+      where: { songId },
+      data: songdata,
     });
   }
 
   // ลบเพลง
-  async remove(id: string) {
-    return this.prisma.song.delete({
-      where: { id },
+  async remove(songId: string) {
+    return await this.prisma.song.delete({
+      where: { songId },
     });
   }
 }

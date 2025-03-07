@@ -35,7 +35,7 @@ export class EventService {
     // ค้นหาข้อมูลทั้งหมดจากฐานข้อมูล
     return await this.prisma.event.findMany({
       select: {
-        id: true,
+        eventId: true,
         eventName: true,     // ชื่อกิจกรรม
         eventDate: true,          // วันที่
         startTime: true,           // เวลา
@@ -45,10 +45,10 @@ export class EventService {
   }
 
   // ฟังก์ชันค้นหา Event ด้วย id
-  async findOne(id: string) {
+  async findOne(eventId: string) {
     return await this.prisma.event.findUnique({
       where: { 
-         id
+         eventId
       }
     });
   }
@@ -61,17 +61,17 @@ export class EventService {
   }
 
   // ฟังก์ชันอัพเดต Event
-  async update(id: string, eventData: Prisma.EventUpdateInput) {
+  async update(eventId: string, eventData: Prisma.EventUpdateInput) {
     return await this.prisma.event.update({
-      where: { id },
+      where: { eventId },
       data: eventData,
     });
   }
 
   // ฟังก์ชันลบ Event
-  async remove(id: string) {
+  async remove(eventId: string) {
     return await this.prisma.event.delete({
-      where: { id },
+      where: { eventId },
     });
   }
 }
