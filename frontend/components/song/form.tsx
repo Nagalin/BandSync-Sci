@@ -1,0 +1,423 @@
+import Button from '@/components/ui/button'
+import TextInput from '@/components/ui/text-input'
+import React, { useState, useCallback } from 'react'
+import { Controller } from 'react-hook-form'
+import { View, FlatList, TouchableOpacity, Text, Keyboard } from 'react-native'
+import { TextInput as RnTextInput } from 'react-native-paper'
+import useSong from './use-song-form'
+
+type FormPropsType = {
+    song?: {
+        id: string,
+        songName: string,
+        songDescription: string,
+        songOrder: string,
+        songKey: string,
+        songReference: string,
+        songVocalist: string,
+        songGuitarist: string,
+        songDrummer: string,
+        songBassist: string,
+        songKeyboardist: string,
+        songExtra: string,
+        songPercussionist: string
+    }
+}
+
+const Form = ({ song }: FormPropsType) => {
+    const {
+        control,
+        setValue,
+        errors,
+        onSubmit,
+        deleteSong
+    } = useSong(song)
+    const [show, setShow] = useState(false)
+    const openPicker = useCallback(
+        () => {
+            Keyboard.dismiss()
+            setShow(true)
+        },
+        [show]
+    )
+
+    const hidePicker = useCallback(
+        (item: any) => {
+            setShow(false)
+            setValue('songKey', item)
+        },
+        [show]
+    )
+
+    return (
+        <View style={{
+            padding: 20,
+            flexDirection: 'column',
+            gap: 20
+        }}>
+
+            <View style={{
+                flexDirection: 'row',
+                gap: 10
+            }}>
+
+                <Controller
+                    control={control}
+                    name='songName'
+                    rules={{ required: 'กรุณากรอกชื่อเพลง' }}
+                    render={({ field: { onBlur, onChange, value } }) => (
+                        <View>
+                            <TextInput
+                                label='ชื่อเพลง'
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                            />
+
+                            {errors.songName && (
+                                <Text
+                                    style={{
+                                        color: 'red',
+                                        fontSize: 12,
+                                        marginTop: 10,
+                                    }}
+                                >
+                                    {errors.songName.message}
+                                </Text>
+                            )}
+                        </View>
+                    )}
+                />
+
+                <Controller
+                    control={control}
+                    name='songKey'
+                    rules={{ required: 'กรุณากรอก key เพลง' }}
+                    render={({ field: { onBlur, onChange, value } }) => (
+                        <View>
+                            <TextInput
+                                label={'key'}
+                                onChangeText={onChange}
+                                editable={false}
+                                value={value}
+                                right={<RnTextInput.Icon onPress={openPicker} icon='chevron-down' size={20}
+                                />
+                                }
+                            />
+
+                            {errors.songKey && (
+                                <Text
+                                    style={{
+                                        color: 'red',
+                                        fontSize: 12,
+                                        marginTop: 10,
+                                    }}
+                                >
+                                    {errors.songKey.message}
+                                </Text>
+                            )}
+                        </View>
+                    )}
+                />
+
+                {show ?
+                    <FlatList
+                        style={{ backgroundColor: 'rgb(211, 211, 211)', elevation: 1, zIndex: 22, width: '100%', marginTop: 60, position: 'absolute' }}
+                        data={['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']}
+                        renderItem={({ item, index }) => (
+                            <TouchableOpacity
+                                onPress={() => hidePicker(item)}>
+                                <Text style={{ padding: 8 }}>
+                                    {item}
+                                </Text>
+                            </TouchableOpacity>
+                        )}
+                        keyExtractor={item => item}
+                    />
+                    : null}
+            </View>
+
+            <Controller
+                control={control}
+                name='songReference'
+                rules={{ required: 'กรุณากรอก ref เพลง' }}
+                render={({ field: { onBlur, onChange, value } }) => (
+                    <View>
+                        <TextInput
+                            style={{ width: 150 }}
+                            label='ref'
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            value={value}
+                        />
+
+                        {errors.songReference && (
+                            <Text
+                                style={{
+                                    color: 'red',
+                                    fontSize: 12,
+                                    marginTop: 10,
+                                }}
+                            >
+                                {errors.songReference.message}
+                            </Text>
+                        )}
+                    </View>
+                )}
+            />
+
+            <Controller
+                control={control}
+                name='songDescription'
+                render={({ field: { onBlur, onChange, value } }) => (
+                    <View>
+                        <TextInput
+                            value={value}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            label='รายละเอียดเพิ่มเติม (optional)'
+                        />
+                    </View>
+
+                )}
+            />
+
+            <View>
+                <View style={{
+                    flexDirection: 'row',
+                    gap: 10
+                }}
+                >
+                    <Controller
+                        control={control}
+                        name='songVocalist'
+                        rules={{ required: 'กรุณากรอกจำนวนนักร้อง' }}
+                        render={({ field: { onBlur, onChange, value } }) => (
+                            <View>
+                                <TextInput
+                                    keyboardType='numeric'
+                                    label='จำนวนนักร้อง'
+                                    onBlur={onBlur}
+                                    onChangeText={onChange}
+                                    value={value}
+                                />
+
+                                {errors.songVocalist && (
+                                    <Text
+                                        style={{
+                                            color: 'red',
+                                            fontSize: 12,
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        {errors.songVocalist.message}
+                                    </Text>
+                                )}
+                            </View>
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name='songGuitarist'
+                        rules={{ required: 'กรุณากรอกจำนวนกีตาร์' }}
+                        render={({ field: { onBlur, onChange, value } }) => (
+                            <View>
+                                <TextInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    keyboardType='numeric'
+                                    style={{ width: 150 }}
+                                    label='จำนวนกีตาร์'
+                                />
+                                {errors.songGuitarist && (
+                                    <Text
+                                        style={{
+                                            color: 'red',
+                                            fontSize: 12,
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        {errors.songGuitarist.message}
+                                    </Text>
+                                )}
+                            </View>
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name='songBassist'
+                        rules={{ required: 'กรุณากรอกจำนวนเบส' }}
+                        render={({ field: { onBlur, onChange, value } }) => (
+                            <View>
+                                <TextInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    keyboardType='numeric'
+                                    style={{ width: 150 }}
+                                    label='จำนวนเบส'
+                                />
+                                {errors.songBassist && (
+                                    <Text
+                                        style={{
+                                            color: 'red',
+                                            fontSize: 12,
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        {errors.songBassist.message}
+                                    </Text>
+                                )}
+                            </View>
+                        )}
+                    />
+
+                </View>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        gap: 10
+                    }
+                    }>
+                    <Controller
+                        control={control}
+                        name='songDrummer'
+                        rules={{ required: 'กรุณากรอกจำนวนกลอง' }}
+                        render={({ field: { onBlur, onChange, value } }) => (
+                            <View>
+                                <TextInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    keyboardType='numeric'
+                                    style={{ width: 150 }}
+                                    label='จำนวนกลอง'
+                                />
+                                {errors.songDrummer && (
+                                    <Text
+                                        style={{
+                                            color: 'red',
+                                            fontSize: 12,
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        {errors.songDrummer.message}
+                                    </Text>
+                                )}
+                            </View>
+
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name='songKeyboardist'
+                        rules={{ required: 'กรุณากรอกจำนวนคีย์บอร์ด' }}
+                        render={({ field: { onBlur, onChange, value } }) => (
+                            <View>
+                                <TextInput
+                                    value={value}
+                                    onBlur={onBlur}
+                                    onChangeText={onChange}
+                                    keyboardType='numeric'
+                                    style={{ width: 150 }}
+                                    label='จำนวนคีย์บอร์ด'
+                                />
+                                {errors.songKeyboardist && (
+                                    <Text
+                                        style={{
+                                            color: 'red',
+                                            fontSize: 12,
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        {errors.songKeyboardist.message}
+                                    </Text>
+                                )}
+                            </View>
+
+                        )}
+                    />
+                </View>
+
+                <View style={
+                    {
+                        flexDirection: 'row',
+                        gap: 10
+                    }
+                }>
+
+                    <Controller
+                        control={control}
+                        name='songExtra'
+                        rules={{ required: 'กรุณากรอกจำนวน extra' }}
+                        render={({ field: { onBlur, onChange, value } }) => (
+                            <View>
+                                <TextInput
+                                    value={value}
+                                    onBlur={onBlur}
+                                    onChangeText={onChange}
+                                    keyboardType='numeric'
+                                    style={{ width: 150 }}
+                                    label='จำนวน extra'
+                                />
+                                {errors.songExtra && (
+                                    <Text
+                                        style={{
+                                            color: 'red',
+                                            fontSize: 12,
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        {errors.songExtra.message}
+                                    </Text>
+                                )}
+                            </View>
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name='songPercussionist'
+                        rules={{ required: 'กรุณากรอกจำนวน percussion' }}
+
+                        render={({ field: { onBlur, onChange, value } }) => (
+                            <View>
+                                <TextInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    onBlur={onBlur}
+                                    keyboardType='numeric'
+                                    style={{ width: 150 }}
+                                    label='จำนวน percussion'
+                                />
+                                {errors.songPercussionist && (
+                                    <Text
+                                        style={{
+                                            color: 'red',
+                                            fontSize: 12,
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        {errors.songPercussionist.message}
+                                    </Text>
+                                )}
+                            </View>
+
+                        )}
+                    />
+                </View>
+            </View>
+
+
+            <Button onPress={onSubmit} style={{ width: '90%' }}>
+                {song ? 'อัปเดต' : 'สร้าง'}
+            </Button>
+
+            {song && <Button onPress={() => deleteSong()} variant='danger'>ลบ</Button>}
+
+        </View>
+    )
+}
+
+export default Form

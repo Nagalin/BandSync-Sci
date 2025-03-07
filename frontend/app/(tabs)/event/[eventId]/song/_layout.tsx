@@ -19,13 +19,7 @@ const Layout = () => {
         }}
       />
 
-      <Stack.Screen
-        name="[id]"
-        options={{
-          title: 'รายละเอียดเพลง',
-          headerTitleStyle: { fontFamily: 'IBMPlexSans_400Regular' },
-        }}
-      />
+
     </Stack>
   )
 }

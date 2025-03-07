@@ -1,6 +1,6 @@
 import React from 'react'
 import { useLocalSearchParams } from 'expo-router'
-import Form from '@/components/song/create/form-detail'
+import Form from '@/components/song/form'
 import Background from '@/components/ui/background'
 import { useQuery } from '@tanstack/react-query'
 import axios from '@/lib/axios'
@@ -25,16 +25,14 @@ const SongDetail = () => {
   const { songId } = useLocalSearchParams()
   const { data: song, isFetching } = useQuery<APIResponse>({
     queryKey: ['songs', songId],
-    queryFn: async () => {
-      return (await axios.get(`/songs/${songId}`)).data
-    }
+    queryFn: async () => (await axios.get(`/songs/${songId}`)).data
   })
 
   if (isFetching) return
 
   const formattedSong = {
     id: song?.id!,
-    songName:  song?.songName!,
+    songName: song?.songName!,
     songDescription: song?.songDescription!,
     songOrder: song?.songOrder!,
     songKey: song?.songKey!,

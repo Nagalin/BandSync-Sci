@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import Background from '@/components/ui/background'
-import FormDetail from '@/components/song/create/form-detail'
+import Form from '@/components/song/form'
 
 const Index = () => {
   return (
     <Background>
-      <FormDetail/>
+      <Form/>
     </Background>
   )
 }

@@ -2,7 +2,8 @@ import { Alert } from 'react-native'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from '@/lib/axios'
-import { router } from 'expo-router'
+import { router, useLocalSearchParams, usePathname } from 'expo-router'
+import { useRouter } from 'expo-router'
 
 type FormValues = {
     id: string,
@@ -22,7 +23,8 @@ type FormValues = {
 
 const useSong = (song?: FormValues) => {
     const queryClient = useQueryClient()
-console.log(song)
+    const { eventId } = useLocalSearchParams()
+    const router = useRouter()
 
     const {
         control,
@@ -33,38 +35,28 @@ console.log(song)
     } = useForm<FormValues>({
         defaultValues: {
             songName: song?.songName || '',
-            songKey: song?.songKey || '',
+            songKey: song?.songKey || 'C',
             songReference: song?.songReference || '',
             songDescription: song?.songDescription || '',
-            songVocalist: song?.songVocalist ||'0',
-            songGuitarist: song?.songGuitarist ||'0',
-            songDrummer: song?.songDrummer  ||'0',
-            songKeyboardist: song?.songKeyboardist ||'0',
-            songExtra: song?.songExtra ||'0',
+            songVocalist: song?.songVocalist || '0',
+            songGuitarist: song?.songGuitarist || '0',
+            songBassist: song?.songBassist || '0',
+            songDrummer: song?.songDrummer || '0',
+            songKeyboardist: song?.songKeyboardist || '0',
+            songExtra: song?.songExtra || '0',
             songPercussionist: song?.songPercussionist || '0',
-
-        },
+        }
     })
 
     const { mutate: createSong } = useMutation({
-        
         mutationFn: async (data: FormValues) => {
-            console.log(data)
-            const formattedData = {
-                ...data,
-                songVocalist: Number(data.songVocalist) || 0,
-                songGuitarist: Number(data.songGuitarist) || 0,
-                songDrummer: Number(data.songDrummer) || 0,
-                songBassist: Number(data.songBassist) || 0,
-                songKeyboardist: Number(data.songKeyboardist) || 0,
-                songExtra: Number(data.songExtra) || 0,
-                songPercussionist: Number(data.songPercussionist) || 0,
-            };
             try {
-                await axios.post('/songs', formattedData)
+                await axios.post(`/events/${eventId}/songs`, data)
+
                 Alert.alert('สำเร็จ', 'สร้าง Song สำเร็จ', [
                     { text: 'OK' },
                 ])
+                router.replace(`/event/${eventId}/song`)
                 queryClient.invalidateQueries({ queryKey: ['songs'] })
 
             } catch (error: any) {
@@ -74,20 +66,10 @@ console.log(song)
     })
 
     const { mutate: updateSong } = useMutation({
-        
+
         mutationFn: async (data: FormValues) => {
-            const formattedData = {
-                ...data,
-                songVocalist: Number(data.songVocalist) || 0,
-                songGuitarist: Number(data.songGuitarist) || 0,
-                songDrummer: Number(data.songDrummer) || 0,
-                songBassist: Number(data.songBassist) || 0,
-                songKeyboardist: Number(data.songKeyboardist) || 0,
-                songExtra: Number(data.songExtra) || 0,
-                songPercussionist: Number(data.songPercussionist) || 0,
-            };
             try {
-                await axios.put(`/songs/${song?.id}`, formattedData)
+                await axios.put(`/songs/${song?.id}`, data)
                 Alert.alert('สำเร็จ', 'อัปเดต Song สำเร็จ', [
                     { text: 'OK' },
                 ])
@@ -100,14 +82,14 @@ console.log(song)
     const { mutate: deleteSong } = useMutation({
         mutationFn: async () => {
             try {
-                Alert.alert('คำเตือน', 'ต้องการลบ Song หรือไม่', [
+                Alert.alert('คำเตือน', 'ต้องการลบเพลงหรือไม่', [
                     { text: 'cancel' },
                     {
                         text: 'ok', onPress: async () => {
-                            await axios.delete(`/songs/${song?.id}`)
+                            await axios.delete(`/events/${eventId}/songs/${song?.id}`)
                             Alert.alert('สำเร็จ', 'ลบ Song สำเร็จ')
-                            router.navigate('/song')
-                        },
+                            router.navigate('/event/[eventId]/songs')
+                        }
                     }
                 ])
             } catch (error: any) {

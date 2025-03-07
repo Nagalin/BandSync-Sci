@@ -23,6 +23,7 @@ type APIResponse = {
 
 const Index = () => {
     const { eventId } = useLocalSearchParams()
+    
 
     const { data: event, isFetching } = useQuery<APIResponse>({
         queryKey: ['event-detail'],
