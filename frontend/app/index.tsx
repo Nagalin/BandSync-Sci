@@ -2,7 +2,9 @@ import React, { useCallback, useEffect } from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import * as AuthSession from 'expo-auth-session';
 import { useSSO, useAuth } from '@clerk/clerk-expo'; // Import useAuth to check the session
-import { View, Button } from 'react-native';
+import { View, Button, Alert } from 'react-native';
+import axios from '@/lib/axios';
+import { useRouter } from 'expo-router';
 
 export const useWarmUpBrowser = () => {
   useEffect(() => {
@@ -16,6 +18,7 @@ export const useWarmUpBrowser = () => {
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Page() {
+  const router = useRouter()
   useWarmUpBrowser();
 
   const { startSSOFlow } = useSSO();
@@ -37,10 +40,21 @@ export default function Page() {
 
       // If sign-in was successful, set the active session
       if (createdSessionId) {
-        setActive!({ session: createdSessionId });
+        console.log(createdSessionId)
+        try {
+          setActive!({ session: createdSessionId });
+          const res = await axios.get('/auth/user');
+          router.replace('/login')
+          console.log('success')
+        } catch (error) {
+          console.error(error)
+          Alert.alert('เกิดข้อผิดพลาด', 'คุณไม่มีสิทธิ์เข้าใช้งานระบบนี้')
+          await signOut()
+        }
+
       } else {
         // Handle missing requirements (e.g., MFA)
-        console.log('Additional steps required:', signIn || signUp);
+        console.log('Additional steps required:', signIn || signUp)
       }
     } catch (err) {
       console.error(JSON.stringify(err, null, 2));
