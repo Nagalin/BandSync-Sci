@@ -11,7 +11,7 @@ import axios from '@/lib/axios'
 import ListIcon from '@/assets/icons/list'
 
 type APIResponse = {
-    id: string
+    eventId: string
     eventName: string
     dressCode: string
     eventDate: Date
@@ -47,7 +47,7 @@ const Index = () => {
             <View style={{ marginTop: -60 }}>
                 <Form
                     event={{
-                        id: event?.id!,
+                        eventId: event?.eventId!,
                         eventName: event?.eventName!,
                         eventDate: eventDate!,
                         startTime: startTime!,

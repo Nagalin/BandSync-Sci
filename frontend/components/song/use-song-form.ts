@@ -2,30 +2,29 @@ import { Alert } from 'react-native'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from '@/lib/axios'
-import { router, useLocalSearchParams, usePathname } from 'expo-router'
+import { useLocalSearchParams } from 'expo-router'
 import { useRouter } from 'expo-router'
 
 type FormValues = {
-    id: string,
+    songId: string,
     songName: string,
     songDescription: string,
     songOrder: string,
     songKey: string,
     songReference: string,
-    songVocalist: string,
-    songGuitarist: string,
-    songDrummer: string,
-    songBassist: string,
-    songKeyboardist: string,
-    songExtra: string,
-    songPercussionist: string
+    totalVocalist: string,
+    totalGuitarist: string,
+    totalDrummer: string,
+    totalBassist: string,
+    totalKeyboardist: string,
+    totalExtra: string,
+    totalPercussionist: string
 }
 
 const useSong = (song?: FormValues) => {
     const queryClient = useQueryClient()
     const { eventId } = useLocalSearchParams()
     const router = useRouter()
-
     const {
         control,
         handleSubmit,
@@ -38,13 +37,13 @@ const useSong = (song?: FormValues) => {
             songKey: song?.songKey || 'C',
             songReference: song?.songReference || '',
             songDescription: song?.songDescription || '',
-            songVocalist: song?.songVocalist || '0',
-            songGuitarist: song?.songGuitarist || '0',
-            songBassist: song?.songBassist || '0',
-            songDrummer: song?.songDrummer || '0',
-            songKeyboardist: song?.songKeyboardist || '0',
-            songExtra: song?.songExtra || '0',
-            songPercussionist: song?.songPercussionist || '0',
+            totalVocalist: song?.totalVocalist || '0',
+            totalGuitarist: song?.totalGuitarist || '0',
+            totalBassist: song?.totalBassist || '0',
+            totalDrummer: song?.totalDrummer || '0',
+            totalKeyboardist: song?.totalKeyboardist || '0',
+            totalExtra: song?.totalExtra || '0',
+            totalPercussionist: song?.totalPercussionist || '0',
         }
     })
 
@@ -53,7 +52,7 @@ const useSong = (song?: FormValues) => {
             try {
                 await axios.post(`/events/${eventId}/songs`, data)
 
-                Alert.alert('สำเร็จ', 'สร้าง Song สำเร็จ', [
+                Alert.alert('สำเร็จ', 'สร้างเพลงสำเร็จ', [
                     { text: 'OK' },
                 ])
                 router.replace(`/event/${eventId}/song`)
@@ -69,8 +68,8 @@ const useSong = (song?: FormValues) => {
 
         mutationFn: async (data: FormValues) => {
             try {
-                await axios.put(`/songs/${song?.id}`, data)
-                Alert.alert('สำเร็จ', 'อัปเดต Song สำเร็จ', [
+                await axios.put(`/songs/${song?.songId}`, data)
+                Alert.alert('สำเร็จ', 'อัปเดตเพลงสำเร็จ', [
                     { text: 'OK' },
                 ])
             } catch (error: any) {
@@ -86,9 +85,9 @@ const useSong = (song?: FormValues) => {
                     { text: 'cancel' },
                     {
                         text: 'ok', onPress: async () => {
-                            await axios.delete(`/events/${eventId}/songs/${song?.id}`)
-                            Alert.alert('สำเร็จ', 'ลบ Song สำเร็จ')
-                            router.navigate('/event/[eventId]/songs')
+                            await axios.delete(`/events/${eventId}/songs/${song?.songId}`)
+                            Alert.alert('สำเร็จ', 'ลบเพลงสำเร็จ')
+                            router.replace(`/event/${eventId}/song`)
                         }
                     }
                 ])

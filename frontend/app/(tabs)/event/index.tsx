@@ -10,7 +10,7 @@ import axios from '@/lib/axios'
 import Text from '@/components/ui/text'
 
 type APIResponse = {
-  id: string
+  eventId: string
   eventName: string
   eventDate: Date
   startTime: Date
@@ -58,8 +58,8 @@ const Index = () => {
         ) : (
           events?.map(curr => (
             <EventCard
-              key={curr.id}
-              id={curr.id}
+              key={curr.eventId}
+              eventId={curr.eventId}
               eventName={curr.eventName}
               eventDate={curr.eventDate}
               startTime={curr.startTime}

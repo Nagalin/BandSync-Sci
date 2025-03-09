@@ -8,19 +8,19 @@ import useSong from './use-song-form'
 
 type FormPropsType = {
     song?: {
-        id: string,
+        songId: string,
         songName: string,
         songDescription: string,
         songOrder: string,
         songKey: string,
         songReference: string,
-        songVocalist: string,
-        songGuitarist: string,
-        songDrummer: string,
-        songBassist: string,
-        songKeyboardist: string,
-        songExtra: string,
-        songPercussionist: string
+        totalVocalist: string,
+        totalGuitarist: string,
+        totalDrummer: string,
+        totalBassist: string,
+        totalKeyboardist: string,
+        totalExtra: string,
+        totalPercussionist: string
     }
 }
 
@@ -190,7 +190,7 @@ const Form = ({ song }: FormPropsType) => {
                 >
                     <Controller
                         control={control}
-                        name='songVocalist'
+                        name='totalVocalist'
                         rules={{ required: 'กรุณากรอกจำนวนนักร้อง' }}
                         render={({ field: { onBlur, onChange, value } }) => (
                             <View>
@@ -202,7 +202,7 @@ const Form = ({ song }: FormPropsType) => {
                                     value={value}
                                 />
 
-                                {errors.songVocalist && (
+                                {errors.totalVocalist && (
                                     <Text
                                         style={{
                                             color: 'red',
@@ -210,7 +210,7 @@ const Form = ({ song }: FormPropsType) => {
                                             marginTop: 10,
                                         }}
                                     >
-                                        {errors.songVocalist.message}
+                                        {errors.totalVocalist.message}
                                     </Text>
                                 )}
                             </View>
@@ -219,7 +219,7 @@ const Form = ({ song }: FormPropsType) => {
 
                     <Controller
                         control={control}
-                        name='songGuitarist'
+                        name='totalGuitarist'
                         rules={{ required: 'กรุณากรอกจำนวนกีตาร์' }}
                         render={({ field: { onBlur, onChange, value } }) => (
                             <View>
@@ -230,7 +230,7 @@ const Form = ({ song }: FormPropsType) => {
                                     style={{ width: 150 }}
                                     label='จำนวนกีตาร์'
                                 />
-                                {errors.songGuitarist && (
+                                {errors.totalGuitarist && (
                                     <Text
                                         style={{
                                             color: 'red',
@@ -238,7 +238,7 @@ const Form = ({ song }: FormPropsType) => {
                                             marginTop: 10,
                                         }}
                                     >
-                                        {errors.songGuitarist.message}
+                                        {errors.totalGuitarist.message}
                                     </Text>
                                 )}
                             </View>
@@ -247,7 +247,7 @@ const Form = ({ song }: FormPropsType) => {
 
                     <Controller
                         control={control}
-                        name='songBassist'
+                        name='totalBassist'
                         rules={{ required: 'กรุณากรอกจำนวนเบส' }}
                         render={({ field: { onBlur, onChange, value } }) => (
                             <View>
@@ -258,7 +258,7 @@ const Form = ({ song }: FormPropsType) => {
                                     style={{ width: 150 }}
                                     label='จำนวนเบส'
                                 />
-                                {errors.songBassist && (
+                                {errors.totalBassist && (
                                     <Text
                                         style={{
                                             color: 'red',
@@ -266,7 +266,7 @@ const Form = ({ song }: FormPropsType) => {
                                             marginTop: 10,
                                         }}
                                     >
-                                        {errors.songBassist.message}
+                                        {errors.totalBassist.message}
                                     </Text>
                                 )}
                             </View>
@@ -282,7 +282,7 @@ const Form = ({ song }: FormPropsType) => {
                     }>
                     <Controller
                         control={control}
-                        name='songDrummer'
+                        name='totalDrummer'
                         rules={{ required: 'กรุณากรอกจำนวนกลอง' }}
                         render={({ field: { onBlur, onChange, value } }) => (
                             <View>
@@ -293,7 +293,7 @@ const Form = ({ song }: FormPropsType) => {
                                     style={{ width: 150 }}
                                     label='จำนวนกลอง'
                                 />
-                                {errors.songDrummer && (
+                                {errors.totalDrummer && (
                                     <Text
                                         style={{
                                             color: 'red',
@@ -301,7 +301,7 @@ const Form = ({ song }: FormPropsType) => {
                                             marginTop: 10,
                                         }}
                                     >
-                                        {errors.songDrummer.message}
+                                        {errors.totalDrummer.message}
                                     </Text>
                                 )}
                             </View>
@@ -311,7 +311,7 @@ const Form = ({ song }: FormPropsType) => {
 
                     <Controller
                         control={control}
-                        name='songKeyboardist'
+                        name='totalKeyboardist'
                         rules={{ required: 'กรุณากรอกจำนวนคีย์บอร์ด' }}
                         render={({ field: { onBlur, onChange, value } }) => (
                             <View>
@@ -323,7 +323,7 @@ const Form = ({ song }: FormPropsType) => {
                                     style={{ width: 150 }}
                                     label='จำนวนคีย์บอร์ด'
                                 />
-                                {errors.songKeyboardist && (
+                                {errors.totalKeyboardist && (
                                     <Text
                                         style={{
                                             color: 'red',
@@ -331,7 +331,7 @@ const Form = ({ song }: FormPropsType) => {
                                             marginTop: 10,
                                         }}
                                     >
-                                        {errors.songKeyboardist.message}
+                                        {errors.totalKeyboardist.message}
                                     </Text>
                                 )}
                             </View>
@@ -349,7 +349,7 @@ const Form = ({ song }: FormPropsType) => {
 
                     <Controller
                         control={control}
-                        name='songExtra'
+                        name='totalExtra'
                         rules={{ required: 'กรุณากรอกจำนวน extra' }}
                         render={({ field: { onBlur, onChange, value } }) => (
                             <View>
@@ -361,7 +361,7 @@ const Form = ({ song }: FormPropsType) => {
                                     style={{ width: 150 }}
                                     label='จำนวน extra'
                                 />
-                                {errors.songExtra && (
+                                {errors.totalExtra && (
                                     <Text
                                         style={{
                                             color: 'red',
@@ -369,7 +369,7 @@ const Form = ({ song }: FormPropsType) => {
                                             marginTop: 10,
                                         }}
                                     >
-                                        {errors.songExtra.message}
+                                        {errors.totalExtra.message}
                                     </Text>
                                 )}
                             </View>
@@ -378,9 +378,8 @@ const Form = ({ song }: FormPropsType) => {
 
                     <Controller
                         control={control}
-                        name='songPercussionist'
+                        name='totalPercussionist'
                         rules={{ required: 'กรุณากรอกจำนวน percussion' }}
-
                         render={({ field: { onBlur, onChange, value } }) => (
                             <View>
                                 <TextInput
@@ -391,7 +390,7 @@ const Form = ({ song }: FormPropsType) => {
                                     style={{ width: 150 }}
                                     label='จำนวน percussion'
                                 />
-                                {errors.songPercussionist && (
+                                {errors.totalPercussionist && (
                                     <Text
                                         style={{
                                             color: 'red',
@@ -399,7 +398,7 @@ const Form = ({ song }: FormPropsType) => {
                                             marginTop: 10,
                                         }}
                                     >
-                                        {errors.songPercussionist.message}
+                                        {errors.totalPercussionist.message}
                                     </Text>
                                 )}
                             </View>

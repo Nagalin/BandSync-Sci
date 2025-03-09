@@ -1,20 +1,21 @@
 import axios from '@/lib/axios'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import React from 'react'
 import { Text, View, StyleSheet, FlatList } from 'react-native'
 
 type APIResponseType = {
-  id: string
+  songId: string
   songName: string
   songKey: string
 }
 
 export default function App() {
   const router = useRouter()
+  const { eventId } = useLocalSearchParams()
   const { data: songs = [], isFetching } = useQuery<APIResponseType[]>({
     queryKey: ['songs'],
-    queryFn: async () => (await axios.get('/songs')).data,
+    queryFn: async () => (await axios.get(`/events/${eventId}/songs`)).data,
   })
 
   const renderItem = ({ item }: { item: APIResponseType }) => (
@@ -23,8 +24,8 @@ export default function App() {
         onPress={() => router.push({
           pathname: '/event/[eventId]/song/[songId]',
           params: {
-            eventId: item.id,
-            songId: item.id
+            eventId: eventId as string,
+            songId: item.songId
           }
         })}
         style={styles.text}>
@@ -36,7 +37,7 @@ export default function App() {
   return (
     <FlatList
       data={songs}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.songId}
       renderItem={renderItem}
     />
   )

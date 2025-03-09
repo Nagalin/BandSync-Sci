@@ -9,14 +9,14 @@ import Calender from '@/assets/icons/calender'
 import Clock from '@/assets/icons/clock'
 
 type EventCardPropsType = {
-  id: string
+  eventId: string
   eventName: string
   eventDate: Date
   startTime: Date
   endTime: Date
 }
 
-const EventCard = ({ id, eventName, eventDate, startTime, endTime }: EventCardPropsType) => {
+const EventCard = ({ eventId, eventName, eventDate, startTime, endTime }: EventCardPropsType) => {
   const theme = useAppTheme()
   const formattedDate = format(eventDate, 'dd/MM/yy')
   const formattedStartTime = format(new Date(startTime), 'HH:mm')
@@ -25,9 +25,9 @@ const EventCard = ({ id, eventName, eventDate, startTime, endTime }: EventCardPr
   return (
     <Card
       onPress={() => router.push({
-        pathname: '/event/[id]',
+        pathname: '/event/[eventId]',
         params: {
-          id: id
+          eventId: eventId
         }
       })}
       style={{

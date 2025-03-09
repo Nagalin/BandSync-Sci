@@ -5,7 +5,7 @@ import axios from '@/lib/axios'
 import { router } from 'expo-router'
 
 type FormValue = {
-    id: string
+    eventId: string
     eventName: string
     eventDate: Date
     startTime: Date
@@ -51,7 +51,7 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValue) =
     const { mutate: updateEvent } = useMutation({
         mutationFn: async (data: FormValue) => {
             try {
-                await axios.put(`/events/${event?.id}`, data)
+                await axios.put(`/events/${event?.eventId}`, data)
                 Alert.alert('สำเร็จ', 'อัปเดต Event สำเร็จ', [
                     { text: 'OK' },
                 ])
@@ -68,7 +68,7 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValue) =
                     { text: 'cancel' },
                     {
                         text: 'ok', onPress: async () => {
-                            await axios.delete(`/events/${event?.id}`)
+                            await axios.delete(`/events/${event?.eventId}`)
                             Alert.alert('สำเร็จ', 'ลบ Event สำเร็จ')
                             router.navigate('/event')
                         }
