@@ -13,27 +13,76 @@ export class SongService {
     return await this.prisma.song.findMany({
       select: {
         songId: true,
-        songName: true,      
-        songKey: true,        
+        songName: true,
+        songKey: true,
       },
       where: {
         eventId
       }
     });
   }
-  
+
 
   // ดึงข้อมูลเพลงตาม id
-  async findOne(songId: string) {
+  async findOne(SongDto: CreateSongDto, songId: string) {
+    function convertToString(value: number | string): string {
+      return String(value);
+    }
+    const {
+      songKey,
+      songDescription,
+      songName,
+      songReference,
+      totalBassist,
+      currentBassist,
+      totalDrummer,
+      currentDrummer,
+      totalExtra,
+      currentExtra,
+      totalGuitarist,
+      currentGuitarist,
+      totalKeyboardist,
+      currentKeyboardist,
+      totalPercussionist,
+      currentPercussionist,
+      totalVocalist,
+      currentVocalist,
+      totalCount,
+      currentCount
+    } = SongDto;
+
+    const convertedData = {
+      totalBassist: convertToString(totalBassist),
+      currentBassist: convertToString(currentBassist),
+      totalDrummer: convertToString(totalDrummer),
+      currentDrummer: convertToString(currentDrummer),
+      totalExtra: convertToString(totalExtra),
+      currentExtra: convertToString(currentExtra),
+      totalGuitarist: convertToString(totalGuitarist),
+      currentGuitarist: convertToString(currentGuitarist),
+      totalKeyboardist: convertToString(totalKeyboardist),
+      currentKeyboardist: convertToString(currentKeyboardist),
+      totalPercussionist: convertToString(totalPercussionist),
+      currentPercussionist: convertToString(currentPercussionist),
+      totalVocalist: convertToString(totalVocalist),
+      currentVocalist: convertToString(currentVocalist),
+      totalCount: convertToString(totalCount),
+      currentCount: convertToString(currentCount),
+      songKey,
+      songDescription,
+      songReference,
+      songName,
+    };
+
     return await this.prisma.song.findUnique({
       where: { songId },
     });
   }
 
   // ค้นหาเพลงตามชื่อเพลง
-  async findBySongName(songName: string ,eventId: string) {
+  async findBySongName(songName: string, eventId: string) {
     return this.prisma.song.findFirst({
-      where: { 
+      where: {
         songName,
         eventId
       },
@@ -54,39 +103,57 @@ export class SongService {
       songDescription,
       songName,
       songReference,
+      totalBassist,
       currentBassist,
+      totalDrummer,
       currentDrummer,
+      totalExtra,
       currentExtra,
+      totalGuitarist,
       currentGuitarist,
+      totalKeyboardist,
       currentKeyboardist,
+      totalPercussionist,
       currentPercussionist,
+      totalVocalist,
       currentVocalist,
+      totalCount,
+      currentCount
     } = createSongDto;
-  
+
     // Convert the string fields to numbers
     const convertedData = {
+      totalBassist: Number(totalBassist),
       currentBassist: Number(currentBassist),
+      totalDrummer: Number(totalDrummer),
       currentDrummer: Number(currentDrummer),
+      totalExtra: Number(totalExtra),
       currentExtra: Number(currentExtra),
+      totalGuitarist: Number(totalGuitarist),
       currentGuitarist: Number(currentGuitarist),
+      totalKeyboardist: Number(totalKeyboardist),
       currentKeyboardist: Number(currentKeyboardist),
+      totalPercussionist: Number(totalPercussionist),
       currentPercussionist: Number(currentPercussionist),
+      totalVocalist: Number(totalVocalist),
       currentVocalist: Number(currentVocalist),
+      totalCount: Number(totalCount),
+      currentCount: Number(currentCount),
       songKey,
       songDescription,
       songReference,
       songName,
     };
-  
+
     // ค้นหา songOrder ที่สูงที่สุดในระบบ
     const lastSong = await this.prisma.song.findFirst({
       orderBy: {
         songOrder: 'desc', // เรียงจาก songOrder ที่มากที่สุด
       },
     });
-  
+
     const nextSongOrder = lastSong ? lastSong.songOrder + 1 : 1;
-  
+
     // สร้างเพลงใหม่
     const newSong = await this.prisma.song.create({
       data: {
@@ -99,7 +166,7 @@ export class SongService {
         },
       },
     });
-  
+
     return newSong;
   }
 

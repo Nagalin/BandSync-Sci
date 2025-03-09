@@ -25,10 +25,10 @@ export class SongController {
 
   // ดึงข้อมูลเพลงตาม id
   @Get(':songId')
-  async findOne(@Param('id') songId: string) {
+  async findOne(@Param('songId') songId: string ,@Body() SongDto: CreateSongDto) {
     try {
       // เรียกใช้ service เพื่อดึงข้อมูลเพลงตาม id
-      const event = await this.songService.findOne(songId);
+      const event = await this.songService.findOne(SongDto,songId);
 
       // ถ้าไม่พบข้อมูลเพลง
       if (!event) {
