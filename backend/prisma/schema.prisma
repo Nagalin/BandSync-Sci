@@ -55,3 +55,13 @@ model Song {
   eventId              String
   event                Event  @relation(fields: [eventId], references: [eventId])
 }
+
+model User {
+  userId    String   @id @default(uuid())
+  firstName String
+  lastName  String
+  nickName String
+  discordId String
+  discordUsername String
+  isActive Boolean  @default(true)
+}
