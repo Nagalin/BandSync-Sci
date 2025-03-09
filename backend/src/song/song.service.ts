@@ -24,59 +24,21 @@ export class SongService {
 
 
   // ดึงข้อมูลเพลงตาม id
-  async findOne(SongDto: CreateSongDto, songId: string) {
-    function convertToString(value: number | string): string {
-      return String(value);
-    }
-    const {
-      songKey,
-      songDescription,
-      songName,
-      songReference,
-      totalBassist,
-      currentBassist,
-      totalDrummer,
-      currentDrummer,
-      totalExtra,
-      currentExtra,
-      totalGuitarist,
-      currentGuitarist,
-      totalKeyboardist,
-      currentKeyboardist,
-      totalPercussionist,
-      currentPercussionist,
-      totalVocalist,
-      currentVocalist,
-      totalCount,
-      currentCount
-    } = SongDto;
+  async findOne(songId: string, eventId: string) {
+    const song = await this.prisma.song.findUnique({
+      where: { songId, eventId }
+    })
 
-    const convertedData = {
-      totalBassist: convertToString(totalBassist),
-      currentBassist: convertToString(currentBassist),
-      totalDrummer: convertToString(totalDrummer),
-      currentDrummer: convertToString(currentDrummer),
-      totalExtra: convertToString(totalExtra),
-      currentExtra: convertToString(currentExtra),
-      totalGuitarist: convertToString(totalGuitarist),
-      currentGuitarist: convertToString(currentGuitarist),
-      totalKeyboardist: convertToString(totalKeyboardist),
-      currentKeyboardist: convertToString(currentKeyboardist),
-      totalPercussionist: convertToString(totalPercussionist),
-      currentPercussionist: convertToString(currentPercussionist),
-      totalVocalist: convertToString(totalVocalist),
-      currentVocalist: convertToString(currentVocalist),
-      totalCount: convertToString(totalCount),
-      currentCount: convertToString(currentCount),
-      songKey,
-      songDescription,
-      songReference,
-      songName,
-    };
-
-    return await this.prisma.song.findUnique({
-      where: { songId },
-    });
+    return song? {
+      ...song,
+      totalVocalist: String(song.totalVocalist),
+      totalGuitarist: String(song.totalGuitarist),
+      totalDrummer: String(song.totalDrummer), 
+      totalKeyboardist: String(song.totalKeyboardist),
+      totalExtra: String(song.totalExtra),
+      totalPercussionist: String(song.totalPercussionist),
+      totalBassist: String(song.totalBassist),
+    } : null
   }
 
   // ค้นหาเพลงตามชื่อเพลง
@@ -99,50 +61,25 @@ export class SongService {
   // สร้างเพลงใหม่และเชื่อมโยงกับ Event
   async create(createSongDto: CreateSongDto, eventId: string) {
     const {
-      songKey,
-      songDescription,
-      songName,
-      songReference,
       totalBassist,
-      currentBassist,
       totalDrummer,
-      currentDrummer,
       totalExtra,
-      currentExtra,
       totalGuitarist,
-      currentGuitarist,
       totalKeyboardist,
-      currentKeyboardist,
       totalPercussionist,
-      currentPercussionist,
       totalVocalist,
-      currentVocalist,
-      totalCount,
-      currentCount
     } = createSongDto;
 
     // Convert the string fields to numbers
     const convertedData = {
+      ...createSongDto,
       totalBassist: Number(totalBassist),
-      currentBassist: Number(currentBassist),
       totalDrummer: Number(totalDrummer),
-      currentDrummer: Number(currentDrummer),
       totalExtra: Number(totalExtra),
-      currentExtra: Number(currentExtra),
       totalGuitarist: Number(totalGuitarist),
-      currentGuitarist: Number(currentGuitarist),
       totalKeyboardist: Number(totalKeyboardist),
-      currentKeyboardist: Number(currentKeyboardist),
       totalPercussionist: Number(totalPercussionist),
-      currentPercussionist: Number(currentPercussionist),
       totalVocalist: Number(totalVocalist),
-      currentVocalist: Number(currentVocalist),
-      totalCount: Number(totalCount),
-      currentCount: Number(currentCount),
-      songKey,
-      songDescription,
-      songReference,
-      songName,
     };
 
     // ค้นหา songOrder ที่สูงที่สุดในระบบ
@@ -171,17 +108,37 @@ export class SongService {
   }
 
   // อัพเดตเพลง
-  async update(songId: string, songdata: Prisma.SongUpdateInput) {
+  async update(songId: string, songdata: CreateSongDto) {
+    const {
+      totalBassist,
+      totalDrummer,
+      totalExtra,
+      totalGuitarist,
+      totalKeyboardist,
+      totalPercussionist,
+      totalVocalist,
+    } = songdata;
+
+    const convertedData = {
+      ...songdata,
+      totalBassist: Number(totalBassist),
+      totalDrummer: Number(totalDrummer),
+      totalExtra: Number(totalExtra),
+      totalGuitarist: Number(totalGuitarist),
+      totalKeyboardist: Number(totalKeyboardist),
+      totalPercussionist: Number(totalPercussionist),
+      totalVocalist: Number(totalVocalist),
+    };
     return await this.prisma.song.update({
       where: { songId },
-      data: songdata,
+      data: convertedData,
     });
   }
 
   // ลบเพลง
-  async remove(songId: string) {
+  async remove(songId: string, eventId: string) {
     return await this.prisma.song.delete({
-      where: { songId },
+      where: { songId, eventId },
     });
   }
 }

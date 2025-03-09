@@ -1,5 +1,15 @@
 // song.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body, InternalServerErrorException, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+  InternalServerErrorException,
+  HttpException, HttpStatus
+} from '@nestjs/common';
 import { SongService } from './song.service';
 import { Prisma } from '@prisma/client';
 import { CreateSongDto } from './dto/create-song.dto';
@@ -25,10 +35,10 @@ export class SongController {
 
   // ดึงข้อมูลเพลงตาม id
   @Get(':songId')
-  async findOne(@Param('songId') songId: string ,@Body() SongDto: CreateSongDto) {
+  async findOne(@Param('eventId') eventId: string, @Param('songId') songId: string) {
     try {
       // เรียกใช้ service เพื่อดึงข้อมูลเพลงตาม id
-      const event = await this.songService.findOne(SongDto,songId);
+      const event = await this.songService.findOne(songId, eventId);
 
       // ถ้าไม่พบข้อมูลเพลง
       if (!event) {
@@ -77,10 +87,10 @@ export class SongController {
 
   // อัพเดตเพลง
   @Put(':songId')
-    async update(@Param('songId') songId: string, @Body() songData: Prisma.SongUpdateInput) {
+  async update(@Param('songId') songId: string, @Body() songData: CreateSongDto) {
     try {
       // เรียกใช้ service เพื่ออัปเดตข้อมูลเพลงตาม id
-      const updatedSong = await this.songService.update(songId,songData);
+      const updatedSong = await this.songService.update(songId, songData);
     } catch (error) {
       // จัดการข้อผิดพลาด
       console.error(error);
@@ -94,10 +104,10 @@ export class SongController {
 
   // ลบเพลง
   @Delete(':songId')
-  async remove(@Param('songId') songId: string) {
+  async remove(@Param('eventId') eventId: string, @Param('songId') songId: string) {
     try {
       // เรียกใช้ service เพื่อทำการลบข้อมูลเพลงตาม id
-      await this.songService.remove(songId);
+      await this.songService.remove(songId, eventId);
     } catch (error) {
       // จัดการข้อผิดพลาด
       console.error(error);

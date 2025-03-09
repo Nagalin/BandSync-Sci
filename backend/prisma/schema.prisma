@@ -38,22 +38,20 @@ model Song {
   songOrder            Int    @default(1)
   songKey              String
   songReference        String
-  totalVocalist        Int    @default(0)
+  totalVocalist        Int    
   currentVocalList     Int    @default(0)
-  totalGuitarist       Int    @default(0)
+  totalGuitarist       Int    
   currentGuitarist     Int    @default(0)
-  totalDrummer         Int    @default(0)
+  totalDrummer         Int   
   currentDrummer       Int    @default(0)
-  totalBassist         Int    @default(0)
+  totalBassist         Int   
   currentBassist       Int    @default(0)
-  totalKeyboardist     Int    @default(0)
+  totalKeyboardist     Int   
   currentKeyboardist   Int    @default(0)
-  totalExtra           Int    @default(0)
+  totalExtra           Int  
   currentExtra         Int    @default(0)
-  totalPercussionist   Int    @default(0)
+  totalPercussionist   Int   
   currentPercussionist Int    @default(0)
-  totalCount           Int    @default(0)
-  currentCount         Int    @default(0)
   eventId              String
   event                Event  @relation(fields: [eventId], references: [eventId])
 }
