@@ -38,30 +38,49 @@ model Song {
   songOrder            Int    @default(1)
   songKey              String
   songReference        String
-  totalVocalist        Int    
+  totalVocalist        Int
   currentVocalList     Int    @default(0)
-  totalGuitarist       Int    
+  totalGuitarist       Int
   currentGuitarist     Int    @default(0)
-  totalDrummer         Int   
+  totalDrummer         Int
   currentDrummer       Int    @default(0)
-  totalBassist         Int   
+  totalBassist         Int
   currentBassist       Int    @default(0)
-  totalKeyboardist     Int   
+  totalKeyboardist     Int
   currentKeyboardist   Int    @default(0)
-  totalExtra           Int  
+  totalExtra           Int
   currentExtra         Int    @default(0)
-  totalPercussionist   Int   
+  totalPercussionist   Int
   currentPercussionist Int    @default(0)
   eventId              String
   event                Event  @relation(fields: [eventId], references: [eventId])
 }
 
 model User {
-  userId    String   @id @default(uuid())
-  firstName String
-  lastName  String
-  nickName String
-  discordId String
+  userId          String   @id @default(uuid())
+  firstName       String
+  lastName        String
+  nickName        String
+  discordId       String
   discordUsername String
-  isActive Boolean  @default(true)
+  isActive        Boolean  @default(true)
+  roles           Role[]   @relation("UserRoles")
+}
+
+model Role {
+  roleId String   @id @default(uuid())
+  role   UserRole
+  users  User[]   @relation("UserRoles")
+}
+
+enum UserRole {
+  vocalist
+  guitarist
+  bassist
+  drummer
+  Keyboardist
+  extra
+  percussionist
+  backstage
+  staff
 }

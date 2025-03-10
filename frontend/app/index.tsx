@@ -5,6 +5,20 @@ import { useSSO, useAuth } from '@clerk/clerk-expo'
 import { View, Button, Alert } from 'react-native'
 import { useRootNavigationState, useRouter } from 'expo-router'
 import axios from '@/lib/axios'
+import * as SecureStore from 'expo-secure-store';
+import useStore from '@/zustand/user-role'
+
+async function storeRoles(user: any) {
+  try {
+    const rolesKey = 'user_roles';
+    const rolesData = JSON.stringify(user.roles);
+    await SecureStore.setItemAsync(rolesKey, rolesData);
+    console.log('Roles stored successfully.');
+  } catch (error) {
+    console.error('Error storing roles:', error);
+  }
+}
+
 
 export const useWarmUpBrowser = () => {
   useEffect(() => {
@@ -18,6 +32,8 @@ export const useWarmUpBrowser = () => {
 WebBrowser.maybeCompleteAuthSession()
 
 export default function Page() {
+  const { roles ,setRoles } = useStore();
+
   const { getToken, isSignedIn, signOut } = useAuth()
   const router = useRouter()
   const navigationState = useRootNavigationState()
@@ -48,8 +64,10 @@ export default function Page() {
             }
           }
 
-          await axios.get('/auth/user', config)
-          router.push('/(tabs)/main-menu')
+          const res = await axios.get('/auth/user', config)
+          console.log(res.data)
+          setRoles(res.data.roles)
+          router.push('/main-menu')
         } catch (error) {
           console.error(error)
           Alert.alert('Error', 'คุณไม่มีสิทธิ์เข้าใช้งานระบบนี้')

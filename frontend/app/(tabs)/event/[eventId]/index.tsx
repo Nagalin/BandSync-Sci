@@ -9,6 +9,7 @@ import Text from '@/components/ui/text'
 import Form from '@/components/event/form'
 import axios from '@/lib/axios'
 import ListIcon from '@/assets/icons/list'
+import useUserStore from '@/zustand/user-role'
 
 type APIResponse = {
     eventId: string
@@ -23,14 +24,15 @@ type APIResponse = {
 
 const Index = () => {
     const { eventId } = useLocalSearchParams()
-    
+    const { roles } = useUserStore()
+
 
     const { data: event, isFetching } = useQuery<APIResponse>({
         queryKey: ['event-detail'],
         queryFn: async () => (await axios.get(`/events/${eventId}`)).data
     })
 
-    if (isFetching) return <DetailLoading/>
+    if (isFetching) return <DetailLoading />
 
     const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined
     const startTime = event?.startTime ? new Date(event.startTime) : undefined
@@ -59,7 +61,10 @@ const Index = () => {
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <Button style={{ width: '90%' }}>เริ่ม Event </Button>
+                {roles.find(curr => curr.role === 'backstage') ? (
+
+                    <Button style={{ width: '90%' }}>เริ่ม Event </Button>
+                ) : null}
             </View>
 
             <Link

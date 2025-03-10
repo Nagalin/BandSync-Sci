@@ -55,7 +55,7 @@ const useSong = (song?: FormValues) => {
                 Alert.alert('สำเร็จ', 'สร้างเพลงสำเร็จ', [
                     { text: 'OK' },
                 ])
-                router.replace(`/event/${eventId}/song`)
+                router.back()
                 queryClient.invalidateQueries({ queryKey: ['songs'] })
 
             } catch (error: any) {

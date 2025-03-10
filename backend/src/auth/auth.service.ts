@@ -5,10 +5,13 @@ import { createClerkClient, verifyToken } from '@clerk/backend'
 const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY })
 @Injectable()
 export class AuthService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService) { }
 
     async getUser(discordId: string) {
-        return await this.prisma.user.findFirst({ where: { discordId } });
+        return await this.prisma.user.findFirst({
+            where: { discordId },
+            include: { roles: true }
+        });
     }
 
     async getDiscordIdFromSessionToken(sessionToken: string) {

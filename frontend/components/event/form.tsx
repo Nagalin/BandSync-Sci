@@ -7,6 +7,7 @@ import TextInput from '@/components/ui/text-input'
 import Button from '@/components/ui/button'
 import Text from '@/components/ui/text'
 import useEventForm from '@/components/event/use-event-form'
+import useUserStore from '@/zustand/user-role'
 
 type FormPropsType = {
     closeModalImmediately?: () => void
@@ -22,6 +23,8 @@ type FormPropsType = {
 }
 
 const Form = ({ closeModalImmediately, event }: FormPropsType) => {
+    const { roles } = useUserStore()
+    const editable = !!(roles.find(curr => curr.role === 'backstage') && event)
     const [showEventDate, setShowEventDate] = useState(false)
     const [showStartTime, setShowStartTime] = useState(false)
     const [showEndTime, setShowEndTime] = useState(false)
@@ -50,6 +53,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                     <>
                         <TextInput
                             label='ชื่อ Event'
+                            editable={editable}
                             onBlur={onBlur}
                             onChangeText={onChange}
                             value={value}
@@ -214,6 +218,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                 render={({ field: { onChange, onBlur, value } }) => (
                     <>
                         <TextInput
+                            editable={editable}
                             label='Dresscode'
                             onBlur={onBlur}
                             onChangeText={onChange}
@@ -242,6 +247,8 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                 render={({ field: { onChange, onBlur, value } }) => (
                     <>
                         <TextInput
+                            editable={editable}
+
                             label='รายละเอียดเพิ่มเติม (optional)'
                             onBlur={onBlur}
                             onChangeText={onChange}
@@ -260,17 +267,25 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
             }}
             >
 
-                <Button onPress={onSubmit} style={{ width: '90%' }}>
-                    {event ? 'อัปเดต' : 'สร้าง'}
-                </Button>
+                {roles.find(curr => curr.role === 'backstage') ? (
+                    <>
 
-                {event &&
-                    <Button
-                        style={{ width: '90%' }}
-                        variant='danger'
-                        onPress={() => deleteEvent()}>
-                        ลบ Event
-                    </Button>}
+                        <Button onPress={onSubmit} style={{ width: '90%' }}>
+                            {event ? 'อัปเดต' : 'สร้าง'}
+                        </Button>
+                        {event &&
+                            <Button
+                                style={{ width: '90%' }}
+                                variant='danger'
+                                onPress={() => deleteEvent()}>
+                                ลบ Event
+                            </Button>}
+                    </>
+
+                ) : null}
+
+
+
             </View>
         </View>
     )

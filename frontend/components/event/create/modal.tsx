@@ -5,8 +5,10 @@ import Form from '@/components/event/form'
 import Text from '@/components/ui/text'
 import { useAppTheme } from '@/hooks/use-theme'
 import CloseButton from '@/assets/icons/close-square'
+import useUserStore from '@/zustand/user-role'
 
 const Modal = () => {
+    const { roles } = useUserStore()
     const theme = useAppTheme()
     const [visible, setVisible] = useState(false)
     const showModal = () => setVisible(true)
@@ -54,36 +56,44 @@ const Modal = () => {
                 </RnModal>
             </Portal>
 
-            <Button
-                style={{
-                    flex: 1,
-                    position: 'absolute',
-                    bottom: 10,
-                    right: 5,
-                    alignItems: 'center',
-                    backgroundColor: theme.colors.mainButton,
-                    borderRadius: 30,
-                    height: 60,
-                    width: 40,
-                }}
-                onPress={showModal}
-            >
-                <View
+            {roles.find(curr => curr.role === 'backstage') ?
+                (<Button
                     style={{
-                        justifyContent: 'center',
-                        height: '100%',
-                    }}>
-                    <Text
+                        flex: 1,
+                        position: 'absolute',
+                        bottom: 10,
+                        right: 5,
+                        alignItems: 'center',
+                        backgroundColor: theme.colors.mainButton,
+                        borderRadius: 30,
+                        height: 60,
+                        width: 40,
+                    }}
+                    onPress={showModal}
+                >
+                    <View
                         style={{
-                            fontSize: 40,
-                            lineHeight: 40,
-                            textAlignVertical: 'center',
+                            justifyContent: 'center',
                             height: '100%',
                         }}>
-                        +
-                    </Text>
-                </View>
-            </Button>
+
+
+                        <Text
+                            style={{
+                                fontSize: 40,
+                                lineHeight: 40,
+                                textAlignVertical: 'center',
+                                height: '100%',
+                            }}>
+                            +
+                        </Text>
+                    </View>
+                </Button>) :
+                (null)
+
+            }
+
+
         </React.Fragment>
     )
 }

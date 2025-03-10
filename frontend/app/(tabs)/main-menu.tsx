@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Background from '@/components/ui/background'
-import EventCard from '@/components/event/view/event-card'
 import { Card } from 'react-native-paper'
 import Text from '@/components/ui/text'
 import { View } from 'react-native'
@@ -12,9 +11,7 @@ import { useAuth } from '@clerk/clerk-expo'
 const Index = () => {
   const theme = useAppTheme()
   const { signOut } = useAuth()
-
-
-
+  
 
   return (
     <Background
