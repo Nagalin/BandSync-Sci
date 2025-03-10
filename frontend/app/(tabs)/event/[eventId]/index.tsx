@@ -10,6 +10,7 @@ import Form from '@/components/event/form'
 import axios from '@/lib/axios'
 import ListIcon from '@/assets/icons/list'
 import useUserStore from '@/zustand/user-role'
+import { isBackstage } from '@/utils/check-user-role'
 
 type APIResponse = {
     eventId: string
@@ -24,8 +25,7 @@ type APIResponse = {
 
 const Index = () => {
     const { eventId } = useLocalSearchParams()
-    const { roles } = useUserStore()
-
+    const isUserBackstage = isBackstage();
 
     const { data: event, isFetching } = useQuery<APIResponse>({
         queryKey: ['event-detail'],
@@ -61,7 +61,7 @@ const Index = () => {
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                {roles.find(curr => curr.role === 'backstage') ? (
+                {isUserBackstage ? (
 
                     <Button style={{ width: '90%' }}>เริ่ม Event </Button>
                 ) : null}

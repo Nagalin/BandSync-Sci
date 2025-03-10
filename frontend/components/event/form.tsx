@@ -8,6 +8,7 @@ import Button from '@/components/ui/button'
 import Text from '@/components/ui/text'
 import useEventForm from '@/components/event/use-event-form'
 import useUserStore from '@/zustand/user-role'
+import { isBackstage } from '@/utils/check-user-role'
 
 type FormPropsType = {
     closeModalImmediately?: () => void
@@ -23,8 +24,9 @@ type FormPropsType = {
 }
 
 const Form = ({ closeModalImmediately, event }: FormPropsType) => {
+    const isUserBackstage = isBackstage()
     const { roles } = useUserStore()
-    const editable = !!(roles.find(curr => curr.role === 'backstage') && event)
+    const editable = isUserBackstage
     const [showEventDate, setShowEventDate] = useState(false)
     const [showStartTime, setShowStartTime] = useState(false)
     const [showEndTime, setShowEndTime] = useState(false)
@@ -267,7 +269,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
             }}
             >
 
-                {roles.find(curr => curr.role === 'backstage') ? (
+                {isUserBackstage ? (
                     <>
 
                         <Button onPress={onSubmit} style={{ width: '90%' }}>
