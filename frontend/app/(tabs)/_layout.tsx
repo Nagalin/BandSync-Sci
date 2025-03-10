@@ -7,6 +7,14 @@ const TabsLayout = () => {
     <Tabs backBehavior='history'>
 
       <Tabs.Screen
+        name='main-menu'
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name='eye' color={color} />
+        }}
+      />
+
+      <Tabs.Screen
         name='event'
         options={{
           headerShown: false,

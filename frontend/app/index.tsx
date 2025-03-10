@@ -1,69 +1,71 @@
-import React, { useCallback, useEffect } from 'react';
-import * as WebBrowser from 'expo-web-browser';
-import * as AuthSession from 'expo-auth-session';
-import { useSSO, useAuth } from '@clerk/clerk-expo'; // Import useAuth to check the session
-import { View, Button, Alert } from 'react-native';
-import axios from '@/lib/axios';
-import { useRouter } from 'expo-router';
+import React, { useEffect, useCallback } from 'react'
+import * as WebBrowser from 'expo-web-browser'
+import * as AuthSession from 'expo-auth-session'
+import { useSSO, useAuth } from '@clerk/clerk-expo'
+import { View, Button, Alert } from 'react-native'
+import { useRootNavigationState, useRouter } from 'expo-router'
+import axios from '@/lib/axios'
 
 export const useWarmUpBrowser = () => {
   useEffect(() => {
-    void WebBrowser.warmUpAsync();
+    void WebBrowser.warmUpAsync()
     return () => {
-      void WebBrowser.coolDownAsync();
-    };
-  }, []);
-};
+      void WebBrowser.coolDownAsync()
+    }
+  }, [])
+}
 
-WebBrowser.maybeCompleteAuthSession();
+WebBrowser.maybeCompleteAuthSession()
 
 export default function Page() {
+  const { getToken, isSignedIn, signOut } = useAuth()
   const router = useRouter()
-  useWarmUpBrowser();
+  const navigationState = useRootNavigationState()
+  const { startSSOFlow } = useSSO()
+  useWarmUpBrowser()
 
-  const { startSSOFlow } = useSSO();
-  const { isSignedIn, signOut } = useAuth(); // Use useAuth to check if a session exists
+  useEffect(() => {
+    if (navigationState?.key && isSignedIn) 
+      router.navigate('/(tabs)/main-menu')
+    
+  }, [])
 
   const onPress = useCallback(async () => {
     try {
-      // Check if the user is already signed in
-      if (isSignedIn) {
-        // Sign out the existing session before starting a new one
-        await signOut();
-      }
-
-      // Start the SSO flow
       const { createdSessionId, setActive, signIn, signUp } = await startSSOFlow({
         strategy: 'oauth_discord',
-        redirectUrl: AuthSession.makeRedirectUri(),
-      });
+        redirectUrl: AuthSession.makeRedirectUri()
+      })
 
-      // If sign-in was successful, set the active session
       if (createdSessionId) {
-        console.log(createdSessionId)
+        await setActive?.({ session: createdSessionId })
+
         try {
-          setActive!({ session: createdSessionId });
-          const res = await axios.get('/auth/user');
-          router.replace('/login')
-          console.log('success')
+          const token = await getToken()
+          const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+          }
+
+          await axios.get('/auth/user', config)
+          router.push('/(tabs)/main-menu')
         } catch (error) {
           console.error(error)
-          Alert.alert('เกิดข้อผิดพลาด', 'คุณไม่มีสิทธิ์เข้าใช้งานระบบนี้')
+          Alert.alert('Error', 'คุณไม่มีสิทธิ์เข้าใช้งานระบบนี้')
           await signOut()
         }
-
       } else {
-        // Handle missing requirements (e.g., MFA)
         console.log('Additional steps required:', signIn || signUp)
       }
     } catch (err) {
-      console.error(JSON.stringify(err, null, 2));
+      console.error(JSON.stringify(err, null, 2))
     }
-  }, [isSignedIn, signOut, startSSOFlow]);
+  }, [getToken, router, signOut, startSSOFlow])
 
   return (
     <View>
-      <Button title="Sign in with Discord" onPress={onPress} />
+      <Button title='Sign in with Discord' onPress={onPress} />
     </View>
-  );
+  )
 }

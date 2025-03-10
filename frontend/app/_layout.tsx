@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router'
+import { Slot, Stack } from 'expo-router'
 import { PaperProvider } from 'react-native-paper'
 import { tokenCache } from '@/cache'
 import { theme } from '@/hooks/use-theme'
@@ -22,9 +22,7 @@ export default function RootLayout() {
       <ClerkLoaded>
         <QueryClientProvider client={queryClient}>
           <PaperProvider theme={theme}>
-            <Stack>
-              <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-            </Stack>
+            <Slot/>
           </PaperProvider>
         </QueryClientProvider>
       </ClerkLoaded>
