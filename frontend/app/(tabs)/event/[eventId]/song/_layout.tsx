@@ -13,6 +13,14 @@ const Layout = () => {
       />
 
       <Stack.Screen
+        name="[songId]"
+        options={{
+          headerShown: false,
+          headerTitleStyle: { fontFamily: 'IBMPlexSans_400Regular' },
+        }}
+      />
+
+      <Stack.Screen
         name="create"
         options={{
           headerShown: false

@@ -6,12 +6,13 @@ import { View, Button, Alert } from 'react-native'
 import { useRootNavigationState, useRouter } from 'expo-router'
 import axios from '@/lib/axios'
 import * as SecureStore from 'expo-secure-store';
-import useStore from '@/zustand/user-role'
 
 async function storeRoles(user: any) {
+  console.log('start func: ', user)
   try {
     const rolesKey = 'user_roles';
-    const rolesData = JSON.stringify(user.roles);
+    const rolesData = JSON.stringify(user);
+    console.log("this is role: ", user.roles)
     await SecureStore.setItemAsync(rolesKey, rolesData);
     console.log('Roles stored successfully.');
   } catch (error) {
@@ -32,7 +33,6 @@ export const useWarmUpBrowser = () => {
 WebBrowser.maybeCompleteAuthSession()
 
 export default function Page() {
-  const { roles ,setRoles } = useStore();
 
   const { getToken, isSignedIn, signOut } = useAuth()
   const router = useRouter()
@@ -41,9 +41,9 @@ export default function Page() {
   useWarmUpBrowser()
 
   useEffect(() => {
-    if (navigationState?.key && isSignedIn) 
+    if (navigationState?.key && isSignedIn)
       router.navigate('/(tabs)/main-menu')
-    
+
   }, [])
 
   const onPress = useCallback(async () => {
@@ -65,8 +65,8 @@ export default function Page() {
           }
 
           const res = await axios.get('/auth/user', config)
-          console.log(res.data)
-          setRoles(res.data.roles)
+          console.log("this is response: ", res.data.roles)
+          storeRoles(res.data.roles)
           router.push('/main-menu')
         } catch (error) {
           console.error(error)

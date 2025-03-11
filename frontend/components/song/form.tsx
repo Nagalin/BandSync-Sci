@@ -5,6 +5,7 @@ import { Controller } from 'react-hook-form'
 import { View, FlatList, TouchableOpacity, Text, Keyboard } from 'react-native'
 import { TextInput as RnTextInput } from 'react-native-paper'
 import useSong from './use-song-form'
+import { isBackstage } from '@/utils/check-user-role'
 
 type FormPropsType = {
     song?: {
@@ -25,6 +26,7 @@ type FormPropsType = {
 }
 
 const Form = ({ song }: FormPropsType) => {
+    const isUserBackstage = isBackstage()
     const {
         control,
         setValue,
@@ -68,6 +70,7 @@ const Form = ({ song }: FormPropsType) => {
                     render={({ field: { onBlur, onChange, value } }) => (
                         <View>
                             <TextInput
+                                editable={isUserBackstage}
                                 label='ชื่อเพลง'
                                 onBlur={onBlur}
                                 onChangeText={onChange}
@@ -144,6 +147,8 @@ const Form = ({ song }: FormPropsType) => {
                 render={({ field: { onBlur, onChange, value } }) => (
                     <View>
                         <TextInput
+                            editable={isUserBackstage}
+
                             style={{ width: 150 }}
                             label='ref'
                             onBlur={onBlur}
@@ -172,6 +177,8 @@ const Form = ({ song }: FormPropsType) => {
                 render={({ field: { onBlur, onChange, value } }) => (
                     <View>
                         <TextInput
+                            editable={isUserBackstage}
+
                             value={value}
                             onBlur={onBlur}
                             onChangeText={onChange}
@@ -195,6 +202,8 @@ const Form = ({ song }: FormPropsType) => {
                         render={({ field: { onBlur, onChange, value } }) => (
                             <View>
                                 <TextInput
+                                    editable={isUserBackstage}
+
                                     keyboardType='numeric'
                                     label='จำนวนนักร้อง'
                                     onBlur={onBlur}
@@ -225,6 +234,8 @@ const Form = ({ song }: FormPropsType) => {
                             <View>
                                 <TextInput
                                     value={value}
+                                    editable={isUserBackstage}
+
                                     onChangeText={onChange}
                                     keyboardType='numeric'
                                     style={{ width: 150 }}
@@ -253,6 +264,7 @@ const Form = ({ song }: FormPropsType) => {
                             <View>
                                 <TextInput
                                     value={value}
+                                    editable={isUserBackstage}
                                     onChangeText={onChange}
                                     keyboardType='numeric'
                                     style={{ width: 150 }}
@@ -289,6 +301,7 @@ const Form = ({ song }: FormPropsType) => {
                                 <TextInput
                                     value={value}
                                     onChangeText={onChange}
+                                    editable={isUserBackstage}
                                     keyboardType='numeric'
                                     style={{ width: 150 }}
                                     label='จำนวนกลอง'
@@ -318,6 +331,7 @@ const Form = ({ song }: FormPropsType) => {
                                 <TextInput
                                     value={value}
                                     onBlur={onBlur}
+                                    editable={isUserBackstage}
                                     onChangeText={onChange}
                                     keyboardType='numeric'
                                     style={{ width: 150 }}
@@ -356,6 +370,7 @@ const Form = ({ song }: FormPropsType) => {
                                 <TextInput
                                     value={value}
                                     onBlur={onBlur}
+                                    editable={isUserBackstage}
                                     onChangeText={onChange}
                                     keyboardType='numeric'
                                     style={{ width: 150 }}
@@ -384,6 +399,7 @@ const Form = ({ song }: FormPropsType) => {
                             <View>
                                 <TextInput
                                     value={value}
+                                    editable={isUserBackstage}
                                     onChangeText={onChange}
                                     onBlur={onBlur}
                                     keyboardType='numeric'
