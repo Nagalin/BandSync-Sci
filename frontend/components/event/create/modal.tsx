@@ -5,12 +5,10 @@ import Form from '@/components/event/form'
 import Text from '@/components/ui/text'
 import { useAppTheme } from '@/hooks/use-theme'
 import CloseButton from '@/assets/icons/close-square'
-import useUserStore from '@/zustand/user-role'
 import { isBackstage } from '@/utils/check-user-role'
 
 const Modal = () => {
     const isUserBackstage = isBackstage()
-    const { roles } = useUserStore()
     const theme = useAppTheme()
     const [visible, setVisible] = useState(false)
     const showModal = () => setVisible(true)

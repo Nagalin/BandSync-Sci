@@ -6,8 +6,9 @@ import { useQuery } from '@tanstack/react-query'
 import Background from '@/components/ui/background'
 import EventCard from '@/components/event/view/event-card'
 import Modal from '@/components/event/create/modal'
-import axios from '@/lib/axios'
 import Text from '@/components/ui/text'
+import useAxiosWithAuth from '@/lib/use-axios-with-auth'
+import { Clerk } from '@clerk/clerk-expo'
 
 type APIResponse = {
   eventId: string
@@ -18,6 +19,7 @@ type APIResponse = {
 }
 
 const Index = () => {
+  const axios = useAxiosWithAuth()
   const [snackbarVisible, setSnackbarVisible] = useState(false)
 
   const {
@@ -31,6 +33,13 @@ const Index = () => {
   })
 
   useEffect(() => {
+    const func = async () => {
+      const token = await window.Clerk.session.getToken({ template: 'testing-template' })
+
+      console.log("test token",token)
+    }
+
+    func()
     if (error) {
       setSnackbarVisible(true)
     }

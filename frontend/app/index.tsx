@@ -8,13 +8,10 @@ import axios from '@/lib/axios'
 import * as SecureStore from 'expo-secure-store';
 
 async function storeRoles(user: any) {
-  console.log('start func: ', user)
   try {
     const rolesKey = 'user_roles';
     const rolesData = JSON.stringify(user);
-    console.log("this is role: ", user.roles)
     await SecureStore.setItemAsync(rolesKey, rolesData);
-    console.log('Roles stored successfully.');
   } catch (error) {
     console.error('Error storing roles:', error);
   }
@@ -38,7 +35,7 @@ export default function Page() {
   const router = useRouter()
   const navigationState = useRootNavigationState()
   const { startSSOFlow } = useSSO()
-  useWarmUpBrowser()
+  // useWarmUpBrowser()
 
   useEffect(() => {
     if (navigationState?.key && isSignedIn)
@@ -58,6 +55,7 @@ export default function Page() {
 
         try {
           const token = await getToken()
+          console.log('token from hook: ', token)
           const config = {
             headers: {
               Authorization: 'Bearer ' + token,
@@ -65,7 +63,6 @@ export default function Page() {
           }
 
           const res = await axios.get('/auth/user', config)
-          console.log("this is response: ", res.data.roles)
           storeRoles(res.data.roles)
           router.push('/main-menu')
         } catch (error) {

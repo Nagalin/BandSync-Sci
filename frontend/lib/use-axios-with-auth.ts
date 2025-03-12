@@ -13,6 +13,7 @@ const useAxiosWithAuth = () => {
         const jwt = await SecureStore.getItemAsync('__clerk_client_jwt');
         console.log("this is " + jwt);
         const token = await getToken();
+        console.log(token)
         if (jwt) config.headers.Authorization = `Bearer ${token}`;
         return config;
     });

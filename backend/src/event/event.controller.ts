@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, BadRequestException, InternalServerErrorException, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, BadRequestException, InternalServerErrorException, HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { EventService } from './event.service';
 import { Prisma } from '@prisma/client';
 import { CreateEventDto } from './dto/create-event.dto';
 import { ConflictException } from '@nestjs/common';
+import { AuthGuard } from 'guard/auth.guard';
 
 @Controller('events')
 export class EventController {
@@ -50,6 +51,7 @@ export class EventController {
   }
 
   @Post()
+  @UseGuards(AuthGuard)
   async create(@Body() eventData: CreateEventDto) {
     try {
       // ตรวจสอบว่า Event มีอยู่แล้วหรือไม่
@@ -74,6 +76,7 @@ export class EventController {
   }
 
   @Put(':eventId')
+  @UseGuards(AuthGuard)
   async update(@Param('eventId') eventId: string, @Body() eventData: Prisma.EventUpdateInput) {
     try {
       // เรียกใช้ service เพื่ออัปเดตข้อมูลกิจกรรมตาม id
@@ -90,6 +93,7 @@ export class EventController {
   }
 
   @Delete(':eventId')
+  @UseGuards(AuthGuard)
   async remove(@Param('eventId') eventId: string) {
     try {
       // เรียกใช้ service เพื่อทำการลบข้อมูลกิจกรรมตาม id

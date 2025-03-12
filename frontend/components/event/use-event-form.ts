@@ -1,8 +1,8 @@
 import { Alert } from 'react-native'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import axios from '@/lib/axios'
 import { router } from 'expo-router'
+import useAxiosWithAuth from '@/lib/use-axios-with-auth'
 
 type FormValue = {
     eventId: string
@@ -15,6 +15,7 @@ type FormValue = {
 }
 
 const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValue) => {
+    const axios = useAxiosWithAuth()
     const queryClient = useQueryClient()
     const {
         control,

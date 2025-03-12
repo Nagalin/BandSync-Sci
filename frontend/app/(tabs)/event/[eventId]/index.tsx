@@ -7,10 +7,9 @@ import Button from '@/components/ui/button'
 import Background from '@/components/ui/background'
 import Text from '@/components/ui/text'
 import Form from '@/components/event/form'
-import axios from '@/lib/axios'
 import ListIcon from '@/assets/icons/list'
-import useUserStore from '@/zustand/user-role'
 import { isBackstage } from '@/utils/check-user-role'
+import useAxiosWithAuth from '@/lib/use-axios-with-auth'
 
 type APIResponse = {
     eventId: string
@@ -26,6 +25,8 @@ type APIResponse = {
 const Index = () => {
     const { eventId } = useLocalSearchParams()
     const isUserBackstage = isBackstage();
+    const axios = useAxiosWithAuth()
+
 
     const { data: event, isFetching } = useQuery<APIResponse>({
         queryKey: ['event-detail'],
