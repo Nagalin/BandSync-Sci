@@ -14,9 +14,7 @@ export class AuthMiddleware implements NestMiddleware {
             const existingUser = await this.authService.checkIfUserExist(discordId);
             if (!existingUser) throw new HttpException('Unauthorized access', HttpStatus.FORBIDDEN);
             
-            // Set the user on the request object
-            req.user = existingUser;  // This attaches the user to the request
-            console.log("Middleware user:", req.user);
+            req.user = existingUser; 
             next();
         } catch (error) {
             console.error(error);

@@ -16,7 +16,6 @@ export class AuthService {
     }
 
     async getDiscordIdFromSessionToken(sessionToken: string) {
-        console.log(sessionToken)
         const verifiedToken = await verifyToken(sessionToken, {
             jwtKey: process.env.CLERK_JWT_PUBLIC_KEY,
         })

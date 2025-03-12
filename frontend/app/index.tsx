@@ -37,25 +37,26 @@ export default function Page() {
   const { startSSOFlow } = useSSO()
   // useWarmUpBrowser()
 
-  useEffect(() => {
-    if (navigationState?.key && isSignedIn)
-      router.navigate('/(tabs)/main-menu')
+  // useEffect(() => {
+  //   if (navigationState?.key && isSignedIn)
+  //     router.navigate('/(tabs)/main-menu')
 
-  }, [])
+  // }, [])
 
   const onPress = useCallback(async () => {
+    if(isSignedIn) await signOut()
     try {
       const { createdSessionId, setActive, signIn, signUp } = await startSSOFlow({
         strategy: 'oauth_discord',
         redirectUrl: AuthSession.makeRedirectUri()
       })
 
+
       if (createdSessionId) {
         await setActive?.({ session: createdSessionId })
 
         try {
           const token = await getToken()
-          console.log('token from hook: ', token)
           const config = {
             headers: {
               Authorization: 'Bearer ' + token,

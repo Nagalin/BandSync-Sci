@@ -11,6 +11,16 @@ import { useAuth } from '@clerk/clerk-expo'
 const Index = () => {
   const theme = useAppTheme()
   const { signOut } = useAuth()
+
+  useEffect(() => {
+    const func = async () => {
+      const token = await window.Clerk.session.getToken({ template: 'testing-template' })
+
+      console.log("test token: ",token)
+    }
+
+    func()
+  })
   
 
   return (

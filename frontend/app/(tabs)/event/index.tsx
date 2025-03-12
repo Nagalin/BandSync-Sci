@@ -33,13 +33,6 @@ const Index = () => {
   })
 
   useEffect(() => {
-    const func = async () => {
-      const token = await window.Clerk.session.getToken({ template: 'testing-template' })
-
-      console.log("test token",token)
-    }
-
-    func()
     if (error) {
       setSnackbarVisible(true)
     }

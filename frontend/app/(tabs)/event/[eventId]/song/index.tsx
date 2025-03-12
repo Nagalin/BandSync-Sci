@@ -14,7 +14,6 @@ function Index() {
   useEffect(() => {
     const getArray = async (key: string) => {
       const value = await SecureStore.getItemAsync(key)
-      console.log(JSON.parse(value!))
       return value ? JSON.parse(value) : null;
     }
 
