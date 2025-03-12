@@ -9,7 +9,6 @@ const createTokenCache = (): TokenCache => {
         console.log("this is key: ",key)
         const item = await SecureStore.getItemAsync(key)
         if (item) {
-          console.log('token from cache:', item)
           console.log(`${key} was used 🔐 \n`)
         } else {
           console.log('No values stored under key: ' + key)

@@ -4,7 +4,7 @@ import { Card } from 'react-native-paper'
 import Text from '@/components/ui/text'
 import { View } from 'react-native'
 import { useAppTheme } from '@/hooks/use-theme'
-import { router } from 'expo-router'
+import { router, useFocusEffect } from 'expo-router'
 import { useAuth } from '@clerk/clerk-expo'
 
 
@@ -12,10 +12,9 @@ const Index = () => {
   const theme = useAppTheme()
   const { signOut } = useAuth()
 
-  useEffect(() => {
+  useFocusEffect(() => {
     const func = async () => {
       const token = await window.Clerk.session.getToken({ template: 'testing-template' })
-
       console.log("test token: ",token)
     }
 

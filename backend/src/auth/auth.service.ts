@@ -19,6 +19,7 @@ export class AuthService {
         const verifiedToken = await verifyToken(sessionToken, {
             jwtKey: process.env.CLERK_JWT_PUBLIC_KEY,
         })
+        console.log('sid: ', verifiedToken.sid)
         const user = await clerkClient.users.getUser(verifiedToken.sub)
         return user.externalAccounts[0].externalId
     }
