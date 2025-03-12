@@ -8,12 +8,14 @@ import {
   Param,
   Body,
   InternalServerErrorException,
-  HttpException, HttpStatus
+  HttpException, HttpStatus,
+  UseGuards
 } from '@nestjs/common';
 import { SongService } from './song.service';
 import { Prisma } from '@prisma/client';
 import { CreateSongDto } from './dto/create-song.dto';
 import { ConflictException } from '@nestjs/common';
+import { AuthGuard } from 'guard/auth.guard';
 
 @Controller('events/:eventId/songs')
 export class SongController {
@@ -64,6 +66,7 @@ export class SongController {
   }
   // สร้างเพลงใหม่
   @Post()
+  @UseGuards(AuthGuard)
   async create(@Param('eventId') eventId: string, @Body() songData: CreateSongDto) {
     try {
       const existingEvent = await this.songService.findBySongName(songData.songName, eventId);
@@ -87,6 +90,7 @@ export class SongController {
 
   // อัพเดตเพลง
   @Put(':songId')
+  @UseGuards(AuthGuard)
   async update(@Param('songId') songId: string, @Body() songData: CreateSongDto) {
     try {
       // เรียกใช้ service เพื่ออัปเดตข้อมูลเพลงตาม id
@@ -104,6 +108,7 @@ export class SongController {
 
   // ลบเพลง
   @Delete(':songId')
+  @UseGuards(AuthGuard)
   async remove(@Param('eventId') eventId: string, @Param('songId') songId: string) {
     try {
       // เรียกใช้ service เพื่อทำการลบข้อมูลเพลงตาม id
