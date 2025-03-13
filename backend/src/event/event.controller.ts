@@ -3,7 +3,7 @@ import { EventService } from './event.service';
 import { Prisma } from '@prisma/client';
 import { CreateEventDto } from './dto/create-event.dto';
 import { ConflictException } from '@nestjs/common';
-import { AuthGuard } from 'guard/auth.guard';
+import { AuthGuard } from 'src/guard/auth.guard';
 
 @Controller('events')
 export class EventController {

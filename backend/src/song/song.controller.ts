@@ -15,7 +15,7 @@ import { SongService } from './song.service';
 import { Prisma } from '@prisma/client';
 import { CreateSongDto } from './dto/create-song.dto';
 import { ConflictException } from '@nestjs/common';
-import { AuthGuard } from 'guard/auth.guard';
+import { AuthGuard } from 'src/guard/auth.guard';
 
 @Controller('events/:eventId/songs')
 export class SongController {

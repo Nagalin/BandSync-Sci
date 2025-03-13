@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { EventModule } from './event/event.module';
 import { SongModule } from './song/song.module';
 import { AuthModule } from './auth/auth.module';
-import { AuthMiddleware } from '../middleware/auth.middleware'
+import { AuthMiddleware } from 'src/middleware/auth.middleware'
 
 @Module({
   imports: [EventModule, SongModule, AuthModule],
