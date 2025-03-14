@@ -12,11 +12,11 @@ export class AuthMiddleware implements NestMiddleware {
             if(!authHeader) throw new UnauthorizedException('Missing authorzation header')
                 
             const sessionToken = authHeader?.split('Bearer ')[1];
+            console.log(sessionToken)
             const discordId = await this.authService.getDiscordIdFromSessionToken(sessionToken);
            
             const existingUser = await this.authService.checkIfUserExist(discordId);
             if (!existingUser) throw new UnauthorizedException('Your account does not have access to this application')
-            
             req.user = existingUser
             next()
         } catch (error) {

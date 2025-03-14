@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Background from '@/components/ui/background'
 import { Card } from 'react-native-paper'
 import Text from '@/components/ui/text'
-import { View } from 'react-native'
 import { useAppTheme } from '@/hooks/use-theme'
 import { router, useFocusEffect } from 'expo-router'
-import { useAuth } from '@clerk/clerk-expo'
-
+import { checkAdminRole } from '@/utils/check-user-role'
 
 const Index = () => {
   const theme = useAppTheme()
-  const { signOut } = useAuth()
+  const isAdmin = checkAdminRole()
 
   useFocusEffect(() => {
     const func = async () => {
-      const token = await window.Clerk.session.getToken({ template: 'testing-template' })
-      console.log("test token: ",token)
+      const token = await window.Clerk!.session!.getToken({ template: 'testing-template' })
+      console.log("test token: ", token)
     }
 
     func()
   })
-  
+
 
   return (
     <Background
@@ -64,10 +62,7 @@ const Index = () => {
       </Card>
       <Card
         onPress={async () => {
-          await signOut()
-          router.push({
-            pathname: '/',
-          })
+         
         }}
         style={{
           borderStyle: 'solid',
@@ -94,6 +89,141 @@ const Index = () => {
 
         </Card.Content>
       </Card>
+
+      <Card
+        onPress={async () => {
+          router.push({
+            pathname: '/profile',
+          })
+        }}
+        style={{
+          borderStyle: 'solid',
+          width: '45%',
+          marginTop: 15,
+          height: 150,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: theme.colors.primary
+        }}
+      >
+        <Card.Content>
+          <Text
+            variant='titleLarge'
+            style={{
+              textAlign: 'center'
+            }}
+          >
+            Profile
+          </Text>
+
+
+
+        </Card.Content>
+      </Card>
+
+      {isAdmin ? (
+        <>
+          <Card
+            onPress={async () => {
+              router.push({
+                pathname: '/',
+              })
+            }}
+            style={{
+              borderStyle: 'solid',
+              width: '45%',
+              marginTop: 15,
+              height: 150,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: theme.colors.primary
+            }}
+          >
+            <Card.Content>
+              <Text
+                variant='titleLarge'
+                style={{
+                  textAlign: 'center'
+                }}
+              >
+                Activate new account
+              </Text>
+            </Card.Content>
+
+
+          </Card>
+          <Card
+            onPress={async () => {
+              router.push({
+                pathname: '/',
+              })
+            }}
+            style={{
+              borderStyle: 'solid',
+              width: '45%',
+              marginTop: 15,
+              height: 150,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: theme.colors.primary
+            }}
+          >
+            <Card.Content>
+              <Text
+                variant='titleLarge'
+                style={{
+                  textAlign: 'center'
+                }}
+              >
+                Dctivate new account
+              </Text>
+            </Card.Content>
+
+
+          </Card>
+
+          <Card
+            onPress={async () => {
+              router.push({
+                pathname: '/',
+              })
+            }}
+            style={{
+              borderStyle: 'solid',
+              width: '45%',
+              marginTop: 15,
+              height: 150,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: theme.colors.primary
+            }}
+          >
+            <Card.Content>
+              <Text
+                variant='titleLarge'
+                style={{
+                  textAlign: 'center'
+                }}
+              >
+                Tranfer system admin previlege
+              </Text>
+            </Card.Content>
+          </Card>
+        </>
+      ) : null}
+
+
+
+
+
+
+
+
+
 
 
     </Background>

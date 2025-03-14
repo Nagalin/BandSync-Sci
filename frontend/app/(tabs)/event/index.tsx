@@ -8,7 +8,7 @@ import EventCard from '@/components/event/view/event-card'
 import Modal from '@/components/event/create/modal'
 import Text from '@/components/ui/text'
 import useAxiosWithAuth from '@/lib/use-axios-with-auth'
-import { Clerk } from '@clerk/clerk-expo'
+import { Clerk, useAuth } from '@clerk/clerk-expo'
 
 type APIResponse = {
   eventId: string

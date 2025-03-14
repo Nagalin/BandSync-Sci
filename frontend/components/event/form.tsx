@@ -7,7 +7,7 @@ import TextInput from '@/components/ui/text-input'
 import Button from '@/components/ui/button'
 import Text from '@/components/ui/text'
 import useEventForm from '@/components/event/use-event-form'
-import { isBackstage } from '@/utils/check-user-role'
+import { checkBackstageRole } from '@/utils/check-user-role'
 
 type FormPropsType = {
     closeModalImmediately?: () => void
@@ -23,7 +23,7 @@ type FormPropsType = {
 }
 
 const Form = ({ closeModalImmediately, event }: FormPropsType) => {
-    const isUserBackstage = isBackstage()
+    const isUserBackstage = checkBackstageRole()
     const editable = isUserBackstage
     const [showEventDate, setShowEventDate] = useState(false)
     const [showStartTime, setShowStartTime] = useState(false)

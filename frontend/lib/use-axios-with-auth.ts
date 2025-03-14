@@ -10,9 +10,9 @@ const useAxiosWithAuth = () => {
     });
 
     axios.interceptors.request.use(async (config) => {
-        const jwt = await SecureStore.getItemAsync('__clerk_client_jwt');
         const token = await getToken();
-        if (jwt) config.headers.Authorization = `Bearer ${token}`;
+        console.log('my token is: ', token)
+        config.headers.Authorization = `Bearer ${token}`;
         return config;
     });
 

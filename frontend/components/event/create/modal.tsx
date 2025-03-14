@@ -5,10 +5,10 @@ import Form from '@/components/event/form'
 import Text from '@/components/ui/text'
 import { useAppTheme } from '@/hooks/use-theme'
 import CloseButton from '@/assets/icons/close-square'
-import { isBackstage } from '@/utils/check-user-role'
+import { checkBackstageRole } from '@/utils/check-user-role'
 
 const Modal = () => {
-    const isUserBackstage = isBackstage()
+    const isUserBackstage = checkBackstageRole()
     const theme = useAppTheme()
     const [visible, setVisible] = useState(false)
     const showModal = () => setVisible(true)

@@ -83,4 +83,5 @@ enum UserRole {
   percussionist
   backstage
   staff
+  admin
 }
