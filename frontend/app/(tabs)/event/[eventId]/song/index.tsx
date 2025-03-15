@@ -6,7 +6,7 @@ import Text from '@/components/ui/text'
 import Background from '@/components/ui/background'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import Button from '@/components/ui/button'
-import { isBackstage } from '@/utils/check-user-role';
+import { checkBackstageRole } from '@/utils/check-user-role';
 import * as SecureStore from 'expo-secure-store';
 
 function Index() {
@@ -27,7 +27,7 @@ function Index() {
 
   const { eventId } = useLocalSearchParams()
   const router = useRouter()
-  const isUserBackstage = isBackstage()
+  const isUserBackstage = checkBackstageRole()
 
   return (
     <Background>

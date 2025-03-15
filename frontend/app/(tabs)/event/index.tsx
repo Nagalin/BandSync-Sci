@@ -7,7 +7,7 @@ import Background from '@/components/ui/background'
 import EventCard from '@/components/event/view/event-card'
 import Modal from '@/components/event/create/modal'
 import Text from '@/components/ui/text'
-import useAxiosWithAuth from '@/lib/use-axios-with-auth'
+import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
 import { Clerk, useAuth } from '@clerk/clerk-expo'
 
 type APIResponse = {

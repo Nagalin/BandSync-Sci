@@ -1,7 +1,7 @@
 import { View, } from 'react-native'
 import React from 'react'
 import TextInput from '@/components/ui/text-input'
-import useAxiosWithAuth from '@/lib/use-axios-with-auth';
+import useAxiosWithAuth from '@/hooks/use-axios-with-auth';
 import { useQuery } from '@tanstack/react-query';
 import Button from '../ui/button';
 import { useAuth } from '@clerk/clerk-expo';

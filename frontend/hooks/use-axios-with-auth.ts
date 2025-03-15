@@ -11,7 +11,6 @@ const useAxiosWithAuth = () => {
 
     axios.interceptors.request.use(async (config) => {
         const token = await getToken();
-        console.log('my token is: ', token)
         config.headers.Authorization = `Bearer ${token}`;
         return config;
     });

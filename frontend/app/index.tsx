@@ -4,8 +4,8 @@ import * as AuthSession from 'expo-auth-session'
 import { useSSO, useAuth } from '@clerk/clerk-expo'
 import { View, Button, Alert } from 'react-native'
 import { useRootNavigationState, useRouter } from 'expo-router'
-import axios from '@/lib/axios'
 import * as SecureStore from 'expo-secure-store';
+import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
 
 async function storeRoles(user: any) {
   try {
@@ -30,18 +30,10 @@ export const useWarmUpBrowser = () => {
 WebBrowser.maybeCompleteAuthSession()
 
 export default function Page() {
-
+  const axios = useAxiosWithAuth()
   const { getToken, isSignedIn, signOut } = useAuth()
   const router = useRouter()
-  const navigationState = useRootNavigationState()
   const { startSSOFlow } = useSSO()
-  // useWarmUpBrowser()
-
-  // useEffect(() => {
-  //   if (navigationState?.key && isSignedIn)
-  //     router.navigate('/(tabs)/main-menu')
-
-  // }, [])
 
   const onPress = useCallback(async () => {
     if(isSignedIn) await signOut()

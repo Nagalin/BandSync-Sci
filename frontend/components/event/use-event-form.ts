@@ -2,7 +2,7 @@ import { Alert } from 'react-native'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
-import useAxiosWithAuth from '@/lib/use-axios-with-auth'
+import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
 
 type FormValue = {
     eventId: string

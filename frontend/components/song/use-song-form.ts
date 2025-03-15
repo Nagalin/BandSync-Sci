@@ -1,9 +1,9 @@
 import { Alert } from 'react-native'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import axios from '@/lib/axios'
 import { useLocalSearchParams } from 'expo-router'
 import { useRouter } from 'expo-router'
+import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
 
 type FormValues = {
     songId: string,
@@ -22,6 +22,7 @@ type FormValues = {
 }
 
 const useSong = (song?: FormValues) => {
+    const axios = useAxiosWithAuth()
     const queryClient = useQueryClient()
     const { eventId } = useLocalSearchParams()
     const router = useRouter()
@@ -68,7 +69,7 @@ const useSong = (song?: FormValues) => {
 
         mutationFn: async (data: FormValues) => {
             try {
-                await axios.put(`/songs/${song?.songId}`, data)
+                await axios.post(`/events/${eventId}/songs`, data)
                 Alert.alert('สำเร็จ', 'อัปเดตเพลงสำเร็จ', [
                     { text: 'OK' },
                 ])

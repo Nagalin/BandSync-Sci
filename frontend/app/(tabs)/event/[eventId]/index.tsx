@@ -8,8 +8,8 @@ import Background from '@/components/ui/background'
 import Text from '@/components/ui/text'
 import Form from '@/components/event/form'
 import ListIcon from '@/assets/icons/list'
-import { isBackstage } from '@/utils/check-user-role'
-import useAxiosWithAuth from '@/lib/use-axios-with-auth'
+import { checkBackstageRole } from '@/utils/check-user-role'
+import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
 
 type APIResponse = {
     eventId: string
@@ -24,7 +24,7 @@ type APIResponse = {
 
 const Index = () => {
     const { eventId } = useLocalSearchParams()
-    const isUserBackstage = isBackstage();
+    const isUserBackstage = checkBackstageRole();
     const axios = useAxiosWithAuth()
 
 

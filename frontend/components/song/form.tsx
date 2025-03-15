@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form'
 import { View, FlatList, TouchableOpacity, Text, Keyboard } from 'react-native'
 import { TextInput as RnTextInput } from 'react-native-paper'
 import useSong from './use-song-form'
-import { isBackstage } from '@/utils/check-user-role'
+import { checkBackstageRole } from '@/utils/check-user-role'
 
 type FormPropsType = {
     song?: {
@@ -26,7 +26,7 @@ type FormPropsType = {
 }
 
 const Form = ({ song }: FormPropsType) => {
-    const isUserBackstage = isBackstage()
+    const isUserBackstage = checkBackstageRole()
     const {
         control,
         setValue,
