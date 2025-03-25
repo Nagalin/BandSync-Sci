@@ -157,7 +157,7 @@ const Index = () => {
           <Card
             onPress={async () => {
               router.push({
-                pathname: '/',
+                pathname: '/deactiave-account',
               })
             }}
             style={{
@@ -178,7 +178,7 @@ const Index = () => {
                   textAlign: 'center'
                 }}
               >
-                Dctivate new account
+                Deactivate new account
               </Text>
             </Card.Content>
 
