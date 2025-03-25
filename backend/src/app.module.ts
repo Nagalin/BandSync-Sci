@@ -5,9 +5,10 @@ import { EventModule } from './event/event.module';
 import { SongModule } from './song/song.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthMiddleware } from 'src/middleware/auth.middleware'
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [EventModule, SongModule, AuthModule],
+  imports: [EventModule, SongModule, AuthModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 })
