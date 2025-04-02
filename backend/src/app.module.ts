@@ -6,9 +6,10 @@ import { SongModule } from './song/song.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthMiddleware } from 'src/middleware/auth.middleware'
 import { UserModule } from './user/user.module';
+import { PlayerModule } from './player/player.module';
 
 @Module({
-  imports: [EventModule, SongModule, AuthModule, UserModule],
+  imports: [EventModule, SongModule, AuthModule, UserModule, PlayerModule],
   controllers: [AppController],
   providers: [AppService],
 })

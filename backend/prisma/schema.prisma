@@ -54,6 +54,7 @@ model Song {
   currentPercussionist Int    @default(0)
   eventId              String
   event                Event  @relation(fields: [eventId], references: [eventId])
+  users               User[]
 }
 
 model User {
@@ -65,6 +66,7 @@ model User {
   discordUsername String
   isActive        Boolean  @default(true)
   roles           Role[]   @relation("UserRoles")
+  songs          Song[]
 }
 
 model Role {

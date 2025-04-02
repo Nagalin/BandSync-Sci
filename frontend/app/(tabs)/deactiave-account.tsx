@@ -4,6 +4,8 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
 import { Checkbox } from 'react-native-paper'
 import Button from '@/components/ui/button'
+import Text from '@/components/ui/text'
+import { useLocalSearchParams } from 'expo-router'
 
 type UsersType = {
     discordId:       string;
@@ -16,6 +18,7 @@ type UsersType = {
 }
 
 const DeactivateAccountPage = () => {
+    const { playerType } = useLocalSearchParams()
     const axios = useAxiosWithAuth()
     const { data: users, isFetching } = useQuery<UsersType[]>({
         queryKey: ['users'],
@@ -40,6 +43,7 @@ const DeactivateAccountPage = () => {
 
     return (
         <View>
+            <Text> Unassigned {playerType}</Text>
             {users?.map(user => (
                 <Checkbox.Item
                     key={user.userId}

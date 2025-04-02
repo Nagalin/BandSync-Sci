@@ -6,6 +6,7 @@ import { View, FlatList, TouchableOpacity, Text, Keyboard } from 'react-native'
 import { TextInput as RnTextInput } from 'react-native-paper'
 import useSong from './use-song-form'
 import { checkBackstageRole } from '@/utils/check-user-role'
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router'
 
 type FormPropsType = {
     song?: {
@@ -26,7 +27,9 @@ type FormPropsType = {
 }
 
 const Form = ({ song }: FormPropsType) => {
+    const { eventId, songId } = useLocalSearchParams()
     const isUserBackstage = checkBackstageRole()
+    const router = useRouter();
     const {
         control,
         setValue,
@@ -225,8 +228,9 @@ const Form = ({ song }: FormPropsType) => {
                             </View>
                         )}
                     />
+                    <Button onPress={() => router.navigate(`/event/${eventId}/song/${songId}/vocalist`)}> ดูข้อมูล </Button>
 
-                    <Controller
+                    {/* <Controller
                         control={control}
                         name='totalGuitarist'
                         rules={{ required: 'กรุณากรอกจำนวนกีตาร์' }}
@@ -254,9 +258,9 @@ const Form = ({ song }: FormPropsType) => {
                                 )}
                             </View>
                         )}
-                    />
+                    /> */}
 
-                    <Controller
+                    {/* <Controller
                         control={control}
                         name='totalBassist'
                         rules={{ required: 'กรุณากรอกจำนวนเบส' }}
@@ -283,7 +287,10 @@ const Form = ({ song }: FormPropsType) => {
                                 )}
                             </View>
                         )}
-                    />
+                    /> */}
+
+<Button onPress={() => router.navigate(`/event/${eventId}/song/${songId}/bassist`)}> ดูข้อมูล </Button>
+
 
                 </View>
                 <View
