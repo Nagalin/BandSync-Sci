@@ -29,7 +29,7 @@ const Button = ({ variant = 'primary', children, style, ...props }: ButtonPropsT
       mode='contained'
       buttonColor={backgroundColor}
       textColor={textColor}
-      style={[style]}
+      style={[{display: 'flex', justifyContent: 'center', alignItems: 'center'},style]}
       {...props}
     >
       {children}

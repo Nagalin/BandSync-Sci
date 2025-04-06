@@ -8,24 +8,51 @@ import { Checkbox } from 'react-native-paper'
 import Button from '../ui/button'
 
 export type ApiResponse = {
-    discordId: string;
-    discordUsername: string;
+    songId:               string;
+    songName:             string;
+    songDescription:      string;
+    songOrder:            number;
+    songKey:              string;
+    songReference:        string;
+    totalVocalist:        number;
+    currentVocalList:     number;
+    totalGuitarist:       number;
+    currentGuitarist:     number;
+    totalDrummer:         number;
+    currentDrummer:       number;
+    totalBassist:         number;
+    currentBassist:       number;
+    totalKeyboardist:     number;
+    currentKeyboardist:   number;
+    totalExtra:           number;
+    currentExtra:         number;
+    totalPercussionist:   number;
+    currentPercussionist: number;
+    eventId:              string;
+    users:                User[];
+}
+
+type User = {
+    userId: string;
     firstName: string;
-    isActive: boolean;
     lastName: string;
     nickName: string;
-    userId: string;
+    discordId: string;
+    discordUsername: string;
+    isActive: boolean;
 }
+
+
 
 const AssignedPlayerList = () => {
     const queryClient = useQueryClient()
     const axios = useAxiosWithAuth()
-    const { songId, eventId, playerType } = useLocalSearchParams()
+    const { songId, playerType } = useLocalSearchParams()
     const [selectedUsers, setSelectedUsers] = useState<Record<string, boolean>>({})
 
     const { data: playersList, isFetching } = useQuery<ApiResponse[]>({
         queryKey: ['assignedPlayerList'],
-        queryFn: async () => (await axios.get(`songs/${songId}/player/${playerType}`)).data
+        queryFn: async () => (await axios.get(`songs/${songId}/player/assigned/${playerType}`)).data
     })
 
     const unassignedPlayer = async () => {
@@ -35,19 +62,17 @@ const AssignedPlayerList = () => {
         })
         queryClient.invalidateQueries({ queryKey: ['assignedPlayerList'] })
         queryClient.invalidateQueries({ queryKey: ['unassignedPlayerList'] })
-
     }
 
-
     useEffect(() => {
-        if (playersList) {
-            const initialSelectedState = playersList.reduce((acc, curr) => {
-                acc[curr.userId] = true; // Set all to checked by default
-                return acc;
-            }, {} as Record<string, boolean>);
+        if (playersList && playersList[0]?.users) {
+            const initialSelectedState: Record<string, boolean> = {};
+            playersList[0].users.forEach(user => {
+                initialSelectedState[user.userId] = true;
+            });
             setSelectedUsers(initialSelectedState);
         }
-    }, [playersList])
+    }, [playersList]);
 
     const handleToggle = (userId: string) => {
         setSelectedUsers(prev => ({
@@ -58,19 +83,30 @@ const AssignedPlayerList = () => {
 
     if (isFetching) return null
 
+    console.log(playersList)
+
     return (
-        <View>
-            <Text> Bassist </Text>
-            {playersList?.length === 0 ? (
-                <Text>No Bassist has been assigned</Text>
+        <View style={{ padding: 10 }}>
+            <Text style={{ fontSize: 20, marginBottom: 10 }}> 
+                {playerType} {playersList![0].currentBassist} / {playersList![0].totalBassist}
+                </Text>
+            {playersList![0].users.length === 0 ? (
+                <Text>No {playerType} has been assigned</Text>
             ) : (
                 <>
-                    {playersList?.map(curr => (
+                    {playersList?.map((curr, index) => (
                         <Checkbox.Item
-                            key={curr.userId}
-                            label={curr.nickName}
-                            status={selectedUsers[curr.userId] ? 'checked' : 'unchecked'}
-                            onPress={() => handleToggle(curr.userId)}
+                            style={{
+                                backgroundColor: 'white',
+                                borderRadius: 10,
+                                height: 40,
+                                width: '100%',
+                                marginBottom: 10
+                            }}
+                            key={curr.songId}
+                            label={curr.users[index].nickName}
+                            status={selectedUsers[curr.users[index].userId] ? 'checked' : 'unchecked'}
+                            onPress={() => handleToggle(curr.users[index].userId)}
                         />
                     ))}
 

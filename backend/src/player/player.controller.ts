@@ -18,7 +18,7 @@ export class PlayerController {
     async dd(
         @Param('songId') songId: string, @Param('playerType') playerType:  'guitarist' | 'bassist' | 'drummer' | 'vocalist'  | 'Keyboardist' | 'extra' | 'percussionist'
     ) {
-        const players = await this.playerService.findUnassignedPlayer(songId, playerType);
+        const players = await this.playerService.findAssignedPlayer(songId, playerType);
         return players
       
     }

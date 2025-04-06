@@ -20,7 +20,7 @@ export type ApiResponse = {
 const AssignedPlayerList = () => {
     const queryClient = useQueryClient()
     const axios = useAxiosWithAuth()
-    const { songId, eventId, playerType } = useLocalSearchParams()
+    const { songId, playerType } = useLocalSearchParams()
     const [selectedUsers, setSelectedUsers] = useState<Record<string, boolean>>({})
     
     const handleToggle = (userId: string) => {
@@ -41,17 +41,17 @@ const AssignedPlayerList = () => {
 
     const { data: playersList, isFetching } = useQuery<ApiResponse[]>({
         queryKey: ['unassignedPlayerList'],
-        queryFn: async () => (await axios.get(`songs/${songId}/player/assigned/${playerType}`)).data
+        queryFn: async () => (await axios.get(`songs/${songId}/player/unassigned/${playerType}`)).data
     })
 
     if (isFetching) return null
 
-    console.log('playersList', playersList)
+    console.log('playersList unassigned', playersList)
     
     return (
         <View>
             {playersList?.length === 0 ? (
-                <Text>No players found</Text>
+                <Text>No { playerType } found</Text>
             ) : (
                 <>
                     {playersList?.map(curr => (
