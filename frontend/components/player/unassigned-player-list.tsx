@@ -31,12 +31,20 @@ const AssignedPlayerList = () => {
     }
 
     const assignedPlayer = async () => {
-        await axios.post(`songs/${songId}/player/assign`, {
-            songId: songId,
-            playerId: Object.keys(selectedUsers).filter(userId => selectedUsers[userId])
-        })
-        queryClient.invalidateQueries({ queryKey: ['assignedPlayerList'] })
-        queryClient.invalidateQueries({ queryKey: ['unassignedPlayerList'] })
+        try {
+            const res = await axios.post(`songs/${songId}/player/assign`, {
+                songId: songId,
+                playerId: Object.keys(selectedUsers).filter(userId => selectedUsers[userId])
+            })
+            queryClient.invalidateQueries({ queryKey: ['assignedPlayerList'] })
+            queryClient.invalidateQueries({ queryKey: ['unassignedPlayerList'] })
+            
+        } catch (error) {
+            console.error("Error assigning players: ",error)
+            alert('Cannot add more players')
+            
+        }
+        
     }
 
     const { data: playersList, isFetching } = useQuery<ApiResponse[]>({
