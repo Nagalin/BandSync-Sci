@@ -55,7 +55,7 @@ export class EventService {
 
   // ฟังก์ชันค้นหาด้วย eventName
   async findByEventName(eventName: string) {
-    return this.prisma.event.findFirst({
+    return await this.prisma.event.findFirst({
       where: { eventName },
     });
   }

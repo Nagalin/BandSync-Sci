@@ -1,0 +1,39 @@
+# flow.yaml
+
+appId: host.exp.exponent
+---
+# Create Event
+- tapOn: "+"
+- tapOn: "ชื่อ Event"
+- inputText: "Test event"
+- tapOn: "Dresscode"
+- inputText: "Test dresscode"
+- tapOn: "รายละเอียดเพิ่มเติม (optional)"
+- inputText: "Test event description"
+- hideKeyboard
+- tapOn: "สร้าง"
+- assertVisible: "สร้าง Event สำเร็จ"
+- tapOn: "OK"
+- assertVisible: "Test event"
+- tapOn: "Test event"
+
+# View Event
+- tapOn: "Test event"
+- assertVisible: "Test event"
+- assertVisible: "Test event description"
+- assertVisible: "Test Dresscode"
+
+# Update Event
+- inputText: " updated"
+- tapOn: "อัปเดต"
+- assertVisible: "อัปเดต Event สำเร็จ"
+- tapOn: 'OK'
+
+# Delete Event
+- tapOn: "ลบ Event"
+- tapOn: 'OK'
+- assertVisible: "ลบ Event สำเร็จ"
+- tapOn: "OK"
+
+
+

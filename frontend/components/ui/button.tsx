@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import { ButtonProps, Button as RnButton } from 'react-native-paper'
 import { useAppTheme } from '@/hooks/use-theme'
+import { StyleSheet } from 'react-native'
 
 type ButtonPropsType = {
   children: ReactNode
@@ -29,12 +30,13 @@ const Button = ({ variant = 'primary', children, style, ...props }: ButtonPropsT
       mode='contained'
       buttonColor={backgroundColor}
       textColor={textColor}
-      style={[{display: 'flex', justifyContent: 'center', alignItems: 'center'},style]}
+      style={[style]}
       {...props}
     >
       {children}
     </RnButton>
   )
 }
+
 
 export default Button
