@@ -10,6 +10,13 @@ const Layout = () => {
                     title: 'รายละเอียดเพลง'
                 }}
             />
+
+            <Stack.Screen
+                name="[playerType]"
+                options={{
+                    headerShown: false
+                }}
+            />
         </Stack>
     )
 }

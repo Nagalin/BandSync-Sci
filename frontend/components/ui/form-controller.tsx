@@ -7,12 +7,16 @@ import {
 } from 'react-hook-form'
 import TextInput from './text-input'
 import Text from './text'
+import { KeyboardTypeOptions, StyleProp, TextStyle, View } from 'react-native'
+import { checkBackstageRole } from '@/utils/check-user-role'
 
 type FormControllerProps<T extends FieldValues> = {
     name: Path<T>
     control: Control<T>
     label?: string
     rules?: any
+    keyboardType?: KeyboardTypeOptions
+    style?: StyleProp<TextStyle>
     defaultValue?: any
     editable?: boolean
     render?: (props: {
@@ -29,10 +33,13 @@ const FormController = <T extends FieldValues>({
     control,
     label,
     rules,
+    style,
     defaultValue,
+    keyboardType = 'default',
     editable = true,
     render,
 }: FormControllerProps<T>) => {
+    const isBackstage = checkBackstageRole()
     return (
         <Controller
             name={name}
@@ -44,25 +51,34 @@ const FormController = <T extends FieldValues>({
                     {render ? (
                         render({ field: { onChange, onBlur, value } })
                     ) : (
-                        <TextInput
-                            label={label}
-                            editable={editable}
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                        />
+                        <View style={{
+                            flexDirection: 'column',
+                            gap: 20
+                        }}>
+
+                            <TextInput
+                                keyboardType={keyboardType}
+                                style={style}
+                                label={label}
+                                editable={isBackstage}
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                            />
+                            {error && (
+                                <Text
+                                    style={{
+                                        color: 'red',
+                                        fontSize: 12,
+                                        marginTop: -10,
+                                    }}
+                                >
+                                    {error.message}
+                                </Text>
+                            )}
+                        </View>
                     )}
-                    {error && (
-                        <Text
-                            style={{
-                                color: 'red',
-                                fontSize: 12,
-                                marginTop: -10,
-                            }}
-                        >
-                            {error.message}
-                        </Text>
-                    )}
+
                 </>
             )}
         />

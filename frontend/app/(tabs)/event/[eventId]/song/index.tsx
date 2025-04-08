@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import SongCard from '@/components/song/song-card'
+import SongCard from '@/components/song/card'
 import Text from '@/components/ui/text'
 import Background from '@/components/ui/background'
 import { useLocalSearchParams, useRouter } from 'expo-router'
