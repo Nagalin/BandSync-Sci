@@ -34,7 +34,8 @@ const AssignedPlayerList = () => {
         try {
             const res = await axios.post(`songs/${songId}/player/assign`, {
                 songId: songId,
-                playerId: Object.keys(selectedUsers).filter(userId => selectedUsers[userId])
+                playerId: Object.keys(selectedUsers).filter(userId => selectedUsers[userId]),
+                playerType: playerType
             })
             queryClient.invalidateQueries({ queryKey: ['assignedPlayerList'] })
             queryClient.invalidateQueries({ queryKey: ['unassignedPlayerList'] })
@@ -62,6 +63,7 @@ const AssignedPlayerList = () => {
                 <Text>No { playerType } found</Text>
             ) : (
                 <>
+                <Text style={{fontSize: 20}}>Unassigned {playerType}</Text>
                     {playersList?.map(curr => (
                         <Checkbox.Item
                             key={curr.userId}

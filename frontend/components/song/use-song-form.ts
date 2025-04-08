@@ -67,9 +67,9 @@ const useSong = (song?: FormValues) => {
 
     const { mutate: updateSong } = useMutation({
 
-        mutationFn: async (data: FormValues) => {
+        mutationFn: async (data: FormValues ) => {
             try {
-                await axios.post(`/events/${eventId}/songs`, data)
+                await axios.put(`/events/${eventId}/songs/${song?.songId}`, data)
                 Alert.alert('สำเร็จ', 'อัปเดตเพลงสำเร็จ', [
                     { text: 'OK' },
                 ])

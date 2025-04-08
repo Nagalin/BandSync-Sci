@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tabs } from 'expo-router'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
+import Feather from '@expo/vector-icons/Feather';
 
 const TabsLayout = () => {
   return (
@@ -10,7 +11,7 @@ const TabsLayout = () => {
         name='main-menu'
         options={{
           headerShown: false,
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name='eye' color={color} />
+          tabBarIcon: ({ color }) =>  <FontAwesome size={28} name='th-list' color={color} />
         }}
       />
 
@@ -18,7 +19,7 @@ const TabsLayout = () => {
         name='event'
         options={{
           headerShown: false,
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name='eye' color={color} />
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name='music' color={color} />
         }}
       />
 
@@ -26,7 +27,7 @@ const TabsLayout = () => {
         name='profile'
         options={{
           headerShown: false,
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name='eye' color={color} />
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name='user' color={color} />
         }}
       />
 

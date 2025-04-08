@@ -109,6 +109,7 @@ export class PlayerService {
     }
 
      async canAddMorePlayers (songId: string, type: string) {
+        console.log(type)
         const song = await this.prisma.song.findUnique({
             where: { songId }
         });

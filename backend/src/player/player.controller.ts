@@ -36,9 +36,11 @@ export class PlayerController {
       // @UseGuards(AuthGuard)
       async assignPlayer(@Body() body : { songId: string, playerId: string[], playerType: 'guitarist' | 'bassist' | 'drummer' | 'vocalist'  | 'Keyboardist' | 'extra' | 'percussionist' }) {
         const { songId, playerId, playerType } = body
+        console.log('playerType', playerType)
 
-        const cantAddMorePlayers = await this.playerService.canAddMorePlayers(songId, playerType)
-        if (!cantAddMorePlayers) {
+        const canAddMorePlayers = await this.playerService.canAddMorePlayers(songId, playerType)
+        console.log('canAddMorePlayers', canAddMorePlayers)
+        if (!canAddMorePlayers) {
             throw new HttpException('Cannot add more players', HttpStatus.BAD_REQUEST);
         }
         const songs = await this.playerService.assignPlayer(songId, playerId, playerType)

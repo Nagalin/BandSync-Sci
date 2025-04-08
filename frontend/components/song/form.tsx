@@ -222,7 +222,7 @@ const Form = ({ song }: FormPropsType) => {
 
                     {song && isBackstage ? (
 
-                        <Button variant='danger' onPress={() => deleteSong}>
+                        <Button variant='danger' onPress={() => deleteSong()}>
                             ลบเพลง
                         </Button>
 
