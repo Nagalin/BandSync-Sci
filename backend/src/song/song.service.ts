@@ -43,7 +43,8 @@ export class SongService {
 
   // ค้นหาเพลงตามชื่อเพลง
   async findBySongName(songName: string, eventId: string) {
-    return this.prisma.song.findFirst({
+    console.log(songName, eventId)
+    return await this.prisma.song.findFirst({
       where: {
         songName,
         eventId
@@ -109,6 +110,7 @@ export class SongService {
 
   // อัพเดตเพลง
   async update(songId: string, songdata: CreateSongDto) {
+    console.log("for debug: ",songId)
     const {
       totalBassist,
       totalDrummer,

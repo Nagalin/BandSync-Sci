@@ -4,6 +4,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { useRouter } from 'expo-router'
 import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
+import { create } from 'react-test-renderer'
+import { createSongService, deleteSongService, updateSongService } from '@/services/song'
 
 type FormValues = {
     songId: string,
@@ -51,8 +53,7 @@ const useSong = (song?: FormValues) => {
     const { mutate: createSong } = useMutation({
         mutationFn: async (data: FormValues) => {
             try {
-                await axios.post(`/events/${eventId}/songs`, data)
-
+                await createSongService(data, eventId as string)
                 Alert.alert('สำเร็จ', 'สร้างเพลงสำเร็จ', [
                     { text: 'OK' },
                 ])
@@ -69,7 +70,7 @@ const useSong = (song?: FormValues) => {
 
         mutationFn: async (data: FormValues ) => {
             try {
-                await axios.put(`/events/${eventId}/songs/${song?.songId}`, data)
+                await updateSongService(data, song?.songId as string, eventId as string)
                 Alert.alert('สำเร็จ', 'อัปเดตเพลงสำเร็จ', [
                     { text: 'OK' },
                 ])
@@ -86,9 +87,10 @@ const useSong = (song?: FormValues) => {
                     { text: 'cancel' },
                     {
                         text: 'ok', onPress: async () => {
-                            await axios.delete(`/events/${eventId}/songs/${song?.songId}`)
+                            await deleteSongService(song?.songId as string, eventId as string)
+                            queryClient.invalidateQueries({ queryKey: ['songs'] })
                             Alert.alert('สำเร็จ', 'ลบเพลงสำเร็จ')
-                            router.replace(`/event/${eventId}/song`)
+                            router.back()
                         }
                     }
                 ])

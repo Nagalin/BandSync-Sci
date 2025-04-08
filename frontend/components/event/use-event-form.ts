@@ -2,8 +2,7 @@ import { Alert } from 'react-native'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
-import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
-import { deleteEventService, updateEventService } from '@/services/event'
+import { createEventService, deleteEventService, updateEventService } from '@/services/event'
 
 type FormValue = {
     eventId: string
@@ -16,7 +15,6 @@ type FormValue = {
 }
 
 const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValue) => {
-    const axios = useAxiosWithAuth()
     const queryClient = useQueryClient()
     const {
         control,
@@ -38,7 +36,7 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValue) =
     const { mutate: createEvent } = useMutation({
         mutationFn: async (data: FormValue) => {
             try {
-                await axios.post('/events', data)
+                await createEventService(data)
                 Alert.alert('สำเร็จ', 'สร้าง Event สำเร็จ', [
                     { text: 'OK', onPress: closeModalImmediately },
                 ])

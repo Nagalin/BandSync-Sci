@@ -3,6 +3,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import React from 'react'
 import { Text, View, StyleSheet, FlatList } from 'react-native'
 import useAxiosWithAuth from '@/hooks/use-axios-with-auth';
+import { getSongListService } from '@/services/song';
 
 type APIResponseType = {
   songId: string
@@ -14,9 +15,9 @@ export default function App() {
   const axios = useAxiosWithAuth()
   const router = useRouter()
   const { eventId } = useLocalSearchParams()
-  const { data: songs = [], isFetching } = useQuery<APIResponseType[]>({
+  const { data: songs = [], isFetching } = useQuery({
     queryKey: ['songs'],
-    queryFn: async () => (await axios.get(`/events/${eventId}/songs`)).data,
+    queryFn: async () => await getSongListService(eventId as string),
   })
 
   const renderItem = ({ item }: { item: APIResponseType }) => (

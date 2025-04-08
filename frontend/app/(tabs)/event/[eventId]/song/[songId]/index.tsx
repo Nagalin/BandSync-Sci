@@ -3,7 +3,7 @@ import { useLocalSearchParams } from 'expo-router'
 import Form from '@/components/song/form'
 import Background from '@/components/ui/background'
 import { useQuery } from '@tanstack/react-query'
-import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
+import { getSongService } from '@/services/song'
 
 type APIResponse = {
   songId: string
@@ -22,11 +22,10 @@ type APIResponse = {
 }
 
 const SongDetail = () => {
-  const axios = useAxiosWithAuth()
   const { eventId, songId } = useLocalSearchParams()
   const { data: song, isFetching } = useQuery<APIResponse>({
     queryKey: ['songs', songId],
-    queryFn: async () => (await axios.get(`events/${eventId}/songs/${songId}`)).data
+    queryFn: async () => await getSongService(songId as string, eventId as string)
   })
 
   if (isFetching) return

@@ -55,7 +55,7 @@ export class EventService {
 
   // ฟังก์ชันค้นหาด้วย eventName
   async findByEventName(eventName: string) {
-    return await this.prisma.event.findFirst({
+    return await this.prisma.event.findUnique({
       where: { eventName },
     });
   }
@@ -70,8 +70,17 @@ export class EventService {
 
   // ฟังก์ชันลบ Event
   async remove(eventId: string) {
-    return await this.prisma.event.delete({
-      where: { eventId },
+    // Start a transaction
+    return this.prisma.$transaction(async (prisma) => {
+      // Delete all songs related to the event
+      await prisma.song.deleteMany({
+        where: { eventId },
+      });
+
+      // Delete the event itself
+      return prisma.event.delete({
+        where: { eventId },
+      });
     });
   }
 }

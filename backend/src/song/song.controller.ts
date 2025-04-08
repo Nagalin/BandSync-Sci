@@ -91,6 +91,7 @@ export class SongController {
   @Put(':songId')
   @UseGuards(AuthGuard)
   async update(@Param('songId') songId: string, @Body() songData: CreateSongDto) {
+    console.log("for debug: ",songData)
     try {
       // เรียกใช้ service เพื่ออัปเดตข้อมูลเพลงตาม id
       const updatedSong = await this.songService.update(songId, songData)

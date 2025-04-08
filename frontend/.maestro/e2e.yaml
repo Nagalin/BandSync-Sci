@@ -30,7 +30,49 @@ appId: host.exp.exponent
 - assertVisible: "อัปเดต Event สำเร็จ"
 - tapOn: 'OK'
 
-# Delete Event
+# Create Song
+- tapOn: "ดูรายชื่อเพลง"
+- tapOn: "+"
+- tapOn: "ชื่อเพลง"
+- inputText: "Test song"
+- tapOn: "ref เพลง"
+- hideKeyboard
+- inputText: "Test reference"
+- hideKeyboard
+- scroll
+- tapOn:
+    text: "สร้างเพลง"
+    index: 1
+    repeat: 2
+    delay: 1000
+   
+- assertVisible: "สร้างเพลงสำเร็จ"
+- tapOn: "OK"
+- assertVisible: "Test song (C)"
+
+# Update Song
+- tapOn: "Test song (C)"
+- tapOn: "Test song"
+- inputText: " updated"
+- hideKeyboard
+- scroll
+- tapOn:
+    text: "แก้ไขเพลง"
+    repeat: 2
+    delay: 1000
+- assertVisible: "อัปเดตเพลงสำเร็จ"
+- tapOn: "OK"
+- scroll
+
+# Delete Song
+- tapOn: "ลบเพลง"
+- tapOn: OK
+- assertVisible: "ลบเพลงสำเร็จ"
+- tapOn: "OK"
+- assertNotVisible: "Test song (C)"
+- back
+
+#Delete Event
 - tapOn: "ลบ Event"
 - tapOn: 'OK'
 - assertVisible: "ลบ Event สำเร็จ"
