@@ -8,14 +8,8 @@ import EventCard from '@/components/event/card'
 import Modal from '@/components/event/modal'
 import Text from '@/components/ui/text'
 import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
+import { getEventListService } from '@/services/event'
 
-type APIResponse = {
-  eventId: string
-  eventName: string
-  eventDate: Date
-  startTime: Date
-  endTime: Date
-}
 
 const Index = () => {
   const axios = useAxiosWithAuth()
@@ -26,9 +20,9 @@ const Index = () => {
     isFetching,
     error,
     refetch,
-  } = useQuery<APIResponse[]>({
+  } = useQuery({
     queryKey: ['events'],
-    queryFn: async () => (await axios.get('/events')).data
+    queryFn: async() => await getEventListService()
   })
 
   useEffect(() => {

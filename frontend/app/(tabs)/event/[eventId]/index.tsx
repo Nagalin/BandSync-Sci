@@ -9,28 +9,14 @@ import Text from '@/components/ui/text'
 import Form from '@/components/event/form'
 import ListIcon from '@/assets/icons/list'
 import { checkBackstageRole } from '@/utils/check-user-role'
-import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
-
-type APIResponse = {
-    eventId: string
-    eventName: string
-    dressCode: string
-    eventDate: Date
-    startTime: Date
-    endTime: Date
-    status: string
-    additionalDetails: string
-}
+import { getEventInfoService } from '@/services/event'
 
 const Index = () => {
     const { eventId } = useLocalSearchParams()
     const isUserBackstage = checkBackstageRole();
-    const axios = useAxiosWithAuth()
-
-
-    const { data: event, isFetching } = useQuery<APIResponse>({
+    const { data: event, isFetching } = useQuery({
         queryKey: ['event-detail'],
-        queryFn: async () => (await axios.get(`/events/${eventId}`)).data
+        queryFn: async () => await getEventInfoService(eventId as string)
     })
 
     if (isFetching) return <DetailLoading />

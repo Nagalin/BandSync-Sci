@@ -25,6 +25,7 @@ appId: host.exp.exponent
 
 # Update Event
 - inputText: " updated"
+- hideKeyboard
 - tapOn: "อัปเดต"
 - assertVisible: "อัปเดต Event สำเร็จ"
 - tapOn: 'OK'
@@ -34,6 +35,8 @@ appId: host.exp.exponent
 - tapOn: 'OK'
 - assertVisible: "ลบ Event สำเร็จ"
 - tapOn: "OK"
+- assertVisible: '+'
+- assertNotVisible: "Test event"
 
 
 

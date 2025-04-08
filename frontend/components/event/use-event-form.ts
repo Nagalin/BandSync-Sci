@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
+import { deleteEventService, updateEventService } from '@/services/event'
 
 type FormValue = {
     eventId: string
@@ -52,7 +53,7 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValue) =
     const { mutate: updateEvent } = useMutation({
         mutationFn: async (data: FormValue) => {
             try {
-                await axios.put(`/events/${event?.eventId}`, data)
+                await updateEventService(data, event?.eventId as string)
                 Alert.alert('สำเร็จ', 'อัปเดต Event สำเร็จ', [
                     { text: 'OK' },
                 ])
@@ -69,7 +70,7 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValue) =
                     { text: 'cancel' },
                     {
                         text: 'ok', onPress: async () => {
-                            await axios.delete(`/events/${event?.eventId}`)
+                            await deleteEventService(event?.eventId as string)
                             Alert.alert('สำเร็จ', 'ลบ Event สำเร็จ')
                             router.navigate('/event')
                         }
