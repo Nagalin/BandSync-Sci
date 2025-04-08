@@ -6,6 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import TextInput from '@/components/ui/text-input'
 import Button from '@/components/ui/button'
 import Text from '@/components/ui/text'
+import FormController from '@/components/ui/form-controller'
 import useEventForm from '@/components/event/use-event-form'
 import { checkBackstageRole } from '@/utils/check-user-role'
 
@@ -32,7 +33,6 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
         control,
         setValue,
         watch,
-        errors,
         onSubmit,
         deleteEvent
     } = useEventForm(closeModalImmediately, event)
@@ -45,37 +45,17 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
             </Text>
 
             {/* Event Name */}
-            <Controller
+            <FormController
                 name='eventName'
                 control={control}
+                label='ชื่อ Event'
                 rules={{ required: 'กรุณากรอกชื่อ event' }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <>
-                        <TextInput
-                            label='ชื่อ Event'
-                            editable={editable}
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                        />
-                        {errors.eventName && (
-                            <Text
-                                style={{
-                                    color: 'red',
-                                    fontSize: 12,
-                                    marginTop: -10,
-                                }}
-                            >
-                                {errors.eventName.message}
-                            </Text>
-                        )}
-                    </>
-                )}
+                editable={editable}
             />
 
             {/* Event Date Picker */}
             <Pressable onPress={() => setShowEventDate(true)}>
-                <Controller
+                <FormController
                     rules={{ required: 'กรุณากรอกวันเดือนปี' }}
                     name='eventDate'
                     control={control}
@@ -88,17 +68,6 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                                 right={<PaperTextInput.Icon icon='calendar' />}
                                 editable={false}
                             />
-                            {errors.eventDate && (
-                                <Text
-                                    style={{
-                                        color: 'red',
-                                        fontSize: 12,
-                                        marginTop: 5,
-                                    }}
-                                >
-                                    {errors.eventDate.message}
-                                </Text>
-                            )}
                         </>
                     )}
                 />
@@ -135,17 +104,6 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                                     })}
                                     editable={false}
                                 />
-                                {errors.startTime && (
-                                    <Text
-                                        style={{
-                                            color: 'red',
-                                            fontSize: 12,
-                                            marginTop: 5,
-                                        }}
-                                    >
-                                        {errors.startTime.message}
-                                    </Text>
-                                )}
                             </>
                         )}
                     />
@@ -181,17 +139,6 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                                     })}
                                     editable={false}
                                 />
-                                {errors.endTime && (
-                                    <Text
-                                        style={{
-                                            color: 'red',
-                                            fontSize: 12,
-                                            marginTop: 5,
-                                        }}
-                                    >
-                                        {errors.endTime.message}
-                                    </Text>
-                                )}
                             </>
                         )}
                     />
@@ -210,52 +157,21 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
             </View>
 
             {/* Dress Code */}
-            <Controller
+            <FormController
                 name='dressCode'
                 control={control}
-                rules={{ required: 'กรุณากรอก dresscode' }}
-                defaultValue={event?.dressCode || ''}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <>
-                        <TextInput
-                            editable={editable}
-                            label='Dresscode'
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                        />
-                        {errors.dressCode && (
-                            <Text
-                                style={{
-                                    color: 'red',
-                                    fontSize: 12,
-                                    marginTop: -10,
-                                }}
-                            >
-                                {errors.dressCode.message}
-                            </Text>
-                        )}
-                    </>
-                )}
+                label='Dresscode'
+                rules={{ required: 'กรุณากรอกชื่อ dresscode' }}
+                editable={editable}
             />
 
+
             {/* additional detail */}
-            <Controller
+            <FormController
                 name='additionalDetails'
                 control={control}
-                defaultValue={event?.additionalDetails || ''}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <>
-                        <TextInput
-                            editable={editable}
-
-                            label='รายละเอียดเพิ่มเติม (optional)'
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                        />
-                    </>
-                )}
+                label='รายละเอียดเพิ่มเติม (optional)'
+                editable={editable}
             />
 
             {/* Submit Button */}
@@ -283,8 +199,6 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                     </>
 
                 ) : null}
-
-
 
             </View>
         </View>

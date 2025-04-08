@@ -93,7 +93,6 @@ const useCreateEvent = (closeModalImmediately?: () => void, event?: FormValue) =
         control,
         setValue,
         watch,
-        errors,
         onSubmit,
         deleteEvent
     }

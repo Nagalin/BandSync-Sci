@@ -4,11 +4,10 @@ import { Snackbar } from 'react-native-paper'
 import { Skeleton } from 'moti/skeleton'
 import { useQuery } from '@tanstack/react-query'
 import Background from '@/components/ui/background'
-import EventCard from '@/components/event/view/event-card'
-import Modal from '@/components/event/create/modal'
+import EventCard from '@/components/event/card'
+import Modal from '@/components/event/modal'
 import Text from '@/components/ui/text'
 import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
-import { Clerk, useAuth } from '@clerk/clerk-expo'
 
 type APIResponse = {
   eventId: string

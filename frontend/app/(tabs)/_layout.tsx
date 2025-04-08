@@ -22,6 +22,23 @@ const TabsLayout = () => {
         }}
       />
 
+      <Tabs.Screen
+        name='profile'
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name='eye' color={color} />
+        }}
+      />
+
+      <Tabs.Screen
+        name='deactivate-account'
+        options={{
+          headerShown: false,
+          href: null,
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name='eye' color={color} />
+        }}
+      />
+
     </Tabs>
   )
 }
