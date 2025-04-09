@@ -1,6 +1,6 @@
 import axios from "@/libs/axios"
 
-type Event = {
+export type Event = {
     eventId: string
     eventName: string
     eventDate: Date
@@ -23,11 +23,11 @@ export const getEventInfoService = async (eventId: string) => {
     return response.data as Event
 }
 
-export const createEventService = async (data: Event) => {
+export const createEventService = async (data: Omit<Event, 'eventId'>) => {
     return await axios.post('/events', data)
 }
 
-export const updateEventService = async (data: Event, eventId: string) => {
+export const updateEventService = async (data: Omit<Event, 'eventId'>, eventId: string) => {
     return await axios.put(`/events/${eventId}`, data)
 }
 

@@ -1,6 +1,6 @@
 import axios from "@/libs/axios"
 
-type Song = {
+export type Song = {
     songId: string,
     songName: string,
     songDescription: string,
@@ -16,11 +16,11 @@ type Song = {
     totalPercussionist: string
 }
 
-type SongList = Pick<Song, 'songId' | 'songName' | 'songKey'>
+export type SongList = Pick<Song, 'songId' | 'songName' | 'songKey'>
 
 export const getSongListService = async (eventId: string) => {
-     const response = await axios.get(`/events/${eventId}/songs`)
-     return response.data as SongList[]
+    const response = await axios.get(`/events/${eventId}/songs`)
+    return response.data as SongList[]
 }
 
 export const getSongService = async (songId: string, eventId: string) => {
@@ -28,14 +28,14 @@ export const getSongService = async (songId: string, eventId: string) => {
     return response.data as Song
 }
 
-export const createSongService = async (song: Song, eventId: string) => {
+export const createSongService = async (song: Omit<Song, 'songId'>, eventId: string) => {
     return await axios.post(`/events/${eventId}/songs`, song)
 }
 
-export const updateSongService = async (song: Song, songId: string, eventId: string) => { 
+export const updateSongService = async (song: Omit<Song, 'songId'>, songId: string, eventId: string) => {
     return await axios.put(`/events/${eventId}/songs/${songId}`, song)
 }
 
-export const deleteSongService = async (songId: string, eventId: string) => { 
+export const deleteSongService = async (songId: string, eventId: string) => {
     return await axios.delete(`/events/${eventId}/songs/${songId}`)
 }

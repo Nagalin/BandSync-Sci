@@ -1,35 +1,18 @@
 import { View, } from 'react-native'
 import React from 'react'
 import TextInput from '@/components/ui/text-input'
-import useAxiosWithAuth from '@/hooks/use-axios-with-auth';
-import { useQuery } from '@tanstack/react-query';
-import Button from '../ui/button';
-import { useAuth } from '@clerk/clerk-expo';
-import { useRouter } from 'expo-router';
-type APIResponseType = {
-    discordId: string;
-    discordUsername: string;
-    firstName: string;
-    isActive: boolean;
-    lastName: string;
-    nickName: string;
-    roles: RolesType[];
-    userId: string;
-}
-
-type RolesType = {
-    role: string;
-    roleId: string;
-}
+import { useQuery } from '@tanstack/react-query'
+import Button from '@/components/ui/button'
+import { useAuth } from '@clerk/clerk-expo'
+import { useRouter } from 'expo-router'
+import { getUserService } from '@/services/user'
 
 const Profile = () => {
-    const axios = useAxiosWithAuth()
     const { signOut } = useAuth()
     const router = useRouter()
-
-    const { data: user, isFetching } = useQuery<APIResponseType>({
+    const { data: user, isFetching } = useQuery({
         queryKey: ['profile'],
-        queryFn: async () => (await axios.get('/auth/user')).data
+        queryFn: async () => await getUserService()
     })
 
     if (isFetching) return
@@ -52,7 +35,7 @@ const Profile = () => {
                 editable={false}
             />
             <TextInput
-                label='discord id'
+                label='discord ID'
                 value={user?.discordId}
                 editable={false}
             />

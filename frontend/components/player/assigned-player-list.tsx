@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { View } from 'react-native'
 import Text from '../ui/text'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
 import { useLocalSearchParams } from 'expo-router'
 import { Checkbox } from 'react-native-paper'
 import Button from '../ui/button'
+import axios from '@/libs/axios'
 
 export type ApiResponse = {
     songId:               string;
@@ -42,11 +42,8 @@ type User = {
     isActive: boolean;
 }
 
-
-
 const AssignedPlayerList = () => {
     const queryClient = useQueryClient()
-    const axios = useAxiosWithAuth()
     const { songId, playerType } = useLocalSearchParams()
     const [selectedUsers, setSelectedUsers] = useState<Record<string, boolean>>({})
 

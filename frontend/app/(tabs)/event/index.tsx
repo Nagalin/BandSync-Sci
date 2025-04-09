@@ -7,14 +7,10 @@ import Background from '@/components/ui/background'
 import EventCard from '@/components/event/card'
 import Modal from '@/components/event/modal'
 import Text from '@/components/ui/text'
-import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
 import { getEventListService } from '@/services/event'
 
-
 const Index = () => {
-  const axios = useAxiosWithAuth()
   const [snackbarVisible, setSnackbarVisible] = useState(false)
-
   const {
     data: events,
     isFetching,
@@ -22,7 +18,7 @@ const Index = () => {
     refetch,
   } = useQuery({
     queryKey: ['events'],
-    queryFn: async() => await getEventListService()
+    queryFn: async () => await getEventListService()
   })
 
   useEffect(() => {
@@ -48,7 +44,7 @@ const Index = () => {
       >
         {events?.length === 0 ? (
           <View style={{ marginTop: 15 }}>
-            <Text style={{fontSize: 20}}> ไม่มี Event ขณะนี้.....</Text>
+            <Text style={{ fontSize: 20 }}> ไม่มี Event ขณะนี้.....</Text>
           </View>
         ) : (
           events?.map(curr => (

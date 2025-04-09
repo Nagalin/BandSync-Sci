@@ -5,37 +5,19 @@ import { View, TouchableOpacity, Text, Keyboard } from 'react-native'
 import { TextInput as RnTextInput } from 'react-native-paper'
 import useSong from './use-song-form'
 import { checkBackstageRole } from '@/utils/check-user-role'
-import { useLocalSearchParams, useRouter } from 'expo-router'
 import { ScrollView } from 'react-native-gesture-handler'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Controller from '../ui/form-controller'
 import TotalPlayerInput from './total-player-input'
+import { Song } from '@/services/song'
 
 type FormPropsType = {
-    song?: {
-        songId: string,
-        songName: string,
-        songDescription: string,
-        songOrder: string,
-        songKey: string,
-        songReference: string,
-        totalVocalist: string,
-        totalGuitarist: string,
-        totalDrummer: string,
-        totalBassist: string,
-        totalKeyboardist: string,
-        totalExtra: string,
-        totalPercussionist: string
-    }
+    song?: Song
 }
 
 const Form = ({ song }: FormPropsType) => {
     const isCreateMode = !!!song
     const isBackstage = checkBackstageRole()
-    const { eventId, songId } = useLocalSearchParams()
-    const isUserBackstage = checkBackstageRole()
-    const [showDropdown, setShowDropdown] = useState(false)
-    const router = useRouter();
     const {
         control,
         setValue,
@@ -44,7 +26,7 @@ const Form = ({ song }: FormPropsType) => {
         deleteSong
     } = useSong(song)
     const [show, setShow] = useState(false)
-    const openPicker = useCallback(
+    const openSongKeyPicker = useCallback(
         () => {
             Keyboard.dismiss()
             setShow(true)
@@ -52,7 +34,7 @@ const Form = ({ song }: FormPropsType) => {
         [show]
     )
 
-    const hidePicker = useCallback(
+    const hideSongKeyPicker = useCallback(
         (item: any) => {
             setShow(false)
             setValue('songKey', item)
@@ -71,17 +53,14 @@ const Form = ({ song }: FormPropsType) => {
                             control={control}
                             name='songName'
                             rules={{ required: 'กรุณากรอกชื่อเพลง' }}
-                            style={{
-                                minWidth: 170
-                            }}
-
+                            style={{ minWidth: 170 }}
                         />
 
                         <Controller
                             control={control}
                             name='songKey'
                             rules={{ required: 'กรุณากรอก key เพลง' }}
-                            render={({ field: { onBlur, onChange, value } }) => (
+                            render={({ field: { onChange, value } }) => (
                                 <View>
                                     <TextInput
                                         label={'key'}
@@ -91,7 +70,7 @@ const Form = ({ song }: FormPropsType) => {
                                         style={{
                                             width: 180
                                         }}
-                                        right={<RnTextInput.Icon onPress={openPicker} icon='chevron-down' size={20}
+                                        right={<RnTextInput.Icon onPress={openSongKeyPicker} icon='chevron-down' size={20}
                                         />
                                         }
                                     />
@@ -123,7 +102,7 @@ const Form = ({ song }: FormPropsType) => {
                                 {['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].map((item) => (
                                     <TouchableOpacity
                                         key={item}
-                                        onPress={() => hidePicker(item)}>
+                                        onPress={() => hideSongKeyPicker(item)}>
                                         <Text style={{ padding: 8 }}>
                                             {item}
                                         </Text>

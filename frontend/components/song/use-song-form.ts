@@ -3,28 +3,11 @@ import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { useRouter } from 'expo-router'
-import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
-import { create } from 'react-test-renderer'
-import { createSongService, deleteSongService, updateSongService } from '@/services/song'
+import { createSongService, deleteSongService, Song, updateSongService } from '@/services/song'
 
-type FormValues = {
-    songId: string,
-    songName: string,
-    songDescription: string,
-    songOrder: string,
-    songKey: string,
-    songReference: string,
-    totalVocalist: string,
-    totalGuitarist: string,
-    totalDrummer: string,
-    totalBassist: string,
-    totalKeyboardist: string,
-    totalExtra: string,
-    totalPercussionist: string
-}
+type SongForm = Omit<Song, 'songId'>
 
-const useSong = (song?: FormValues) => {
-    const axios = useAxiosWithAuth()
+const useSong = (song?: Song) => {
     const queryClient = useQueryClient()
     const { eventId } = useLocalSearchParams()
     const router = useRouter()
@@ -34,7 +17,7 @@ const useSong = (song?: FormValues) => {
         setValue,
         watch,
         formState: { errors }
-    } = useForm<FormValues>({
+    } = useForm<SongForm>({
         defaultValues: {
             songName: song?.songName || '',
             songKey: song?.songKey || 'C',
@@ -51,7 +34,7 @@ const useSong = (song?: FormValues) => {
     })
 
     const { mutate: createSong } = useMutation({
-        mutationFn: async (data: FormValues) => {
+        mutationFn: async (data: SongForm) => {
             try {
                 await createSongService(data, eventId as string)
                 Alert.alert('สำเร็จ', 'สร้างเพลงสำเร็จ', [
@@ -68,7 +51,7 @@ const useSong = (song?: FormValues) => {
 
     const { mutate: updateSong } = useMutation({
 
-        mutationFn: async (data: FormValues ) => {
+        mutationFn: async (data: SongForm ) => {
             try {
                 await updateSongService(data, song?.songId as string, eventId as string)
                 Alert.alert('สำเร็จ', 'อัปเดตเพลงสำเร็จ', [

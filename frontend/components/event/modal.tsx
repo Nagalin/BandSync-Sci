@@ -8,27 +8,28 @@ import CloseButton from '@/assets/icons/close-square'
 import { checkBackstageRole } from '@/utils/check-user-role'
 
 const Modal = () => {
-    const isUserBackstage = checkBackstageRole()
+    const isBackstage = checkBackstageRole()
     const theme = useAppTheme()
-    const [visible, setVisible] = useState(false)
-    const showModal = () => setVisible(true)
+    const [isModalVisible, setIsModalVisible] = useState(false)
+    const showModal = () => setIsModalVisible(true)
+
     const confirmCloseModal = () => {
         Alert.alert('คำเตือน', 'คุณต้องการยกเลิกการสร้าง event หรือไม่', [
             {
                 text: 'Cancel',
                 style: 'cancel',
             },
-            { text: 'OK', onPress: () => setVisible(false) }
+            { text: 'OK', onPress: () => setIsModalVisible(false) }
         ])
     }
-    const closeModalImmediately = () => setVisible(false)
+    const closeModalImmediately = () => setIsModalVisible(false)
 
     return (
         <React.Fragment>
             <Portal>
                 <RnModal
                     dismissable={false}
-                    visible={visible}
+                    visible={isModalVisible}
                     onDismiss={confirmCloseModal}
                     contentContainerStyle={{
                         backgroundColor: 'white',
@@ -56,41 +57,42 @@ const Modal = () => {
                 </RnModal>
             </Portal>
 
-            {isUserBackstage ?
-                (<Button
-                    style={{
-                        flex: 1,
-                        position: 'absolute',
-                        bottom: 10,
-                        right: 5,
-                        alignItems: 'center',
-                        backgroundColor: theme.colors.mainButton,
-                        borderRadius: 30,
-                        height: 60,
-                        width: 40,
-                    }}
-                    onPress={showModal}
-                >
-                    <View
+            {isBackstage ?
+                (
+                    <Button
                         style={{
-                            justifyContent: 'center',
-                            height: '100%',
-                        }}>
-
-
-                        <Text
+                            flex: 1,
+                            position: 'absolute',
+                            bottom: 10,
+                            right: 5,
+                            alignItems: 'center',
+                            backgroundColor: theme.colors.mainButton,
+                            borderRadius: 30,
+                            height: 60,
+                            width: 40,
+                        }}
+                        onPress={showModal}
+                    >
+                        <View
                             style={{
-                                fontSize: 40,
-                                lineHeight: 40,
-                                textAlignVertical: 'center',
+                                justifyContent: 'center',
                                 height: '100%',
                             }}>
-                            +
-                        </Text>
-                    </View>
-                </Button>) :
-                (null)
 
+
+                            <Text
+                                style={{
+                                    fontSize: 40,
+                                    lineHeight: 40,
+                                    textAlignVertical: 'center',
+                                    height: '100%',
+                                }}>
+                                +
+                            </Text>
+                        </View>
+                    </Button>
+                ) :
+                null
             }
 
 

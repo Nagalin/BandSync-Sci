@@ -1,26 +1,18 @@
-import { useQuery } from '@tanstack/react-query'
-import { useLocalSearchParams, useRouter } from 'expo-router'
 import React from 'react'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Text, View, StyleSheet, FlatList } from 'react-native'
-import useAxiosWithAuth from '@/hooks/use-axios-with-auth';
-import { getSongListService } from '@/services/song';
-
-type APIResponseType = {
-  songId: string
-  songName: string
-  songKey: string
-}
+import { useQuery } from '@tanstack/react-query'
+import { getSongListService, SongList } from '@/services/song'
 
 export default function App() {
-  const axios = useAxiosWithAuth()
   const router = useRouter()
   const { eventId } = useLocalSearchParams()
-  const { data: songs = [], isFetching } = useQuery({
+  const { data: songs = [] } = useQuery({
     queryKey: ['songs'],
     queryFn: async () => await getSongListService(eventId as string),
   })
 
-  const renderItem = ({ item }: { item: APIResponseType }) => (
+  const renderItem = ({ item }: { item: SongList }) => (
     <View style={styles.rowItem} >
       <Text
         onPress={() => router.push({
@@ -48,8 +40,8 @@ export default function App() {
 const styles = StyleSheet.create({
   rowItem: {
     height: 100,
-    width: '90%', 
-    alignSelf: 'center', 
+    width: '90%',
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'blue',

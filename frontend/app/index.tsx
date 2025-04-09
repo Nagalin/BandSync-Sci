@@ -5,7 +5,7 @@ import { useSSO, useAuth } from '@clerk/clerk-expo'
 import { View, Button, Alert } from 'react-native'
 import { useRootNavigationState, useRouter } from 'expo-router'
 import * as SecureStore from 'expo-secure-store';
-import useAxiosWithAuth from '@/hooks/use-axios-with-auth'
+import axios from '@/libs/axios'
 
 async function storeRoles(user: any) {
   try {
@@ -30,7 +30,6 @@ export const useWarmUpBrowser = () => {
 WebBrowser.maybeCompleteAuthSession()
 
 export default function Page() {
-  const axios = useAxiosWithAuth()
   const { getToken, isSignedIn, signOut } = useAuth()
   const router = useRouter()
   const { startSSOFlow } = useSSO()

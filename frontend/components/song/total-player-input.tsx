@@ -12,11 +12,12 @@ type TotalPlayerInputPropsType<T extends FieldValues> = {
   control: Control<T>
   isCreateMode: boolean
   playerType: string
-
   rules: any
 }
 
-const TotalPlayerInput = <T extends FieldValues>({ label, rules, control, name, isCreateMode, playerType }: TotalPlayerInputPropsType<T>) => {
+const TotalPlayerInput = <T extends FieldValues>({
+  label, rules, control, name, isCreateMode, playerType
+}: TotalPlayerInputPropsType<T>) => {
   const isBackstage = checkBackstageRole()
   const router = useRouter()
   const {
@@ -40,10 +41,10 @@ const TotalPlayerInput = <T extends FieldValues>({ label, rules, control, name, 
         name={name}
         defaultValue={0}
       />
-      {isCreateMode ? null : 
-      <Button onPress={() => router.push(`/event/${eventId}/song/${songId}/${playerType}`)}>
-        ดูข้อมูล
-      </Button>}
+      {isCreateMode ? null :
+        <Button onPress={() => router.push(`/event/${eventId}/song/${songId}/${playerType}`)}>
+          ดูข้อมูล
+        </Button>}
 
     </View>
   )

@@ -9,23 +9,15 @@ import Text from '@/components/ui/text'
 import FormController from '@/components/ui/form-controller'
 import useEventForm from '@/components/event/use-event-form'
 import { checkBackstageRole } from '@/utils/check-user-role'
+import { Event } from '@/services/event'
 
 type FormPropsType = {
     closeModalImmediately?: () => void
-    event?: {
-        eventId: string
-        eventName: string
-        eventDate: Date
-        startTime: Date
-        endTime: Date
-        dressCode: string
-        additionalDetails: string
-    }
+    event?: Event
 }
 
 const Form = ({ closeModalImmediately, event }: FormPropsType) => {
-    const isUserBackstage = checkBackstageRole()
-    const editable = isUserBackstage
+    const isBackstage = checkBackstageRole()
     const [showEventDate, setShowEventDate] = useState(false)
     const [showStartTime, setShowStartTime] = useState(false)
     const [showEndTime, setShowEndTime] = useState(false)
@@ -41,7 +33,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
         <View style={{ gap: 20, padding: 10 }}>
 
             <Text style={{ fontSize: 30 }}>
-                {event?.eventName ? '' : 'สร้าง Event ใหม่'}
+                {event?.eventName ? null : 'สร้าง Event ใหม่'}
             </Text>
 
             {/* Event Name */}
@@ -50,7 +42,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                 control={control}
                 label='ชื่อ Event'
                 rules={{ required: 'กรุณากรอกชื่อ event' }}
-                editable={editable}
+                editable={isBackstage}
             />
 
             {/* Event Date Picker */}
@@ -77,7 +69,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                     value={watch('eventDate') || new Date()}
                     mode='date'
                     display='default'
-                    onChange={(event, selectedDate) => {
+                    onChange={(_event, selectedDate) => {
                         setShowEventDate(false)
                         if (selectedDate) setValue('eventDate', selectedDate)
                     }}
@@ -113,7 +105,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                         value={watch('startTime') || new Date()}
                         mode='time'
                         display='default'
-                        onChange={(event, selectedTime) => {
+                        onChange={(_event, selectedTime) => {
                             setShowStartTime(false)
                             if (selectedTime) setValue('startTime', selectedTime)
                         }}
@@ -148,7 +140,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                         value={watch('endTime') || new Date()}
                         mode='time'
                         display='default'
-                        onChange={(event, selectedTime) => {
+                        onChange={(_event, selectedTime) => {
                             setShowEndTime(false)
                             if (selectedTime) setValue('endTime', selectedTime)
                         }}
@@ -162,7 +154,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                 control={control}
                 label='Dresscode'
                 rules={{ required: 'กรุณากรอกชื่อ dresscode' }}
-                editable={editable}
+                editable={isBackstage}
             />
 
 
@@ -171,7 +163,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                 name='additionalDetails'
                 control={control}
                 label='รายละเอียดเพิ่มเติม (optional)'
-                editable={editable}
+                editable={isBackstage}
             />
 
             {/* Submit Button */}
@@ -183,22 +175,24 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
             }}
             >
 
-                {isUserBackstage ? (
-                    <>
+                {isBackstage ?
+                    (
+                        <>
 
-                        <Button onPress={onSubmit} style={{ width: '90%' }}>
-                            {event ? 'อัปเดต' : 'สร้าง'}
-                        </Button>
-                        {event &&
-                            <Button
-                                style={{ width: '90%' }}
-                                variant='danger'
-                                onPress={() => deleteEvent()}>
-                                ลบ Event
-                            </Button>}
-                    </>
+                            <Button onPress={onSubmit} style={{ width: '90%' }}>
+                                {event ? 'อัปเดต' : 'สร้าง'}
+                            </Button>
+                            {event &&
+                                <Button
+                                    style={{ width: '90%' }}
+                                    variant='danger'
+                                    onPress={() => deleteEvent()}>
+                                    ลบ Event
+                                </Button>}
+                        </>
 
-                ) : null}
+                    ) : null
+                }
 
             </View>
         </View>

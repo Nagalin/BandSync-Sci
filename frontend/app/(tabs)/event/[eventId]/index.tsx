@@ -13,7 +13,7 @@ import { getEventInfoService } from '@/services/event'
 
 const Index = () => {
     const { eventId } = useLocalSearchParams()
-    const isUserBackstage = checkBackstageRole();
+    const isBackstage = checkBackstageRole();
     const { data: event, isFetching } = useQuery({
         queryKey: ['event-detail'],
         queryFn: async () => await getEventInfoService(eventId as string)
@@ -48,10 +48,12 @@ const Index = () => {
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                {isUserBackstage ? (
+                {isBackstage ?
+                    (
 
-                    <Button style={{ width: '90%' }}>เริ่ม Event </Button>
-                ) : null}
+                        <Button style={{ width: '90%' }}>เริ่ม Event </Button>
+                    ) : null
+                }
             </View>
 
             <Link
