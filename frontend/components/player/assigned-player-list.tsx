@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import Text from '../ui/text'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { Checkbox } from 'react-native-paper'
 import Button from '../ui/button'
 import axios from '@/libs/axios'
+import useUnassignPlayer from './use-unassign-player'
 
 export type ApiResponse = {
     songId:               string;
@@ -43,23 +44,18 @@ type User = {
 }
 
 const AssignedPlayerList = () => {
-    const queryClient = useQueryClient()
     const { songId, playerType } = useLocalSearchParams()
-    const [selectedUsers, setSelectedUsers] = useState<Record<string, boolean>>({})
+    const {
+        selectedUsers,
+        setSelectedUsers,
+        handleToggle,
+        unassignedPlayer
+    } = useUnassignPlayer()
 
     const { data: playersList, isFetching } = useQuery<ApiResponse[]>({
         queryKey: ['assignedPlayerList'],
         queryFn: async () => (await axios.get(`songs/${songId}/player/assigned/${playerType}`)).data
     })
-
-    const unassignedPlayer = async () => {
-        await axios.post(`songs/${songId}/player/unassign`, {
-            songId: songId,
-            playerId: Object.keys(selectedUsers).filter(userId => !selectedUsers[userId])
-        })
-        queryClient.invalidateQueries({ queryKey: ['assignedPlayerList'] })
-        queryClient.invalidateQueries({ queryKey: ['unassignedPlayerList'] })
-    }
 
     useEffect(() => {
         if (playersList && playersList[0]?.users) {
@@ -71,16 +67,10 @@ const AssignedPlayerList = () => {
         }
     }, [playersList]);
 
-    const handleToggle = (userId: string) => {
-        setSelectedUsers(prev => ({
-            ...prev,
-            [userId]: !prev[userId]
-        }))
-    }
+    
 
     if (isFetching) return null
 
-    console.log(playersList)
 
     return (
         <View style={{ padding: 10 }}>
@@ -107,7 +97,7 @@ const AssignedPlayerList = () => {
                         />
                     ))}
 
-                    <Button onPress={() => unassignedPlayer()}>
+                    <Button onPress={() => unassignedPlayer(songId as string)}>
                         Confirm
                     </Button>
                 </>

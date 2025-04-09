@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 import Text from '../ui/text'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useLocalSearchParams } from 'expo-router'
 import { Checkbox } from 'react-native-paper'
 import Button from '../ui/button'
+import useAssignPlayer from './use-assign-player'
+import { useQuery } from '@tanstack/react-query'
+import { useLocalSearchParams } from 'expo-router'
 import axios from '@/libs/axios'
 
 export type ApiResponse = {
@@ -18,43 +19,20 @@ export type ApiResponse = {
 }
 
 const AssignedPlayerList = () => {
-    const queryClient = useQueryClient()
     const { songId, playerType } = useLocalSearchParams()
-    const [selectedUsers, setSelectedUsers] = useState<Record<string, boolean>>({})
-    
-    const handleToggle = (userId: string) => {
-        setSelectedUsers(prev => ({
-            ...prev,
-            [userId]: !prev[userId]
-        }))
-    }
-
-    const assignedPlayer = async () => {
-        try {
-            const res = await axios.post(`songs/${songId}/player/assign`, {
-                songId: songId,
-                playerId: Object.keys(selectedUsers).filter(userId => selectedUsers[userId]),
-                playerType: playerType
-            })
-            queryClient.invalidateQueries({ queryKey: ['assignedPlayerList'] })
-            queryClient.invalidateQueries({ queryKey: ['unassignedPlayerList'] })
-            
-        } catch (error) {
-            console.error("Error assigning players: ",error)
-            alert('Cannot add more players')
-            
-        }
-        
-    }
-
     const { data: playersList, isFetching } = useQuery<ApiResponse[]>({
         queryKey: ['unassignedPlayerList'],
         queryFn: async () => (await axios.get(`songs/${songId}/player/unassigned/${playerType}`)).data
     })
+    const {
+        handleToggle,
+        assignedPlayer,
+        selectedUsers,
+    } = useAssignPlayer()
+    
 
     if (isFetching) return null
 
-    console.log('playersList unassigned', playersList)
     
     return (
         <View>
@@ -71,7 +49,7 @@ const AssignedPlayerList = () => {
                             onPress={() => handleToggle(curr.userId)}
                         />
                     ))}
-                    <Button onPress={() => assignedPlayer()}>
+                    <Button onPress={() => assignedPlayer(songId as string, playerType as string)}>
                         Confirm
                     </Button>
                 </>
