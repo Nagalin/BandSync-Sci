@@ -18,7 +18,6 @@ const Index = () => {
     const { data: event, isFetching } = useQuery({
         queryKey: ['event-detail', eventId],
         queryFn: async () => {
-            console.log('running query')
             return await getEventInfoService(eventId)
         },
         refetchOnMount: true,

@@ -1,12 +1,14 @@
 import React from 'react'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import {  useRouter } from 'expo-router'
 import { Text, View, StyleSheet, FlatList } from 'react-native'
 import { useQuery } from '@tanstack/react-query'
 import { getSongListService, SongList } from '@/services/song'
+import { useEventDataStore } from '@/zustand/store'
 
 export default function App() {
   const router = useRouter()
-  const { eventId } = useLocalSearchParams()
+  const { setSongId } = useEventDataStore()
+  const { eventId } = useEventDataStore()
   const { data: songs = [] } = useQuery({
     queryKey: ['songs'],
     queryFn: async () => await getSongListService(eventId as string),
@@ -15,13 +17,13 @@ export default function App() {
   const renderItem = ({ item }: { item: SongList }) => (
     <View style={styles.rowItem} >
       <Text
-        onPress={() => router.push({
-          pathname: '/event/[eventId]/song/[songId]',
-          params: {
-            eventId: eventId as string,
-            songId: item.songId
-          }
-        })}
+        onPress={() => {
+          setSongId(item.songId)
+          router.navigate({
+            pathname: '/song/detail',
+            
+          })}
+        }
         style={styles.text}>
         {`${item.songName} (${item.songKey})`}
       </Text>

@@ -22,7 +22,9 @@ export default function RootLayout() {
       <ClerkLoaded>
         <QueryClientProvider client={queryClient}>
           <PaperProvider theme={theme}>
-            <Slot/>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
           </PaperProvider>
         </QueryClientProvider>
       </ClerkLoaded>

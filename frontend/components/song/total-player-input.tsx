@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
 import FormController from '../ui/form-controller'
 import Button from '../ui/button'
 import { Control, FieldValues, Path } from 'react-hook-form'
 import { checkBackstageRole } from '@/utils/check-user-role'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import {  useRouter } from 'expo-router'
+import { useEventDataStore } from '@/zustand/store'
 
 type TotalPlayerInputPropsType<T extends FieldValues> = {
   label: string
@@ -20,11 +21,8 @@ const TotalPlayerInput = <T extends FieldValues>({
 }: TotalPlayerInputPropsType<T>) => {
   const isBackstage = checkBackstageRole()
   const router = useRouter()
-  const {
-    eventId,
-    songId
-  } = useLocalSearchParams()
-
+  const { setPlayerType } = useEventDataStore()
+  
   return (
     <View style={{
       flexDirection: 'row',
@@ -42,7 +40,10 @@ const TotalPlayerInput = <T extends FieldValues>({
         defaultValue={0}
       />
       {isCreateMode ? null :
-        <Button onPress={() => router.push(`/event/${eventId}/song/${songId}/${playerType}`)}>
+        <Button onPress={() => {
+          setPlayerType(playerType)
+          router.navigate('/song/assign-player')}
+          }>
           ดูข้อมูล
         </Button>}
 

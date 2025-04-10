@@ -157,7 +157,7 @@ const Index = () => {
           <Card
             onPress={async () => {
               router.push({
-                pathname: '/deactiave-account',
+                pathname: '/deactivate-account',
               })
             }}
             style={{

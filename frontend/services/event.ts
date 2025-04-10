@@ -19,7 +19,6 @@ export const getEventListService = async () => {
 
 export const getEventInfoService = async (eventId: string) => {
     const response = await axios.get(`/events/${eventId}`)
-    console.log("for debug: ",response.data)
     return response.data as Event
 }
 

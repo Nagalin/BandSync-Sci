@@ -2,11 +2,11 @@ import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import Text from '../ui/text'
 import { useQuery } from '@tanstack/react-query'
-import { useLocalSearchParams } from 'expo-router'
 import { Checkbox } from 'react-native-paper'
 import Button from '../ui/button'
 import axios from '@/libs/axios'
 import useUnassignPlayer from './use-unassign-player'
+import { useEventDataStore } from '@/zustand/store'
 
 export type ApiResponse = {
     songId:               string;
@@ -44,7 +44,7 @@ type User = {
 }
 
 const AssignedPlayerList = () => {
-    const { songId, playerType } = useLocalSearchParams()
+    const { songId, playerType } = useEventDataStore()
     const {
         selectedUsers,
         setSelectedUsers,

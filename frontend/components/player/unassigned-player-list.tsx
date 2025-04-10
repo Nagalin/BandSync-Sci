@@ -5,8 +5,8 @@ import { Checkbox } from 'react-native-paper'
 import Button from '../ui/button'
 import useAssignPlayer from './use-assign-player'
 import { useQuery } from '@tanstack/react-query'
-import { useLocalSearchParams } from 'expo-router'
 import axios from '@/libs/axios'
+import { useEventDataStore } from '@/zustand/store'
 
 export type ApiResponse = {
     discordId: string;
@@ -19,7 +19,7 @@ export type ApiResponse = {
 }
 
 const AssignedPlayerList = () => {
-    const { songId, playerType } = useLocalSearchParams()
+    const { songId, playerType } = useEventDataStore()
     const { data: playersList, isFetching } = useQuery<ApiResponse[]>({
         queryKey: ['unassignedPlayerList'],
         queryFn: async () => (await axios.get(`songs/${songId}/player/unassigned/${playerType}`)).data

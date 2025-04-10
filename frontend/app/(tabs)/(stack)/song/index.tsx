@@ -47,7 +47,7 @@ function Index() {
               height: 60,
               width: 40,
             }}
-            onPress={() => router.navigate('/song-create')}
+            onPress={() => router.navigate('/song/create')}
           >
             <View style={{
               flexDirection: 'row',

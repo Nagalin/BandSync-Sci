@@ -4,12 +4,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { useRouter } from 'expo-router'
 import { createSongService, deleteSongService, Song, updateSongService } from '@/services/song'
-
+import { useEventDataStore } from '@/zustand/store'
 type SongForm = Omit<Song, 'songId'>
 
 const useSong = (song?: Song) => {
     const queryClient = useQueryClient()
-    const { eventId } = useLocalSearchParams()
+    const { eventId } = useEventDataStore()
     const router = useRouter()
     const {
         control,
