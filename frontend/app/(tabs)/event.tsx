@@ -18,7 +18,8 @@ const Index = () => {
     refetch,
   } = useQuery({
     queryKey: ['events'],
-    queryFn: async () => await getEventListService()
+    queryFn: async () => await getEventListService(),
+   
   })
 
   useEffect(() => {

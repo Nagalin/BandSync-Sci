@@ -1,9 +1,9 @@
 import React from 'react'
-import { useLocalSearchParams } from 'expo-router'
 import Form from '@/components/song/form'
 import Background from '@/components/ui/background'
 import { useQuery } from '@tanstack/react-query'
 import { getSongService } from '@/services/song'
+import { useEventDataStore } from '@/zustand/store'
 
 type APIResponse = {
   songId: string
@@ -22,7 +22,7 @@ type APIResponse = {
 }
 
 const SongDetail = () => {
-  const { eventId, songId } = useLocalSearchParams()
+  const { eventId, songId } = useEventDataStore()
   const { data: song, isFetching } = useQuery<APIResponse>({
     queryKey: ['songs', songId],
     queryFn: async () => await getSongService(songId as string, eventId as string)

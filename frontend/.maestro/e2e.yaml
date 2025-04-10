@@ -9,7 +9,9 @@ appId: host.exp.exponent
 - tapOn: "รายละเอียดเพิ่มเติม (optional)"
 - inputText: "Test event description"
 - hideKeyboard
-- tapOn: "สร้าง"
+- tapOn: 
+    text: "สร้าง"
+    retryTapIfNoChange: false
 - assertVisible: "สร้าง Event สำเร็จ"
 - tapOn: "OK"
 - assertVisible: "Test event"
@@ -22,6 +24,7 @@ appId: host.exp.exponent
 - assertVisible: "Test Dresscode"
 
 # Update Event
+- tapOn: "Test event"
 - inputText: " updated"
 - hideKeyboard
 - tapOn: "อัปเดต"

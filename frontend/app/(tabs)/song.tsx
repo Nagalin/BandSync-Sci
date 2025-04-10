@@ -4,10 +4,11 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import SongCard from '@/components/song/card'
 import Text from '@/components/ui/text'
 import Background from '@/components/ui/background'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import Button from '@/components/ui/button'
 import { checkBackstageRole } from '@/utils/check-user-role';
 import * as SecureStore from 'expo-secure-store';
+import { useEventDataStore } from '@/zustand/store'
 
 function Index() {
 
@@ -18,14 +19,9 @@ function Index() {
     }
 
     getArray('user_roles')
-
-
-
   })
 
 
-
-  const { eventId } = useLocalSearchParams()
   const router = useRouter()
   const isUserBackstage = checkBackstageRole()
 
@@ -51,7 +47,7 @@ function Index() {
               height: 60,
               width: 40,
             }}
-            onPress={() => router.navigate(`/event/${eventId}/song/create`)}
+            onPress={() => router.navigate('/song-create')}
           >
             <View style={{
               flexDirection: 'row',

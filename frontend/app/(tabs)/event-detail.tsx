@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { Link, useLocalSearchParams } from 'expo-router'
+import { Link } from 'expo-router'
 import { Skeleton } from 'moti/skeleton'
 import { useQuery } from '@tanstack/react-query'
 import Button from '@/components/ui/button'
@@ -10,13 +10,19 @@ import Form from '@/components/event/form'
 import ListIcon from '@/assets/icons/list'
 import { checkBackstageRole } from '@/utils/check-user-role'
 import { getEventInfoService } from '@/services/event'
+import { useEventDataStore } from '@/zustand/store'
 
 const Index = () => {
-    const { eventId } = useLocalSearchParams()
+    const { eventId } = useEventDataStore()
     const isBackstage = checkBackstageRole();
     const { data: event, isFetching } = useQuery({
-        queryKey: ['event-detail'],
-        queryFn: async () => await getEventInfoService(eventId as string)
+        queryKey: ['event-detail', eventId],
+        queryFn: async () => {
+            console.log('running query')
+            return await getEventInfoService(eventId)
+        },
+        refetchOnMount: true,
+        refetchOnWindowFocus: true,
     })
 
     if (isFetching) return <DetailLoading />
@@ -57,12 +63,7 @@ const Index = () => {
             </View>
 
             <Link
-                href={{
-                    pathname: '/event/[eventId]/song',
-                    params: {
-                        eventId: eventId as string,
-                    }
-                }}
+                href={{pathname: '/song'}}
                 asChild
                 style={{
                     flexDirection: 'row',
@@ -85,6 +86,8 @@ const Index = () => {
                     </Button>
                 </Pressable>
             </Link>
+
+            
         </Background>
     )
 }
