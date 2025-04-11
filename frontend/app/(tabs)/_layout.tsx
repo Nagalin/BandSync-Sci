@@ -28,6 +28,7 @@ const TabsLayout = () => {
         listeners={{
           tabPress: (e) => {
             e.preventDefault()
+            
             router.dismissAll()
             router.navigate('/event')
           }

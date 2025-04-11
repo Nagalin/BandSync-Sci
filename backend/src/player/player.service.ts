@@ -28,20 +28,68 @@ export class PlayerService {
     async findAssignedPlayer(songId: string, playerType: 
         'guitarist' | 'bassist' | 'drummer' | 'vocalist'  | 'Keyboardist' | 'extra' | 'percussionist'
     ) {
-        return await this.prisma.song.findMany({
+
+        const song = await this.prisma.song.findFirst({
             where: {
-                
-                        songId,
-    
-                
-              
+                songId
+            }
+        })
+
+        const player = await this.prisma.user.findMany({
+            where: {
+                songs: {
+                    some: {
+                        songId
+                    }
+                }
             },
             include: {
-                users: true
+                roles: true
             }
-
-           
         })
+
+        const matchingPlayers = player.filter(user => 
+            user.roles.some(role => role.role === playerType)
+        );
+
+        let totalPlayer, currentPlayer;
+        
+        switch(playerType) {
+            case 'vocalist':
+                totalPlayer = song.totalVocalist;
+                currentPlayer = song.currentVocalList;
+                break;
+            case 'guitarist':
+                totalPlayer = song.totalGuitarist;
+                currentPlayer = song.currentGuitarist;
+                break;
+            case 'drummer':
+                totalPlayer = song.totalDrummer;
+                currentPlayer = song.currentDrummer;
+                break;
+            case 'bassist':
+                totalPlayer = song.totalBassist;
+                currentPlayer = song.currentBassist;
+                break;
+            case 'Keyboardist':
+                totalPlayer = song.totalKeyboardist;
+                currentPlayer = song.currentKeyboardist;
+                break;
+            case 'extra':
+                totalPlayer = song.totalExtra;
+                currentPlayer = song.currentExtra;
+                break;
+            case 'percussionist':
+                totalPlayer = song.totalPercussionist;
+                currentPlayer = song.currentPercussionist;
+                break;
+        }
+
+        return {
+            totalPlayer,
+            currentPlayer,
+            players: matchingPlayers
+        }
     }
 
     async findUnassignedPlayer(songId: string, playerType: 
