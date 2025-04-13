@@ -4,7 +4,7 @@ import { Request } from 'express';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class BackstageGuard implements CanActivate {
     constructor() {}
 
     canActivate(

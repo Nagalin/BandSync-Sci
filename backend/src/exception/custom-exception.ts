@@ -11,3 +11,15 @@ export class ForbiddenException extends HttpException {
         super(message, HttpStatus.FORBIDDEN)
      }
 }
+
+export class NotFoundException extends HttpException {
+    constructor(message: string = 'not found') {
+        super(message, HttpStatus.NOT_FOUND)
+    }
+}
+
+export class ConflictException extends HttpException {
+    constructor(message: string = 'conflict') {
+        super(message, HttpStatus.CONFLICT)
+    }
+}

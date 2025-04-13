@@ -104,7 +104,7 @@ appId: host.exp.exponent
 - assertVisible: "ลบ Event สำเร็จ"
 - tapOn: "OK"
 - assertVisible: '+'
-- assertNotVisible: "Test event"
+- assertNotVisible: "Test event updated"
 
 
 
