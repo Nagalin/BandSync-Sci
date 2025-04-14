@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { PlayerType } from './dto/player.dto';
 
 @Injectable()
 export class PlayerService {
     constructor(private prisma: PrismaService) { }
 
-    async findAll(songId: string, playerType: 
-        'guitarist' | 'bassist' | 'drummer' | 'vocalist'  | 'Keyboardist' | 'extra' | 'percussionist'
-    ) {
+    async findAll(songId: string, playerType: PlayerType) {
         return await this.prisma.user.findMany({
             where: {
                 songs: {
@@ -15,7 +14,6 @@ export class PlayerService {
                         songId
                     }
                 },
-
                 roles: {
                     some: {
                         role: playerType
@@ -25,10 +23,7 @@ export class PlayerService {
         })
     }
 
-    async findAssignedPlayer(songId: string, playerType: 
-        'guitarist' | 'bassist' | 'drummer' | 'vocalist'  | 'Keyboardist' | 'extra' | 'percussionist'
-    ) {
-
+    async findAssignedPlayer(songId: string, playerType: PlayerType) {
         const song = await this.prisma.song.findFirst({
             where: {
                 songId
@@ -55,31 +50,31 @@ export class PlayerService {
         let totalPlayer, currentPlayer;
         
         switch(playerType) {
-            case 'vocalist':
+            case PlayerType.VOCALIST:
                 totalPlayer = song.totalVocalist;
                 currentPlayer = song.currentVocalList;
                 break;
-            case 'guitarist':
+            case PlayerType.GUITARIST:
                 totalPlayer = song.totalGuitarist;
                 currentPlayer = song.currentGuitarist;
                 break;
-            case 'drummer':
+            case PlayerType.DRUMMER:
                 totalPlayer = song.totalDrummer;
                 currentPlayer = song.currentDrummer;
                 break;
-            case 'bassist':
+            case PlayerType.BASSIST:
                 totalPlayer = song.totalBassist;
                 currentPlayer = song.currentBassist;
                 break;
-            case 'Keyboardist':
+            case PlayerType.KEYBOARDIST:
                 totalPlayer = song.totalKeyboardist;
                 currentPlayer = song.currentKeyboardist;
                 break;
-            case 'extra':
+            case PlayerType.EXTRA:
                 totalPlayer = song.totalExtra;
                 currentPlayer = song.currentExtra;
                 break;
-            case 'percussionist':
+            case PlayerType.PERCUSSIONIST:
                 totalPlayer = song.totalPercussionist;
                 currentPlayer = song.currentPercussionist;
                 break;
@@ -92,9 +87,7 @@ export class PlayerService {
         }
     }
 
-    async findUnassignedPlayer(songId: string, playerType: 
-        'guitarist' | 'bassist' | 'drummer' | 'vocalist'  | 'Keyboardist' | 'extra' | 'percussionist'
-    ) {
+    async findUnassignedPlayer(songId: string, playerType: PlayerType) {
         return await this.prisma.user.findMany({
             where: {
                 songs: {
@@ -102,7 +95,6 @@ export class PlayerService {
                         songId
                     }
                 },
-
                 roles: {
                     every: {
                         role: playerType
@@ -115,18 +107,14 @@ export class PlayerService {
         })
     }
 
-    async assignPlayer(songId: string, playerIds: string[], playerType: 'guitarist' | 'bassist' | 'drummer' | 'vocalist'  | 'Keyboardist' | 'extra' | 'percussionist') {
-        // Get the current song data to check player limits
+    async assignPlayer(songId: string, playerIds: string[], playerType: PlayerType) {
         const song = await this.prisma.song.findUnique({
             where: { songId }
         });
 
         if (!song) return;
 
-       
-
         for (const userId of playerIds) {
-            // Get user with their roles
             const user = await this.prisma.user.findFirst({
                 where: { userId },
                 include: { roles: true }
@@ -134,79 +122,69 @@ export class PlayerService {
 
             if (!user || !user.roles.length) continue;
 
-            // Get the first role of the user
             const playerRole = user.roles[0].role
 
-            // Update song with user connection and increment the appropriate counter
             await this.prisma.song.update({
                 where: { songId },
                 data: {
                     users: {
                         connect: { userId }
                     },
-                    ...(playerRole === 'vocalist' && { currentVocalList: { increment: 1 } }),
-                    ...(playerRole === 'guitarist' && { currentGuitarist: { increment: 1 } }),
-                    ...(playerRole === 'drummer' && { currentDrummer: { increment: 1 } }),
-                    ...(playerRole === 'bassist' && { currentBassist: { increment: 1 } }),
-                    ...(playerRole === 'Keyboardist' && { currentKeyboardist: { increment: 1 } }),
-                    ...(playerRole === 'extra' && { currentExtra: { increment: 1 } }),
-                    ...(playerRole === 'percussionist' && { currentPercussionist: { increment: 1 } })
+                    ...(playerRole === PlayerType.VOCALIST && { currentVocalList: { increment: 1 } }),
+                    ...(playerRole === PlayerType.GUITARIST && { currentGuitarist: { increment: 1 } }),
+                    ...(playerRole === PlayerType.DRUMMER && { currentDrummer: { increment: 1 } }),
+                    ...(playerRole === PlayerType.BASSIST && { currentBassist: { increment: 1 } }),
+                    ...(playerRole === PlayerType.KEYBOARDIST && { currentKeyboardist: { increment: 1 } }),
+                    ...(playerRole === PlayerType.EXTRA && { currentExtra: { increment: 1 } }),
+                    ...(playerRole === PlayerType.PERCUSSIONIST && { currentPercussionist: { increment: 1 } })
                 },
             });
         }
     }
 
-     async canAddMorePlayers (songId: string, type: string) {
-        console.log(type)
+    async canAddMorePlayers(songId: string, type: PlayerType) {
         const song = await this.prisma.song.findUnique({
             where: { songId }
         });
-        const lowerType = type
-        switch(lowerType) {
-            case 'vocalist': return song.currentVocalList < song.totalVocalist;
-            case 'guitarist': return song.currentGuitarist < song.totalGuitarist;
-            case 'drummer': return song.currentDrummer < song.totalDrummer;
-            case 'bassist': return song.currentBassist < song.totalBassist;
-            case 'keyboardist': return song.currentKeyboardist < song.totalKeyboardist;
-            case 'extra': return song.currentExtra < song.totalExtra;
-            case 'percussionist': return song.currentPercussionist < song.totalPercussionist;
+        
+        switch(type) {
+            case PlayerType.VOCALIST: return song.currentVocalList < song.totalVocalist;
+            case PlayerType.GUITARIST: return song.currentGuitarist < song.totalGuitarist;
+            case PlayerType.DRUMMER: return song.currentDrummer < song.totalDrummer;
+            case PlayerType.BASSIST: return song.currentBassist < song.totalBassist;
+            case PlayerType.KEYBOARDIST: return song.currentKeyboardist < song.totalKeyboardist;
+            case PlayerType.EXTRA: return song.currentExtra < song.totalExtra;
+            case PlayerType.PERCUSSIONIST: return song.currentPercussionist < song.totalPercussionist;
             default: return false;
-        }
-    };
-
-   
-
-    async unassignPlayer(songId: string, playerIds: string[]) {
-       
-        for (const userId of playerIds) {
-          // Get user with their roles to determine what counter to decrement
-          const user = await this.prisma.user.findFirst({
-            where: { userId },
-            include: { roles: true }
-          });
-
-          if (!user || !user.roles.length) continue;
-
-          // Get the first role of the user
-          const playerRole = user.roles[0].role;
-
-          // Update song by disconnecting user and decrementing the appropriate counter
-          await this.prisma.song.update({
-            where: { songId },
-            data: {
-              users: {
-                disconnect: { userId }
-              },
-              ...(playerRole === 'vocalist' && { currentVocalList: { decrement: 1 } }),
-              ...(playerRole === 'guitarist' && { currentGuitarist: { decrement: 1 } }),
-              ...(playerRole === 'drummer' && { currentDrummer: { decrement: 1 } }),
-              ...(playerRole === 'bassist' && { currentBassist: { decrement: 1 } }),
-              ...(playerRole === 'Keyboardist' && { currentKeyboardist: { decrement: 1 } }),
-              ...(playerRole === 'extra' && { currentExtra: { decrement: 1 } }),
-              ...(playerRole === 'percussionist' && { currentPercussionist: { decrement: 1 } })
-            },
-          });
         }
     }
 
+    async unassignPlayer(songId: string, playerIds: string[]) {
+        for (const userId of playerIds) {
+            const user = await this.prisma.user.findFirst({
+                where: { userId },
+                include: { roles: true }
+            });
+
+            if (!user || !user.roles.length) continue;
+
+            const playerRole = user.roles[0].role;
+
+            await this.prisma.song.update({
+                where: { songId },
+                data: {
+                    users: {
+                        disconnect: { userId }
+                    },
+                    ...(playerRole === PlayerType.VOCALIST && { currentVocalList: { decrement: 1 } }),
+                    ...(playerRole === PlayerType.GUITARIST && { currentGuitarist: { decrement: 1 } }),
+                    ...(playerRole === PlayerType.DRUMMER && { currentDrummer: { decrement: 1 } }),
+                    ...(playerRole === PlayerType.BASSIST && { currentBassist: { decrement: 1 } }),
+                    ...(playerRole === PlayerType.KEYBOARDIST && { currentKeyboardist: { decrement: 1 } }),
+                    ...(playerRole === PlayerType.EXTRA && { currentExtra: { decrement: 1 } }),
+                    ...(playerRole === PlayerType.PERCUSSIONIST && { currentPercussionist: { decrement: 1 } })
+                },
+            });
+        }
+    }
 }

@@ -1,10 +1,10 @@
 import { Alert } from 'react-native'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useLocalSearchParams } from 'expo-router'
 import { useRouter } from 'expo-router'
 import { createSongService, deleteSongService, Song, updateSongService } from '@/services/song'
 import { useEventDataStore } from '@/zustand/store'
+
 type SongForm = Omit<Song, 'songId'>
 
 const useSong = (song?: Song) => {
@@ -57,6 +57,7 @@ const useSong = (song?: Song) => {
                 Alert.alert('สำเร็จ', 'อัปเดตเพลงสำเร็จ', [
                     { text: 'OK' },
                 ])
+                queryClient.invalidateQueries({queryKey: ['songs']})
             } catch (error: any) {
                 console.error(error.response?.data?.message)
             }

@@ -1,39 +1,32 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
-import { Prisma } from '@prisma/client';
-import { CreateSongDto } from './dto/create-song.dto';
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from 'src/prisma.service'
+import { SongDto } from 'src/song/dto/song.dto'
 
 @Injectable()
 export class SongService {
   constructor(private prisma: PrismaService) { }
 
-  // ดึงข้อมูลเพลงทั้งหมด
   async findAll(eventId: string) {
-    // ค้นหาข้อมูลทั้งหมดจากฐานข้อมูล
     return await this.prisma.song.findMany({
       select: {
         songId: true,
         songName: true,
         songKey: true,
       },
-      where: {
-        eventId
-      }
-    });
+      where: { eventId }
+    })
   }
 
-
-  // ดึงข้อมูลเพลงตาม id
   async findOne(songId: string, eventId: string) {
     const song = await this.prisma.song.findUnique({
       where: { songId, eventId }
     })
 
-    return song? {
+    return song ? {
       ...song,
       totalVocalist: String(song.totalVocalist),
       totalGuitarist: String(song.totalGuitarist),
-      totalDrummer: String(song.totalDrummer), 
+      totalDrummer: String(song.totalDrummer),
       totalKeyboardist: String(song.totalKeyboardist),
       totalExtra: String(song.totalExtra),
       totalPercussionist: String(song.totalPercussionist),
@@ -41,26 +34,22 @@ export class SongService {
     } : null
   }
 
-  // ค้นหาเพลงตามชื่อเพลง
   async findBySongName(songName: string, eventId: string) {
-    console.log(songName, eventId)
     return await this.prisma.song.findFirst({
       where: {
         songName,
         eventId
-      },
-    });
+      }
+    })
   }
 
-  // ค้นหาเพลงทั้งหมดที่เชื่อมโยงกับ eventId
   async findByEventId(eventId: string) {
     return this.prisma.song.findMany({
-      where: { eventId }, // ค้นหาเพลงที่เชื่อมโยงกับ eventId
-    });
+      where: { eventId }
+    })
   }
 
-  // สร้างเพลงใหม่และเชื่อมโยงกับ Event
-  async create(createSongDto: CreateSongDto, eventId: string) {
+  async create(createSongDto: SongDto, eventId: string) {
     const {
       totalBassist,
       totalDrummer,
@@ -69,9 +58,8 @@ export class SongService {
       totalKeyboardist,
       totalPercussionist,
       totalVocalist,
-    } = createSongDto;
+    } = createSongDto
 
-    // Convert the string fields to numbers
     const convertedData = {
       ...createSongDto,
       totalBassist: Number(totalBassist),
@@ -81,36 +69,32 @@ export class SongService {
       totalKeyboardist: Number(totalKeyboardist),
       totalPercussionist: Number(totalPercussionist),
       totalVocalist: Number(totalVocalist),
-    };
+    }
 
-    // ค้นหา songOrder ที่สูงที่สุดในระบบ
     const lastSong = await this.prisma.song.findFirst({
       orderBy: {
-        songOrder: 'desc', // เรียงจาก songOrder ที่มากที่สุด
+        songOrder: 'desc'
       },
-    });
+    })
 
-    const nextSongOrder = lastSong ? lastSong.songOrder + 1 : 1;
+    const nextSongOrder = lastSong ? lastSong.songOrder + 1 : 1
 
-    // สร้างเพลงใหม่
     const newSong = await this.prisma.song.create({
       data: {
-        ...convertedData,  // Use the converted data here
-        songOrder: nextSongOrder,  // ตั้งค่า songOrder ใหม่
+        ...convertedData,
+        songOrder: nextSongOrder,
         event: {
           connect: {
-            eventId: eventId,  // เชื่อมโยงเพลงกับ Event ด้วย eventId
-          },
-        },
-      },
-    });
+            eventId: eventId,
+          }
+        }
+      }
+    })
 
-    return newSong;
+    return newSong
   }
 
-  // อัพเดตเพลง
-  async update(songId: string, songdata: CreateSongDto) {
-    console.log("for debug: ",songId)
+  async update(songId: string, songdata: SongDto) {
     const {
       totalBassist,
       totalDrummer,
@@ -118,8 +102,8 @@ export class SongService {
       totalGuitarist,
       totalKeyboardist,
       totalPercussionist,
-      totalVocalist,
-    } = songdata;
+      totalVocalist
+    } = songdata
 
     const convertedData = {
       ...songdata,
@@ -129,21 +113,20 @@ export class SongService {
       totalGuitarist: Number(totalGuitarist),
       totalKeyboardist: Number(totalKeyboardist),
       totalPercussionist: Number(totalPercussionist),
-      totalVocalist: Number(totalVocalist),
-    };
+      totalVocalist: Number(totalVocalist)
+    }
     return await this.prisma.song.update({
       where: { songId },
       data: convertedData,
-    });
+    })
   }
 
-  // ลบเพลง
   async remove(songId: string, eventId: string) {
     return await this.prisma.song.delete({
-      where: { songId, eventId },
-    });
+      where: { songId, eventId }
+    })
   }
 
- 
-  
+
+
 }

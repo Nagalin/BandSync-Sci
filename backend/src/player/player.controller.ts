@@ -1,57 +1,60 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
-import { PlayerService } from './player.service';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpException,
+    HttpStatus,
+    Param,
+    Post,
+    UseGuards
+} from '@nestjs/common'
+import { PlayerService } from 'src/player/player.service'
+import { BackstageGuard } from 'src/guard/auth.guard'
+import { PlayerDto, PlayerType } from 'src/player/dto/player.dto'
 
 @Controller('songs/:songId/player')
 export class PlayerController {
-    constructor(private readonly playerService: PlayerService) {}
+    constructor(private readonly playerService: PlayerService) { }
 
     @Get(':playerType')
     async findAll(
-        @Param('songId') songId: string, @Param('playerType') playerType:  'guitarist' | 'bassist' | 'drummer' | 'vocalist'  | 'Keyboardist' | 'extra' | 'percussionist'
+        @Param('songId') songId: string,
+        @Param('playerType') playerType: PlayerType
     ) {
-        const players = await this.playerService.findAll(songId, playerType);
-        return players
-      
+        return await this.playerService.findAll(songId, playerType)
     }
 
     @Get('assigned/:playerType')
-    async dd(
-        @Param('songId') songId: string, @Param('playerType') playerType:  'guitarist' | 'bassist' | 'drummer' | 'vocalist'  | 'Keyboardist' | 'extra' | 'percussionist'
+    async findAssignedPlayer(
+        @Param('songId') songId: string,
+        @Param('playerType') playerType: PlayerType
     ) {
-        const players = await this.playerService.findAssignedPlayer(songId, playerType);
-        return players
-      
+        return await this.playerService.findAssignedPlayer(songId, playerType)
     }
 
     @Get('unassigned/:playerType')
-    async d(
-        @Param('songId') songId: string, @Param('playerType') playerType:  'guitarist' | 'bassist' | 'drummer' | 'vocalist'  | 'Keyboardist' | 'extra' | 'percussionist'
+    async findUnassignedPlayer(
+        @Param('songId') songId: string,
+        @Param('playerType') playerType: PlayerType
     ) {
-        const players = await this.playerService.findUnassignedPlayer(songId, playerType);
-        return players
-      
+        return await this.playerService.findUnassignedPlayer(songId, playerType)
     }
 
     @Post('/assign')
-      // @UseGuards(AuthGuard)
-      async assignPlayer(@Body() body : { songId: string, playerId: string[], playerType: 'guitarist' | 'bassist' | 'drummer' | 'vocalist'  | 'Keyboardist' | 'extra' | 'percussionist' }) {
-        const { songId, playerId, playerType } = body
-        console.log('playerType', playerType)
+    @UseGuards(BackstageGuard)
+    async assignPlayer(@Body() playerDto: PlayerDto) {
+        const { songId, playerId, playerType } = playerDto
 
         const canAddMorePlayers = await this.playerService.canAddMorePlayers(songId, playerType)
-        console.log('canAddMorePlayers', canAddMorePlayers)
         if (!canAddMorePlayers) {
-            throw new HttpException('Cannot add more players', HttpStatus.BAD_REQUEST);
+            throw new HttpException('Cannot add more players', HttpStatus.BAD_REQUEST)
         }
-        const songs = await this.playerService.assignPlayer(songId, playerId, playerType)
-    //   songs.map((song) => console.log(song.users))
-    
-      }
+        await this.playerService.assignPlayer(songId, playerId, playerType)
+    }
 
     @Post('/unassign')
-    async unassignPlayer(@Body() body : { songId: string, playerId: string[] }) {
-        const { songId, playerId } = body
+    async unassignPlayer(@Body() playerDto: PlayerDto) {
+        const { songId, playerId } = playerDto
         const songs = await this.playerService.unassignPlayer(songId, playerId)
     }
-    
 }

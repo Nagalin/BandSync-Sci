@@ -33,7 +33,10 @@ export const createSongService = async (song: Omit<Song, 'songId'>, eventId: str
 }
 
 export const updateSongService = async (song: Omit<Song, 'songId'>, songId: string, eventId: string) => {
-    return await axios.put(`/events/${eventId}/songs/${songId}`, song)
+    return await axios.put(`/events/${eventId}/songs/${songId}`, {
+        ...song,
+        eventId
+    })
 }
 
 export const deleteSongService = async (songId: string, eventId: string) => {

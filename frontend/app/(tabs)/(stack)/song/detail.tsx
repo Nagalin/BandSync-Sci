@@ -24,7 +24,7 @@ type APIResponse = {
 const SongDetail = () => {
   const { eventId, songId } = useEventDataStore()
   const { data: song, isFetching } = useQuery<APIResponse>({
-    queryKey: ['songs', songId],
+    queryKey: ['song', songId],
     queryFn: async () => await getSongService(songId as string, eventId as string)
   })
 

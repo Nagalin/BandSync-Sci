@@ -6,8 +6,7 @@ import { AuthService } from 'src/auth/auth.service'
 export class AuthMiddleware implements NestMiddleware {
     constructor(private readonly authService: AuthService) { }
 
-    async use(req: Request, res: Response, next: NextFunction) {
-        try {
+    async use(req: Request, _res: Response, next: NextFunction) {
             const authHeader = req.headers.authorization
             if(!authHeader) throw new UnauthorizedException('Missing authorzation header')
                 
@@ -18,10 +17,7 @@ export class AuthMiddleware implements NestMiddleware {
             if (!existingUser) throw new UnauthorizedException('Your account does not have access to this application')
             req.user = existingUser
             next()
-        } catch (error) {
-            console.error(error)
-            next(error)
-        }
+        
     }
 }
 

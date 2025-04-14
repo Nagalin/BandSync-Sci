@@ -1,4 +1,4 @@
-export class CreateSongDto {
+export class SongDto {
   songName: string;
   songDescription: string;
   songKey: string;
