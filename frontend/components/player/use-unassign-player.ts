@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import axios from '@/libs/axios'
 import { unassignPlayerService } from '@/services/user'
 
 const useUnassignPlayer = () => {

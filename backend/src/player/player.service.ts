@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
-import { PlayerType } from './dto/player.dto';
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from 'src/prisma.service'
+import { PlayerType } from './dto/player.dto'
 
 @Injectable()
 export class PlayerService {
@@ -30,60 +30,58 @@ export class PlayerService {
             }
         })
 
-        const player = await this.prisma.user.findMany({
+        const players = await this.prisma.user.findMany({
             where: {
                 songs: {
                     some: {
                         songId
                     }
+                },
+                roles: {
+                    every: {
+                        role: playerType
+                    }
                 }
-            },
-            include: {
-                roles: true
             }
         })
 
-        const matchingPlayers = player.filter(user => 
-            user.roles.some(role => role.role === playerType)
-        );
-
-        let totalPlayer, currentPlayer;
+        let totalPlayer: number, currentPlayer: number
         
         switch(playerType) {
             case PlayerType.VOCALIST:
-                totalPlayer = song.totalVocalist;
-                currentPlayer = song.currentVocalList;
-                break;
+                totalPlayer = song.totalVocalist
+                currentPlayer = song.currentVocalList
+                break
             case PlayerType.GUITARIST:
-                totalPlayer = song.totalGuitarist;
-                currentPlayer = song.currentGuitarist;
-                break;
+                totalPlayer = song.totalGuitarist
+                currentPlayer = song.currentGuitarist
+                break
             case PlayerType.DRUMMER:
-                totalPlayer = song.totalDrummer;
-                currentPlayer = song.currentDrummer;
-                break;
+                totalPlayer = song.totalDrummer
+                currentPlayer = song.currentDrummer
+                break
             case PlayerType.BASSIST:
-                totalPlayer = song.totalBassist;
-                currentPlayer = song.currentBassist;
-                break;
+                totalPlayer = song.totalBassist
+                currentPlayer = song.currentBassist
+                break
             case PlayerType.KEYBOARDIST:
-                totalPlayer = song.totalKeyboardist;
-                currentPlayer = song.currentKeyboardist;
-                break;
+                totalPlayer = song.totalKeyboardist
+                currentPlayer = song.currentKeyboardist
+                break
             case PlayerType.EXTRA:
-                totalPlayer = song.totalExtra;
-                currentPlayer = song.currentExtra;
-                break;
+                totalPlayer = song.totalExtra
+                currentPlayer = song.currentExtra
+                break
             case PlayerType.PERCUSSIONIST:
-                totalPlayer = song.totalPercussionist;
-                currentPlayer = song.currentPercussionist;
-                break;
+                totalPlayer = song.totalPercussionist
+                currentPlayer = song.currentPercussionist
+                break
         }
 
         return {
             totalPlayer,
             currentPlayer,
-            players: matchingPlayers
+            players
         }
     }
 
@@ -110,17 +108,17 @@ export class PlayerService {
     async assignPlayer(songId: string, playerIds: string[], playerType: PlayerType) {
         const song = await this.prisma.song.findUnique({
             where: { songId }
-        });
+        })
 
-        if (!song) return;
+        if (!song) return
 
         for (const userId of playerIds) {
             const user = await this.prisma.user.findFirst({
                 where: { userId },
                 include: { roles: true }
-            });
+            })
 
-            if (!user || !user.roles.length) continue;
+            if (!user || !user.roles.length) continue
 
             const playerRole = user.roles[0].role
 
@@ -138,24 +136,24 @@ export class PlayerService {
                     ...(playerRole === PlayerType.EXTRA && { currentExtra: { increment: 1 } }),
                     ...(playerRole === PlayerType.PERCUSSIONIST && { currentPercussionist: { increment: 1 } })
                 },
-            });
+            })
         }
     }
 
     async canAddMorePlayers(songId: string, type: PlayerType) {
         const song = await this.prisma.song.findUnique({
             where: { songId }
-        });
+        })
         
         switch(type) {
-            case PlayerType.VOCALIST: return song.currentVocalList < song.totalVocalist;
-            case PlayerType.GUITARIST: return song.currentGuitarist < song.totalGuitarist;
-            case PlayerType.DRUMMER: return song.currentDrummer < song.totalDrummer;
-            case PlayerType.BASSIST: return song.currentBassist < song.totalBassist;
-            case PlayerType.KEYBOARDIST: return song.currentKeyboardist < song.totalKeyboardist;
-            case PlayerType.EXTRA: return song.currentExtra < song.totalExtra;
-            case PlayerType.PERCUSSIONIST: return song.currentPercussionist < song.totalPercussionist;
-            default: return false;
+            case PlayerType.VOCALIST: return song.currentVocalList < song.totalVocalist
+            case PlayerType.GUITARIST: return song.currentGuitarist < song.totalGuitarist
+            case PlayerType.DRUMMER: return song.currentDrummer < song.totalDrummer
+            case PlayerType.BASSIST: return song.currentBassist < song.totalBassist
+            case PlayerType.KEYBOARDIST: return song.currentKeyboardist < song.totalKeyboardist
+            case PlayerType.EXTRA: return song.currentExtra < song.totalExtra
+            case PlayerType.PERCUSSIONIST: return song.currentPercussionist < song.totalPercussionist
+            default: return false
         }
     }
 
@@ -164,11 +162,11 @@ export class PlayerService {
             const user = await this.prisma.user.findFirst({
                 where: { userId },
                 include: { roles: true }
-            });
+            })
 
-            if (!user || !user.roles.length) continue;
+            if (!user || !user.roles.length) continue
 
-            const playerRole = user.roles[0].role;
+            const playerRole = user.roles[0].role
 
             await this.prisma.song.update({
                 where: { songId },
@@ -184,7 +182,7 @@ export class PlayerService {
                     ...(playerRole === PlayerType.EXTRA && { currentExtra: { decrement: 1 } }),
                     ...(playerRole === PlayerType.PERCUSSIONIST && { currentPercussionist: { decrement: 1 } })
                 },
-            });
+            })
         }
     }
 }

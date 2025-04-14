@@ -1,14 +1,14 @@
 import Button from '@/components/ui/button'
 import TextInput from '@/components/ui/text-input'
-import React, { useState, useCallback } from 'react'
-import { View, TouchableOpacity, Text, Keyboard } from 'react-native'
+import React from 'react'
+import { View, TouchableOpacity, Text } from 'react-native'
 import { TextInput as RnTextInput } from 'react-native-paper'
-import useSong from './use-song-form'
+import useSongForm from '@/components/song/use-song-form'
 import { checkBackstageRole } from '@/utils/check-user-role'
 import { ScrollView } from 'react-native-gesture-handler'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import Controller from '../ui/form-controller'
-import TotalPlayerInput from './total-player-input'
+import Controller from '@/components/ui/form-controller'
+import TotalPlayerInput from '@/components/song/total-player-input'
 import { Song } from '@/services/song'
 
 type FormPropsType = {
@@ -20,27 +20,14 @@ const Form = ({ song }: FormPropsType) => {
     const isBackstage = checkBackstageRole()
     const {
         control,
-        setValue,
+        showSongkeyPicker,
+        openSongKeyPicker,
+        hideSongKeyPicker,
         errors,
         onSubmit,
         deleteSong
-    } = useSong(song)
-    const [show, setShow] = useState(false)
-    const openSongKeyPicker = useCallback(
-        () => {
-            Keyboard.dismiss()
-            setShow(true)
-        },
-        [show]
-    )
+    } = useSongForm(song)
 
-    const hideSongKeyPicker = useCallback(
-        (item: any) => {
-            setShow(false)
-            setValue('songKey', item)
-        },
-        [show]
-    )
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -67,11 +54,12 @@ const Form = ({ song }: FormPropsType) => {
                                         onChangeText={onChange}
                                         editable={false}
                                         value={value}
-                                        style={{
-                                            width: 180
-                                        }}
-                                        right={<RnTextInput.Icon onPress={openSongKeyPicker} icon='chevron-down' size={20}
-                                        />
+                                        style={{ width: 180 }}
+                                        right={
+                                            <RnTextInput.Icon
+                                                onPress={openSongKeyPicker}
+                                                icon='chevron-down' size={20}
+                                            />
                                         }
                                     />
 
@@ -90,7 +78,7 @@ const Form = ({ song }: FormPropsType) => {
                             )}
                         />
 
-                        {show ? (
+                        {showSongkeyPicker ? (
                             <View style={{
                                 backgroundColor: 'rgb(211, 211, 211)',
                                 elevation: 1,

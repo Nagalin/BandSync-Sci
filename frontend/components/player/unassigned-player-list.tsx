@@ -7,22 +7,13 @@ import useAssignPlayer from './use-assign-player'
 import { useQuery } from '@tanstack/react-query'
 import axios from '@/libs/axios'
 import { useEventDataStore } from '@/zustand/store'
+import { getUnassignedPlayerListService, User } from '@/services/user'
 
-export type ApiResponse = {
-    discordId: string;
-    discordUsername: string;
-    firstName: string;
-    isActive: boolean;
-    lastName: string;
-    nickName: string;
-    userId: string;
-}
-
-const AssignedPlayerList = () => {
+const UnassignedPlayerList = () => {
     const { songId, playerType } = useEventDataStore()
-    const { data: playersList, isFetching } = useQuery<ApiResponse[]>({
+    const { data: playersList, isFetching } = useQuery<User[]>({
         queryKey: ['unassignedPlayerList'],
-        queryFn: async () => (await axios.get(`songs/${songId}/player/unassigned/${playerType}`)).data
+        queryFn: async () => getUnassignedPlayerListService(songId, playerType)
     })
     const {
         handleToggle,
@@ -49,7 +40,7 @@ const AssignedPlayerList = () => {
                             onPress={() => handleToggle(curr.userId)}
                         />
                     ))}
-                    <Button onPress={() => assignedPlayer(songId as string, playerType as string)}>
+                    <Button onPress={() => assignedPlayer(songId, playerType)}>
                         Confirm
                     </Button>
                 </>
@@ -58,4 +49,4 @@ const AssignedPlayerList = () => {
     )
 }
 
-export default AssignedPlayerList
+export default UnassignedPlayerList

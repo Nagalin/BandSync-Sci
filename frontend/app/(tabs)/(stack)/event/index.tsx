@@ -10,27 +10,24 @@ import Text from '@/components/ui/text'
 import { getEventListService } from '@/services/event'
 
 const Index = () => {
-  const [snackbarVisible, setSnackbarVisible] = useState(false)
+  const [errorSnackbarVisible, seteErorSnackbarVisible] = useState(false)
   const {
     data: events,
-    isFetching,
+    isPending,
     error,
-    refetch,
+    refetch
   } = useQuery({
     queryKey: ['events'],
-    queryFn: async () => await getEventListService(),
-   
+    queryFn: async () => await getEventListService()
   })
 
   useEffect(() => {
-    if (error) {
-      setSnackbarVisible(true)
-    }
+    if (error) seteErorSnackbarVisible(true)
   }, [error])
 
-  if (isFetching) return <EventLoadingCard />
+  if (isPending) return <EventLoadingCard />
 
-  const onDismissSnackBar = () => setSnackbarVisible(false)
+  const onDismissSnackBar = () => seteErorSnackbarVisible(false)
 
   return (
     <Background>
@@ -67,7 +64,7 @@ const Index = () => {
         <Snackbar
           style={{ backgroundColor: 'red' }}
           duration={9999}
-          visible={snackbarVisible}
+          visible={errorSnackbarVisible}
           onDismiss={onDismissSnackBar}
           action={{
             label: 'Try again',

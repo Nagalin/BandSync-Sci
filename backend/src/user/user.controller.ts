@@ -20,7 +20,6 @@ export class UserController {
 
     @Patch('/deactivate')
     async deactivateUsers(@Body() body: { userId: string[] }) {
-        console.log(body.userId);
         await this.userService.deactivateUsers(body.userId)
     }
 }

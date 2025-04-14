@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import SongCard from '@/components/song/card'
@@ -6,22 +6,9 @@ import Text from '@/components/ui/text'
 import Background from '@/components/ui/background'
 import { useRouter } from 'expo-router'
 import Button from '@/components/ui/button'
-import { checkBackstageRole } from '@/utils/check-user-role';
-import * as SecureStore from 'expo-secure-store';
-import { useEventDataStore } from '@/zustand/store'
+import { checkBackstageRole } from '@/utils/check-user-role'
 
 function Index() {
-
-  useEffect(() => {
-    const getArray = async (key: string) => {
-      const value = await SecureStore.getItemAsync(key)
-      return value ? JSON.parse(value) : null;
-    }
-
-    getArray('user_roles')
-  })
-
-
   const router = useRouter()
   const isUserBackstage = checkBackstageRole()
 
@@ -69,7 +56,6 @@ function Index() {
 
         ) : null
       }
-
 
     </Background>
   )

@@ -1,13 +1,30 @@
-import { Alert } from 'react-native'
+import { Alert, Keyboard } from 'react-native'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'expo-router'
 import { createSongService, deleteSongService, Song, updateSongService } from '@/services/song'
 import { useEventDataStore } from '@/zustand/store'
+import { useCallback, useState } from 'react'
 
 type SongForm = Omit<Song, 'songId'>
 
 const useSong = (song?: Song) => {
+    const [showSongkeyPicker, setShowSongkeyPicker] = useState(false)
+    const openSongKeyPicker = useCallback(
+        () => {
+            Keyboard.dismiss()
+            setShowSongkeyPicker(true)
+        },
+        [showSongkeyPicker]
+    )
+
+    const hideSongKeyPicker = useCallback(
+        (item: any) => {
+            setShowSongkeyPicker(false)
+            setValue('songKey', item)
+        },
+        [showSongkeyPicker]
+    )
     const queryClient = useQueryClient()
     const { eventId } = useEventDataStore()
     const router = useRouter()
@@ -98,7 +115,11 @@ const useSong = (song?: Song) => {
         watch,
         errors,
         onSubmit,
-        deleteSong
+        deleteSong,
+        showSongkeyPicker,
+        openSongKeyPicker,
+        hideSongKeyPicker
+
     }
 }
 

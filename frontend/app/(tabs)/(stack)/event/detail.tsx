@@ -19,9 +19,7 @@ const Index = () => {
         queryKey: ['event-detail', eventId],
         queryFn: async () => {
             return await getEventInfoService(eventId)
-        },
-        refetchOnMount: true,
-        refetchOnWindowFocus: true,
+        }
     })
 
     if (isFetching) return <DetailLoading />
@@ -85,8 +83,6 @@ const Index = () => {
                     </Button>
                 </Pressable>
             </Link>
-
-            
         </Background>
     )
 }

@@ -43,9 +43,6 @@ export class EventController {
   @Put(':eventId')
   @UseGuards(BackstageGuard)
   async update(@Param('eventId') eventId: string, @Body() eventDto: EventDto) {
-    const { eventName } = eventDto
-    const existingEvent = await this.eventService.findByEventName(eventName)
-    if (existingEvent) throw new ConflictException('Event already exists')
     await this.eventService.update(eventId, eventDto)
   }
 

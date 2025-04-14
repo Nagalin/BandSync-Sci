@@ -46,11 +46,7 @@ export class SongController {
   @Put(':songId')
   @UseGuards(BackstageGuard)
   async update(@Param('songId') songId: string, @Body() songData: SongDto, eventId: string) {
-    const existingEvent = await this.songService.findBySongName(songData.songName, eventId)
-    if (existingEvent) throw new ConflictException('ชื่อเพลงนี้มีอยู่แล้ว')
-
     await this.songService.update(songId, songData)
-
   }
 
   @Delete(':songId')
