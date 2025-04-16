@@ -1,4 +1,5 @@
 import axios from '@/libs/axios'
+import { Song } from './song'
 
 export type Event = {
     eventId: string
@@ -32,4 +33,17 @@ export const updateEventService = async (data: Omit<Event, 'eventId'>, eventId: 
 
 export const deleteEventService = async (eventId: string) => {
     return await axios.delete(`/events/${eventId}`)
+}
+
+export const startEventService = async (eventId: string) => {
+    await axios.post(`/events/${eventId}/start`)
+}
+
+export const getCurrentSongService = async (eventId: string) => {
+    const response = await axios.get<Pick<Song, 'songId'>>(`/events/${eventId}/current-song`)
+    return response.data 
+}
+
+export const updateCurrentSongService = async (eventId: string) => {
+    return await axios.put(`/events/${eventId}/current-song`)
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import { Skeleton } from 'moti/skeleton'
 import { useQuery } from '@tanstack/react-query'
 import Button from '@/components/ui/button'
@@ -9,10 +9,12 @@ import Text from '@/components/ui/text'
 import Form from '@/components/event/form'
 import ListIcon from '@/assets/icons/list'
 import { checkBackstageRole } from '@/utils/check-user-role'
-import { getEventInfoService } from '@/services/event'
+import { getEventInfoService, startEventService } from '@/services/event'
 import { useEventDataStore } from '@/zustand/store'
+import { isSameDay } from 'date-fns'
 
 const Index = () => {
+    const router = useRouter()
     const { eventId } = useEventDataStore()
     const isBackstage = checkBackstageRole();
     const { data: event, isFetching } = useQuery({
@@ -27,7 +29,7 @@ const Index = () => {
     const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined
     const startTime = event?.startTime ? new Date(event.startTime) : undefined
     const endTime = event?.endTime ? new Date(event.endTime) : undefined
-
+    const isEventDay = isSameDay(eventDate!, new Date())
     return (
         <Background style={{
             flexDirection: 'column',
@@ -54,13 +56,22 @@ const Index = () => {
                 {isBackstage ?
                     (
 
-                        <Button style={{ width: '90%' }}>เริ่ม Event </Button>
+                        <Button
+                            onPress={() => {
+                                startEventService(eventId)
+                                router.push('/event/run')
+                            }}
+                            // disabled={!isEventDay}
+                            style={{ width: '90%' }}
+                        >
+                            เริ่ม Event
+                        </Button>
                     ) : null
                 }
             </View>
 
             <Link
-                href={{pathname: '/song'}}
+                href={{ pathname: '/song' }}
                 asChild
                 style={{
                     flexDirection: 'row',

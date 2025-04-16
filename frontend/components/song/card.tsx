@@ -5,17 +5,23 @@ import { useQuery } from '@tanstack/react-query'
 import { getSongListService, SongList } from '@/services/song'
 import { useEventDataStore } from '@/zustand/store'
 
-export default function App() {
+type CardPropsType = {
+  currentSongId?: string
+}
+export default function Card({ currentSongId }: CardPropsType) {
   const router = useRouter()
   const { setSongId } = useEventDataStore()
   const { eventId } = useEventDataStore()
   const { data: songs = [] } = useQuery({
     queryKey: ['songs'],
-    queryFn: async () => await getSongListService(eventId as string),
+    queryFn: async () => await getSongListService(eventId)
   })
 
   const renderItem = ({ item }: { item: SongList }) => (
-    <View style={styles.rowItem} >
+    <View style={[
+      styles.rowItem, 
+      item.songId === currentSongId && styles.activeRowItem
+    ]} >
       <Text
         onPress={() => {
           setSongId(item.songId)
@@ -49,6 +55,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     borderRadius: 10,
     marginBottom: 10,
+  },
+  activeRowItem: {
+    backgroundColor: 'purple',
   },
   text: {
     color: 'white',

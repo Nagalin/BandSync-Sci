@@ -30,6 +30,19 @@ export class EventController {
     return event
   }
 
+  @Get(':eventId/current-song')
+  async findCurrentSong(@Param('eventId') eventId: string) {
+    const currentSong = await this.eventService.findCurrentSong(eventId)
+
+    return currentSong
+  }
+
+  @Put(':eventId/current-song')
+  @UseGuards(BackstageGuard)
+  async updateCurrentSong(@Param('eventId') eventId: string) {
+    await this.eventService.updateCurrentSong(eventId)
+  }
+
   @Post()
   @UseGuards(BackstageGuard)
   async create(@Body() eventDto: EventDto) {
@@ -50,5 +63,11 @@ export class EventController {
   @UseGuards(BackstageGuard)
   async delete(@Param('eventId') eventId: string) {
     await this.eventService.delete(eventId)
+  }
+
+  @Post(':eventId/start')
+  @UseGuards(BackstageGuard)
+  async start(@Param('eventId') eventId: string) {
+    await this.eventService.start(eventId)
   }
 }

@@ -23,6 +23,8 @@ model Event {
   status            Status   @default(UPCOMING)
   additionalDetails String
   songs             Song[]
+  currentSongId     String?
+  currentSong      Song?    @relation("CurrentSong", fields: [currentSongId], references: [songId])
 }
 
 enum Status {
@@ -54,7 +56,8 @@ model Song {
   currentPercussionist Int    @default(0)
   eventId              String
   event                Event  @relation(fields: [eventId], references: [eventId])
-  users               User[]
+  users                User[]
+  currentInEvents      Event[] @relation("CurrentSong")
 }
 
 model User {

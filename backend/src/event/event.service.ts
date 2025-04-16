@@ -40,6 +40,19 @@ export class EventService {
     })
   }
 
+  async findCurrentSong(eventId: string) {
+    const event =  await this.prisma.event.findUnique({
+      where: { eventId },
+      select: {
+        currentSongId: true
+      }
+    })
+
+    return {
+      songId: event.currentSongId
+    }
+  }
+
   async findOne(eventId: string) {
     return await this.prisma.event.findUnique({
       where: { eventId }
@@ -59,6 +72,43 @@ export class EventService {
     })
   }
 
+  async updateCurrentSong(eventId: string) {
+    const songs = await this.prisma.song.findMany({
+      where: { eventId },
+      orderBy: { songOrder: 'asc' }
+    })
+
+    const event = await this.prisma.event.findUnique({
+      where: { eventId },
+      select: {
+        currentSongId: true
+      }
+    })
+
+    if (songs.length === 0) {
+      return
+    }
+
+    const currentIndex = songs.findIndex(song => song.songId === event.currentSongId)
+
+    if (currentIndex === songs.length - 1) 
+      return
+    
+    
+    const nextIndex = currentIndex + 1
+    
+    const nextSongId = songs[nextIndex].songId
+
+    await this.prisma.event.update({
+      where: { eventId },
+      data: {
+        currentSongId: nextSongId
+      }
+    })
+    
+    return { nextSongId }
+  }
+
   async delete(eventId: string) {
     await this.prisma.$transaction(async (prisma) => {
       await prisma.song.deleteMany({
@@ -68,6 +118,18 @@ export class EventService {
       await prisma.event.delete({
         where: { eventId }
       })
+    })
+  }
+
+  async start(eventId: string) {
+    const firstSong = await this.prisma.song.findFirst({
+      where: { eventId },
+      orderBy: { songOrder: 'asc' }
+    })
+
+    await this.prisma.event.update({
+      where: { eventId },
+      data: { status: 'ONGOING', currentSongId: firstSong?.songId }
     })
   }
 }

@@ -13,6 +13,9 @@ export class SongService {
         songName: true,
         songKey: true,
       },
+      orderBy: {
+        songOrder: 'asc'
+      },
       where: { eventId }
     })
   }
