@@ -41,6 +41,7 @@ export class EventController {
   @UseGuards(BackstageGuard)
   async updateCurrentSong(@Param('eventId') eventId: string) {
     await this.eventService.updateCurrentSong(eventId)
+    
   }
 
   @Post()

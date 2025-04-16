@@ -7,9 +7,10 @@ import { AuthModule } from './auth/auth.module';
 import { AuthMiddleware } from 'src/middleware/auth.middleware'
 import { UserModule } from './user/user.module';
 import { PlayerModule } from './player/player.module';
+import { WebsocketsModule } from './websockets/websockets.module';
 
 @Module({
-  imports: [EventModule, SongModule, AuthModule, UserModule, PlayerModule],
+  imports: [EventModule, SongModule, AuthModule, UserModule, PlayerModule, WebsocketsModule],
   controllers: [AppController],
   providers: [AppService],
 })

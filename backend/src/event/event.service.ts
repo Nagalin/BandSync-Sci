@@ -93,6 +93,7 @@ export class EventService {
 
     if (currentIndex === songs.length - 1) 
       return
+
     
     
     const nextIndex = currentIndex + 1

@@ -10,6 +10,7 @@ import { checkBackstageRole } from '@/utils/check-user-role'
 import { getCurrentSongService, updateCurrentSongService } from '@/services/event'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEventDataStore } from '@/zustand/store'
+import { emitSocketEvent } from '@/hooks/use-socket-query'
 
 function Run() {
   const router = useRouter()
@@ -73,7 +74,8 @@ function Run() {
       <Button
       onPress={async () => {
         await updateCurrentSongService(eventId)
-        queryClient.invalidateQueries({ queryKey: ['currentSong'] })
+        emitSocketEvent()
+        // queryClient.invalidateQueries({ queryKey: ['currentSong'] })
       } }
         style={{
           position: 'absolute',

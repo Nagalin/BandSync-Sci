@@ -6,7 +6,7 @@ import { View, Button, Alert } from 'react-native'
 import { useRootNavigationState, useRouter } from 'expo-router'
 import * as SecureStore from 'expo-secure-store';
 import axios from '@/libs/axios'
-
+import { useSocketQuery } from '@/hooks/use-socket-query'
 async function storeRoles(user: any) {
   try {
     const rolesKey = 'user_roles';
@@ -30,6 +30,7 @@ export const useWarmUpBrowser = () => {
 WebBrowser.maybeCompleteAuthSession()
 
 export default function Page() {
+  useSocketQuery()
   const { getToken, isSignedIn, signOut } = useAuth()
   const router = useRouter()
   const { startSSOFlow } = useSSO()
