@@ -16,7 +16,7 @@ export type Song = {
     totalPercussionist: string
 }
 
-export type SongList = Pick<Song, 'songId' | 'songName' | 'songKey'>
+export type SongList = Pick<Song, 'songId' | 'songName' | 'songKey' | 'songOrder'>
 
 export const getSongListService = async (eventId: string) => {
     const response = await axios.get<SongList[]>(`/events/${eventId}/songs`)

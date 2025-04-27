@@ -130,6 +130,22 @@ export class SongService {
     })
   }
 
-
+  async reorderSongs(songOrder: { songId: string; songOrder: number }[], eventId: string) {
+    const updatePromises = songOrder.map((song) =>
+      this.prisma.song.update({
+        where: {
+          songId: song.songId,
+          eventId: eventId
+        },
+        data: {
+          songOrder: song.songOrder,
+        },
+      })
+    );
+  
+    await Promise.all(updatePromises);
+  
+    return { success: true };
+  }
 
 }
