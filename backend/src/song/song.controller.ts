@@ -66,4 +66,10 @@ export class SongController {
   ) {
     return await this.songService.reorderSongs(reorderSongDto.songOrder, eventId);
   }
+
+  @Post(':songId/notification')
+  async notification(@Param('eventId') eventId: string, @Param('songId') songId: string) {
+    await this.songService.notification(songId)
+   
+  }
 }

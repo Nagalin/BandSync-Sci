@@ -12,6 +12,8 @@ import { PlayerService } from 'src/player/player.service'
 import { BackstageGuard } from 'src/guard/auth.guard'
 import { PlayerDto, PlayerType } from 'src/player/dto/player.dto'
 
+
+
 @Controller('songs/:songId/player')
 export class PlayerController {
     constructor(private readonly playerService: PlayerService) { }
@@ -57,4 +59,6 @@ export class PlayerController {
         const { songId, playerId } = playerDto
         const songs = await this.playerService.unassignPlayer(songId, playerId)
     }
+
+   
 }

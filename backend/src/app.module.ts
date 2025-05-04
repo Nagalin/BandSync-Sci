@@ -8,9 +8,17 @@ import { AuthMiddleware } from 'src/middleware/auth.middleware'
 import { UserModule } from './user/user.module';
 import { PlayerModule } from './player/player.module';
 import { WebsocketsModule } from './websockets/websockets.module';
+import { NecordModule } from 'necord';
+import { IntentsBitField } from 'discord.js';
 
 @Module({
-  imports: [EventModule, SongModule, AuthModule, UserModule, PlayerModule, WebsocketsModule],
+  imports: [EventModule, SongModule, AuthModule, UserModule, PlayerModule, WebsocketsModule,
+    NecordModule.forRoot({
+      token: process.env.DISCORD_BOT_TOKEN,
+      intents: [IntentsBitField.Flags.Guilds],
+      development: [process.env.DISCORD_BOT_TOKEN],
+    })
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

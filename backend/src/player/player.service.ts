@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
 import { PlayerType } from './dto/player.dto'
 
 @Injectable()
 export class PlayerService {
     constructor(private prisma: PrismaService) { }
+
+   
 
     async findAll(songId: string, playerType: PlayerType) {
         return await this.prisma.user.findMany({

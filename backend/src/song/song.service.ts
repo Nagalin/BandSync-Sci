@@ -1,10 +1,24 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
 import { SongDto } from 'src/song/dto/song.dto'
+import { Client } from 'discord.js';
+import { Context, On, Once, ContextOf } from 'necord';
 
 @Injectable()
 export class SongService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService,private readonly client: Client) { }
+
+  private readonly logger = new Logger();
+
+  @Once('ready')
+  public onReady(@Context() [client]: ContextOf<'ready'>) {
+    this.logger.log(`Bot logged in as ${client.user.username}`);
+  }
+
+  @On('warn')
+  public onWarn(@Context() [message]: ContextOf<'warn'>) {
+    this.logger.warn(message);
+  }
 
   async findAll(eventId: string) {
     return await this.prisma.song.findMany({
@@ -146,6 +160,24 @@ export class SongService {
     await Promise.all(updatePromises);
   
     return { success: true };
+  }
+
+  async notification(songId: string) {
+    const players = await this.prisma.user.findMany({
+      where: {
+        songs: {
+          some: {
+            songId: songId
+          }
+        }
+      }
+    })
+
+    players.map(async curr => {
+      console.log("debugging: ",curr)
+      const user = await this.client.users.fetch(curr.discordId)
+      await user.send('Hello! This is an automatic DM from the bot.')
+    })
   }
 
 }
