@@ -13,7 +13,7 @@ export class UserService {
                 }
             }
         })
-       
+
     }
 
     async createUser() {
@@ -25,7 +25,7 @@ export class UserService {
                 lastName: 'something',
                 nickName: 'first',
                 isActive: true,
-                roles: {connect: {roleId: '60338d55-b0b8-4930-b624-27c9f93644ae'}}
+                roles: { connect: { roleId: '60338d55-b0b8-4930-b624-27c9f93644ae' } }
 
             }
         })
@@ -45,4 +45,23 @@ export class UserService {
         })
 
     }
+
+    async findAllForAdminTransfer() {
+        const users = await this.prisma.user.findMany({
+            where: {
+                isActive: true,
+            },
+            select: {
+                userId: true,
+                firstName: true,
+                lastName: true,
+            }
+        });
+
+        return users.map(user => ({
+            userId: user.userId,
+            fullName: `${user.firstName} ${user.lastName}`,
+        }));
+    }
+
 }

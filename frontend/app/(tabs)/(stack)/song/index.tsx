@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
+/*import { GestureHandlerRootView } from 'react-native-gesture-handler'*/
 import SongCard from '@/components/song/card'
 import Text from '@/components/ui/text'
 import Background from '@/components/ui/background'
@@ -14,11 +14,9 @@ function Index() {
 
   return (
     <Background>
-
-      <GestureHandlerRootView style={{ flex: 1 }}>
+      
         <Text style={{ fontSize: 30 }}>งานเปิดบ้าน</Text>
         <SongCard />
-      </GestureHandlerRootView>
 
       {
         isUserBackstage ? (

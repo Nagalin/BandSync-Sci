@@ -7,6 +7,7 @@ import { useEventDataStore } from '@/zustand/store';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import axios from '@/libs/axios';
 import { checkBackstageRole } from '@/utils/check-user-role';
+import { Alert } from 'react-native';
 
 type CardPropsType = {
   currentSongId?: string;
@@ -74,10 +75,33 @@ export default function Card({ currentSongId }: CardPropsType) {
     <DraggableFlatList
       data={songs}
       onDragEnd={({ data }) => {
-        setSongs(data);
-        if (isUserBackstage) {
-          updateOrder(data);
-        }
+        if (JSON.stringify(data) === JSON.stringify(songs)) return;
+
+        if (!isUserBackstage) return;
+
+        Alert.alert(
+          'ยืนยันการจัดลำดับ',
+          'คุณต้องการย้ายลำดับเพลงหรือไม่?',
+          [
+            {
+              text: 'ยกเลิก',
+              style: 'cancel',
+            },
+            {
+              text: 'ยืนยัน',
+              onPress: async () => {
+                setSongs(data);
+                try {
+                  await updateOrder(data);
+                  Alert.alert('สำเร็จ', 'จัดลำดับเพลงใหม่เรียบร้อยแล้ว');
+                } catch {
+                  Alert.alert('เกิดข้อผิดพลาด', 'ไม่สามารถอัปเดตลำดับเพลงได้');
+                }
+              },
+            },
+          ],
+          { cancelable: true }
+        );
       }}
       keyExtractor={(item) => item.songId.toString()}
       renderItem={renderItem}

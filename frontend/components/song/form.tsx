@@ -6,7 +6,7 @@ import { TextInput as RnTextInput } from 'react-native-paper'
 import useSongForm from '@/components/song/use-song-form'
 import { checkBackstageRole } from '@/utils/check-user-role'
 import { ScrollView } from 'react-native-gesture-handler'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
+/*import { GestureHandlerRootView } from 'react-native-gesture-handler'*/
 import Controller from '@/components/ui/form-controller'
 import TotalPlayerInput from '@/components/song/total-player-input'
 import { Song } from '@/services/song'
@@ -30,9 +30,9 @@ const Form = ({ song }: FormPropsType) => {
 
 
     return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <ScrollView >
-                <View style={{ gap: 20, padding: 20 }}>
+        /*<GestureHandlerRootView style={{ flex: 1 }}>*/
+            <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 100 }} >
+                <View style={{ gap: 20/*, padding: 20*/ }}>
 
                     <View style={{ flexDirection: 'row', gap: 20, justifyContent: 'space-between' }}>
                         <Controller
@@ -198,7 +198,7 @@ const Form = ({ song }: FormPropsType) => {
                 </View>
 
             </ScrollView>
-        </GestureHandlerRootView>
+       /* </GestureHandlerRootView>*/
     )
 }
 

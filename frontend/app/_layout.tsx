@@ -7,6 +7,8 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
 if (!publishableKey) {
@@ -22,9 +24,11 @@ export default function RootLayout() {
       <ClerkLoaded>
         <QueryClientProvider client={queryClient}>
           <PaperProvider theme={theme}>
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            </Stack>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              </Stack>
+            </GestureHandlerRootView>
           </PaperProvider>
         </QueryClientProvider>
       </ClerkLoaded>

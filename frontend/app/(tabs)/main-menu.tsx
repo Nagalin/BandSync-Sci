@@ -188,7 +188,7 @@ const Index = () => {
           <Card
             onPress={async () => {
               router.push({
-                pathname: '/',
+                pathname: '/transfer',
               })
             }}
             style={{

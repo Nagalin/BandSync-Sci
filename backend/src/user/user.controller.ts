@@ -22,5 +22,11 @@ export class UserController {
     async deactivateUsers(@Body() body: { userId: string[] }) {
         await this.userService.deactivateUsers(body.userId)
     }
+
+    @Get('/admin-transfer-list')
+    async getUsersForAdminTransfer() {
+        return this.userService.findAllForAdminTransfer();
+    }
+
 }
 

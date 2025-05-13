@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
 import { createClerkClient, verifyToken } from '@clerk/backend'
-import { UnauthorizedException } from 'src/exception/custom-exception'
+import { UnauthorizedException } from 'src/exception/custom-exception';
 
 const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY })
 
@@ -12,7 +12,7 @@ export class AuthService {
     async checkIfUserExist(discordId: string) {
         return await this.prisma.user.findFirst({
             where: { discordId, isActive: true },
-            include: { roles: true }
+            include: { roles: {  select: { role: true }}}
         })
     }
 

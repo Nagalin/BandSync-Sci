@@ -28,7 +28,7 @@ const TabsLayout = () => {
         listeners={{
           tabPress: (e) => {
             e.preventDefault()
-            
+
             router.dismissAll()
             router.navigate('/event')
           }
@@ -49,7 +49,7 @@ const TabsLayout = () => {
       />
 
 
-      
+
 
       <Tabs.Screen
         name='deactivate-account'
@@ -60,6 +60,16 @@ const TabsLayout = () => {
           tabBarIcon: ({ color }) => <FontAwesome size={28} name='user' color={color} />
         }}
 
+      />
+
+      <Tabs.Screen
+        name="transfer"
+        options={{
+          href: null,
+          title: 'Transfer System Admin Privileges',
+          headerTitleStyle: { fontFamily: 'IBMPlexSans_400Regular' },
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name='user' color={color} />
+        }}
       />
 
       {/* <Tabs.Screen
@@ -103,7 +113,7 @@ const TabsLayout = () => {
 
       /> */}
 
-    
+
 
     </Tabs>
   )
