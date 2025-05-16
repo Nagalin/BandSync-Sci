@@ -11,17 +11,19 @@ const TransferAdminScreen = () => {
   const [selectedUserId, setSelectedUserId] = useState<string>('');
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get('/user/admin-transfer-list');
-        setUsers(response.data);
-      } catch (err) {
-        Alert.alert('Error', 'ไม่สามารถโหลดรายชื่อผู้ใช้ได้');
-      }
-    };
-    fetchUsers();
-  }, []);
+ useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get<{ userId: string; fullName: string }[]>('/user/admin-transfer-list');
+      const currentUserId = await SecureStore.getItemAsync('userId'); 
+      const filteredUsers = response.data.filter((user) => user.userId !== currentUserId);
+      setUsers(filteredUsers);
+    } catch (err) {
+      Alert.alert('Error', 'ไม่สามารถโหลดรายชื่อผู้ใช้ได้');
+    }
+  };
+  fetchUsers();
+}, []);
 
   const handleTransfer = () => {
     if (!selectedUserId) {
