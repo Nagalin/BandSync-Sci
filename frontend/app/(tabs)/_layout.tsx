@@ -72,8 +72,8 @@ const TabsLayout = () => {
         }}
       />
 
-      {/* <Tabs.Screen
-        name='song/index'
+      <Tabs.Screen
+        name='add-new-account'
         options={{
           href: null,
           title: 'คิวเพลง',
@@ -81,7 +81,7 @@ const TabsLayout = () => {
           tabBarIcon: ({ color }) => <FontAwesome size={28} name='user' color={color} />
         }}
 
-      /> */}
+      />
 
       {/* <Tabs.Screen
         name='song/create'

@@ -60,35 +60,7 @@ const Index = () => {
 
         </Card.Content>
       </Card>
-      <Card
-        onPress={async () => {
-         
-        }}
-        style={{
-          borderStyle: 'solid',
-          width: '45%',
-          marginTop: 15,
-          height: 150,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: theme.colors.primary
-        }}
-      >
-        <Card.Content>
-          <Text
-            variant='titleLarge'
-            style={{
-              textAlign: 'center'
-            }}
-          >
-            Logout (temporary used)
-          </Text>
-
-
-
-        </Card.Content>
-      </Card>
+      
 
       <Card
         onPress={async () => {
@@ -115,6 +87,38 @@ const Index = () => {
             }}
           >
             Profile
+          </Text>
+
+
+
+        </Card.Content>
+      </Card>
+
+      <Card
+        onPress={async () => {
+          router.push({
+            pathname: '/add-new-account',
+          })
+        }}
+        style={{
+          borderStyle: 'solid',
+          width: '45%',
+          marginTop: 15,
+          height: 150,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: theme.colors.primary
+        }}
+      >
+        <Card.Content>
+          <Text
+            variant='titleLarge'
+            style={{
+              textAlign: 'center'
+            }}
+          >
+            Add new account
           </Text>
 
 
