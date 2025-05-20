@@ -9,14 +9,15 @@ import { UserModule } from './user/user.module';
 import { PlayerModule } from './player/player.module';
 import { WebsocketsModule } from './websockets/websockets.module';
 import { NecordModule } from 'necord';
-import { IntentsBitField } from 'discord.js';
+import { GatewayIntentBits, IntentsBitField } from 'discord.js';
 import { AdminModule } from './admin/admin.module';
+import { GoogleSheetsModule } from './google-sheets/google-sheets.module';
 
 @Module({
-  imports: [EventModule, SongModule, AuthModule, UserModule, PlayerModule, WebsocketsModule,AdminModule,
+  imports: [EventModule, SongModule, AuthModule, UserModule, PlayerModule, WebsocketsModule, AdminModule, GoogleSheetsModule,
     NecordModule.forRoot({
       token: process.env.DISCORD_BOT_TOKEN,
-      intents: [IntentsBitField.Flags.Guilds],
+      intents: [IntentsBitField.Flags.Guilds, GatewayIntentBits.GuildMembers],
       development: [process.env.DISCORD_BOT_TOKEN],
     })
   ],

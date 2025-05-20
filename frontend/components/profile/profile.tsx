@@ -48,7 +48,7 @@ const Profile = () => {
             <Button 
             onPress={ async () => {
                 await signOut()
-                router.push({
+                router.replace({
                     pathname: '/'
                 })
 
