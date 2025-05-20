@@ -72,6 +72,13 @@ const TabsLayout = () => {
         }}
       />
 
+      <Tabs.Screen
+        name="index"
+        options={{
+          headerShown: false,
+        }}
+      />
+
       {/* <Tabs.Screen
         name='song/index'
         options={{
