@@ -71,15 +71,6 @@ const TabsLayout = () => {
           tabBarIcon: ({ color }) => <FontAwesome size={28} name='user' color={color} />
         }}
       />
-
-      <Tabs.Screen
-<<<<<<< HEAD
-        name="index"
-        options={{
-          headerShown: false,
-        }}
-      />
-
       {/* <Tabs.Screen
         name='song/index'
 =======

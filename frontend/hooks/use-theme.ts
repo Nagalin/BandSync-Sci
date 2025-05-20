@@ -4,6 +4,7 @@ export const theme = {
   colors: {
     background: '#ffffff',
     primary: '#a4acd3',
+    secondary: '#FF4081',
     mainButton: '#92a692',
     dangerButton: '#d9534f'
   }

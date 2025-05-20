@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView, View, ImageBackground } from 'react-native'
 import { Snackbar } from 'react-native-paper'
-import { Skeleton } from 'moti/skeleton'
 import { useQuery } from '@tanstack/react-query'
-import Background from '@/components/ui/background'
 import EventCard from '@/components/event/card'
 import Modal from '@/components/event/modal'
 import Text from '@/components/ui/text'
@@ -11,6 +9,7 @@ import { getEventListService } from '@/services/event'
 
 const Index = () => {
   const [errorSnackbarVisible, seteErorSnackbarVisible] = useState(false)
+
   const {
     data: events,
     isPending,
@@ -25,24 +24,28 @@ const Index = () => {
     if (error) seteErorSnackbarVisible(true)
   }, [error])
 
-  if (isPending) return <EventLoadingCard />
-
   const onDismissSnackBar = () => seteErorSnackbarVisible(false)
 
   return (
-    <Background>
+    <ImageBackground
+      source={require('@/assets/images/bg.jpg')} // ✅ เปลี่ยน path ตามของคุณ
+      resizeMode="cover"
+      style={{ flex: 1, padding: 20 }}
+    >
       <ScrollView
         contentContainerStyle={{
-          display: 'flex',
           flexDirection: 'row',
           flexWrap: 'wrap',
           justifyContent: 'space-between',
-          paddingHorizontal: 15,
+          rowGap: 20,
+          paddingBottom: 40,
         }}
       >
         {events?.length === 0 ? (
-          <View style={{ marginTop: 15 }}>
-            <Text style={{ fontSize: 20 }}> ไม่มี Event ขณะนี้.....</Text>
+          <View style={{ width: '100%', alignItems: 'center', marginTop: 40 }}>
+            <Text variant="titleLarge" style={{ color: 'white' }}>
+              ไม่มี Event ขณะนี้
+            </Text>
           </View>
         ) : (
           events?.map(curr => (
@@ -56,8 +59,8 @@ const Index = () => {
             />
           ))
         )}
-
       </ScrollView>
+
       <Modal />
 
       {error && (
@@ -68,61 +71,13 @@ const Index = () => {
           onDismiss={onDismissSnackBar}
           action={{
             label: 'Try again',
-            onPress: () => {
-              refetch()
-            }
+            onPress: () => refetch(),
           }}
         >
-          Something went wrong
+          เกิดข้อผิดพลาดขณะโหลดข้อมูล
         </Snackbar>
       )}
-    </Background>
-  )
-}
-
-const EventLoadingCard = () => {
-  return (
-    <Background
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-        paddingHorizontal: 15
-      }}>
-
-      <View style={{ marginTop: 15, width: '45%' }}>
-        <Skeleton colorMode='light' width={'100%'} height={150} />
-      </View>
-
-      <View style={{ marginTop: 15, width: '45%' }}>
-        <Skeleton colorMode='light' width={'100%'} height={150} />
-      </View>
-
-      <View style={{ marginTop: 15, width: '45%' }}>
-        <Skeleton colorMode='light' width={'100%'} height={150} />
-      </View>
-
-      <View style={{ marginTop: 15, width: '45%' }}>
-        <Skeleton colorMode='light' width={'100%'} height={150} />
-      </View>
-
-      <View style={{ marginTop: 15, width: '45%' }}>
-        <Skeleton colorMode='light' width={'100%'} height={150} />
-      </View>
-
-      <View style={{ marginTop: 15, width: '45%' }}>
-        <Skeleton colorMode='light' width={'100%'} height={150} />
-      </View>
-
-      <View style={{ marginTop: 15, width: '45%' }}>
-        <Skeleton colorMode='light' width={'100%'} height={150} />
-      </View>
-
-      <View style={{ marginTop: 15, width: '45%' }}>
-        <Skeleton colorMode='light' width={'100%'} height={150} />
-      </View>
-    </Background>
+    </ImageBackground>
   )
 }
 
