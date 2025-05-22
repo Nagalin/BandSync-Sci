@@ -63,28 +63,8 @@ const Index = () => {
 
       {isAdmin && (
         <>
-          <Card onPress={() => router.push('/')} style={cardBaseStyle}>
-            <Card.Content style={{ flexGrow: 1, flexShrink: 1, flexBasis: '100%' }}>
-              <View style={cardContentWrapper}>
-                <View style={[colorStrip, { backgroundColor: '#FFC107' }]} />
-                <View style={[badgeStyle, { backgroundColor: '#FFC107' }]}>
-                  <Text style={badgeText}>+</Text>
-                </View>
-                <View style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  zIndex: 2,
-                  overflow: 'visible',
-                }}>
-                  <MaterialIcons name="person-add" size={36} color="black" />
-                  <Text style={{ fontSize: 20, color: 'black' ,textAlign: 'center'}}>Activate new account</Text>
-                </View>
-              </View>
-            </Card.Content>
-          </Card>
-
-          <Card onPress={() => router.push('/deactivate-account')} style={cardBaseStyle}>
+          
+          <Card onPress={() => router.push('/account-config')} style={cardBaseStyle}>
             <Card.Content style={{ flexGrow: 1, flexShrink: 1, flexBasis: '100%' }}>
               <View style={cardContentWrapper}>
                 <View style={[colorStrip, { backgroundColor: '#E91E63' }]} />

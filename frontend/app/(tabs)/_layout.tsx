@@ -49,19 +49,6 @@ const TabsLayout = () => {
       />
 
 
-
-
-      <Tabs.Screen
-        name='deactivate-account'
-        options={{
-          href: null,
-          title: 'Deactivate Account',
-          headerTitleStyle: { fontFamily: 'IBMPlexSans_400Regular' },
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name='user' color={color} />
-        }}
-
-      />
-
       <Tabs.Screen
         name="transfer"
         options={{
@@ -71,50 +58,15 @@ const TabsLayout = () => {
           tabBarIcon: ({ color }) => <FontAwesome size={28} name='user' color={color} />
         }}
       />
-      {/* <Tabs.Screen
-        name='song/index'
-=======
-        name='add-new-account'
->>>>>>> 67e994fc13af4a927e44bc9f0cf21f9aa7bb1251
+
+      <Tabs.Screen
+        name="account-config"
         options={{
           href: null,
-          title: 'คิวเพลง',
-          headerTitleStyle: { fontFamily: 'IBMPlexSans_400Regular' },
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name='user' color={color} />
-        }}
 
+        }}
       />
-
-      {/* <Tabs.Screen
-        name='song/create'
-        options={{
-          href: null,
-          headerShown: false,
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name='user' color={color} />
-        }}
-
-      /> */}
-
-      {/* <Tabs.Screen
-        name='song/detail'
-        options={{
-          href: null,
-          headerShown: false,
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name='user' color={color} />
-        }}
-
-      /> */}
-
-      {/* <Tabs.Screen
-        name='event/detail'
-        options={{
-          href: null,
-          title: 'รายละเอียด Event',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name='user' color={color} />
-        }}
-
-      /> */}
-
+     
 
 
     </Tabs>

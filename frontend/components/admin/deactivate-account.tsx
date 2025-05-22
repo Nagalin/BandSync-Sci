@@ -1,12 +1,11 @@
 import { View } from 'react-native'
-import React, { useState } from 'react'
+import React, {  useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Checkbox } from 'react-native-paper'
 import Button from '@/components/ui/button'
-import Text from '@/components/ui/text'
 import axios from '@/libs/axios'
 import { useEventDataStore } from '@/zustand/store'
-
+import Text from '../ui/text'
 type UsersType = {
     discordId:       string;
     discordUsername: string;
@@ -16,8 +15,7 @@ type UsersType = {
     nickName:        string;
     userId:          string;
 }
-
-const DeactivateAccountPage = () => {
+const DeactivateAccount = () => {
     const { playerType } = useEventDataStore()
     const { data: users, isFetching } = useQuery<UsersType[]>({
         queryKey: ['users'],
@@ -31,6 +29,7 @@ const DeactivateAccountPage = () => {
         }))
     })
 
+
     if (isFetching) return null
 
     const handleToggle = (userId: string) => {
@@ -39,10 +38,9 @@ const DeactivateAccountPage = () => {
             [userId]: !prev[userId]
         }))
     }
-
-    return (
-        <View>
-            <Text> Unassigned {playerType}</Text>
+  return (
+    <View>
+        <Text>ปิดบัญชีครับ (header)</Text>
             {users?.map(user => (
                 <Checkbox.Item
                     key={user.userId}
@@ -53,7 +51,7 @@ const DeactivateAccountPage = () => {
             ))}
             <Button onPress={() => mutate()}> ปิดบัญชี </Button>
         </View>
-    )
+  )
 }
 
-export default DeactivateAccountPage
+export default DeactivateAccount

@@ -1,9 +1,9 @@
 import { View, Text, Alert } from 'react-native'
 import React from 'react'
-import Button from '@/components/ui/button'
+import Button from '../ui/button'
 import axios from '@/libs/axios'
 
-const AddNewAccount = () => {
+const ActivateAccount = () => {
     const addNewAccount = async () => {
         try {
             
@@ -17,12 +17,13 @@ const AddNewAccount = () => {
 
     return (
         <View>
+            <Text>เพิ่มบัญชีครับ (header)</Text>
             <Button onPress={() => addNewAccount()}>
 
-                <Text>AddNewAccount</Text>
+                <Text>Add New Account</Text>
             </Button>
         </View>
     )
 }
 
-export default AddNewAccount
+export default ActivateAccount
