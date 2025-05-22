@@ -1,196 +1,205 @@
-import React, { useState } from 'react'
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
-/*import { GestureHandlerRootView } from 'react-native-gesture-handler'*/
-import SongCard from '@/components/song/card'
-import Text from '@/components/ui/text'
-import Background from '@/components/ui/background'
-import { useRouter } from 'expo-router'
-import Button from '@/components/ui/button'
-import { checkBackstageRole } from '@/utils/check-user-role'
-import { getCurrentSongService, updateCurrentSongService } from '@/services/event'
-import { useQuery } from '@tanstack/react-query'
-import { useEventDataStore } from '@/zustand/store'
-import { emitSocketEvent } from '@/hooks/use-socket-query'
-import { Modal as RnModal, Portal } from 'react-native-paper'
-import CloseButton from '@/assets/icons/close-square'
-import { useAppTheme } from '@/hooks/use-theme'
-import TextInput from '@/components/ui/text-input'
-import { notificationService } from '@/services/song'
+import React, { useState, useEffect } from 'react';
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Modal as RnModal, Portal } from 'react-native-paper';
+import { useQuery } from '@tanstack/react-query';
+import { MaterialIcons } from '@expo/vector-icons';
+import Background from '@/components/ui/background';
+import Button from '@/components/ui/button';
+import Text from '@/components/ui/text';
+import TextInput from '@/components/ui/text-input';
+import CloseButton from '@/assets/icons/close-square';
+import { checkBackstageRole } from '@/utils/check-user-role';
+import { getCurrentSongService, updateCurrentSongService } from '@/services/event';
+import { getSongListService, notificationService } from '@/services/song';
+import { useAppTheme } from '@/hooks/use-theme';
+import { emitSocketEvent } from '@/hooks/use-socket-query';
+import { useEventDataStore } from '@/zustand/store';
 
 function Run() {
-  const theme = useAppTheme()
-  const {eventId, songId, setSongId} = useEventDataStore()
+  const theme = useAppTheme();
+  const { eventId, songId, setSongId } = useEventDataStore();
+  const router = useRouter();
+  const isUserBackstage = checkBackstageRole();
 
-  const [openModal, setOpenModal] = useState(false)
-  const showModal = () => setOpenModal(true)
-
-  const router = useRouter()
-  const isUserBackstage = checkBackstageRole()
-  const { data: currentSong, isPending, isError } = useQuery({
-    queryKey: ['currentSong'],
-    queryFn: async () => {
-      const song = await getCurrentSongService(eventId)
-      setSongId(song.songId)
-      return song
-
-    }
-  })
+  const [openModal, setOpenModal] = useState(false);
+  const showModal = () => setOpenModal(true);
   const confirmCloseModal = () => {
     Alert.alert('คำเตือน', 'คุณต้องการยกเลิกการสร้าง event หรือไม่', [
-        {
-            text: 'Cancel',
-            style: 'cancel',
-        },
-        { text: 'OK', onPress: () => setOpenModal(false) }
-    ])
-}
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'OK', onPress: () => setOpenModal(false) },
+    ]);
+  };
 
-  if (isError || isPending) return
+  const { data: currentSong, isPending: loadingCurrent, isError } = useQuery({
+    queryKey: ['currentSong'],
+    queryFn: async () => {
+      const song = await getCurrentSongService(eventId);
+      setSongId(song.songId);
+      return song;
+    },
+  });
 
-  console.log(currentSong.songId)
+  const { data: songs = [] } = useQuery({
+    queryKey: ['songs', eventId],
+    queryFn: async () => await getSongListService(eventId),
+  });
+
+  if (isError || loadingCurrent) return null;
 
   return (
     <Background>
+      {/* Header */}
+      <View style={{ paddingHorizontal: 20, paddingTop: 16 }}>
+        <Text style={{ fontSize: 14, color: '#777' }}>รายการเพลงทั้งหมด</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, gap: 8 }}>
+          <MaterialIcons name="event" size={24} color="#4CAF50" />
+          <View>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>
+              งานเปิดบ้าน
+            </Text>
+            <Text style={{ fontSize: 14, color: '#555' }}>
+              01/12/24 | 01:00 - 05:00
+            </Text>
+          </View>
+        </View>
+        <View style={{ height: 1, backgroundColor: '#eee', marginTop: 12 }} />
+      </View>
 
-        <Text style={{ fontSize: 30 }}>งานเปิดบ้าน</Text>
-        <SongCard currentSongId={currentSong.songId} />
-
-      {
-        isUserBackstage ? (
-          <>
-            <Button
+      {/* Current Song List */}
+      <ScrollView style={{ marginTop: 10 }}>
+        {songs.map(item => {
+          const isCurrent = item.songId === currentSong.songId;
+          return (
+            <View
+              key={item.songId}
               style={{
-                position: 'absolute',
-                bottom: 10,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                right: 5,
-                borderRadius: 30,
-                height: 60,
-                width: 40,
+                backgroundColor: isCurrent ? '#E8F5E9' : '#FFF',
+                borderLeftWidth: isCurrent ? 4 : 1,
+                borderLeftColor: isCurrent ? '#4CAF50' : '#DDD',
+                borderWidth: 1,
+                borderColor: '#DDD',
+                padding: 12,
+                borderRadius: 10,
+                marginHorizontal: 20,
+                marginBottom: 10,
+                shadowColor: '#000',
+                shadowOpacity: 0.05,
+                shadowOffset: { width: 0, height: 2 },
+                shadowRadius: 4,
               }}
-              onPress={() => router.navigate('/song/create')}
             >
-              <View style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-
-                <Text style={{
-                  lineHeight: 40,
-                  width: 40,
-                  textAlign: 'center',
-                  height: '100%',
-                  fontSize: 40
-                }}>
-                  +
-                </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {isCurrent && (
+                  <MaterialIcons
+                    name="volume-up"
+                    size={20}
+                    color="#4CAF50"
+                    style={{ marginRight: 8 }}
+                  />
+                )}
+                <View>
+                  <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#333' }}>
+                    {item.songName} ({item.songKey})
+                  </Text>
+                  {isCurrent && (
+                    <Text style={{ fontSize: 12, color: '#4CAF50' }}>กำลังเล่น</Text>
+                  )}
+                </View>
               </View>
-            </Button>
+            </View>
+          );
+        })}
+      </ScrollView>
 
-            <Button onPress={() => setOpenModal(true)}>
-              Notification
-            </Button>
-          </>
+      {/* Buttons */}
+      {isUserBackstage && (
+        <View style={{ position: 'absolute', bottom: 20, right: 20, gap: 12 }}>
+          <Button
+            style={{
+              backgroundColor: '#4CAF50',
+              borderRadius: 30,
+              height: 50,
+              paddingHorizontal: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => router.navigate('/song/create')}
+          >
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
+              ➕ เพิ่มเพลง
+            </Text>
+          </Button>
 
-        ) : null
-      }
+          <Button
+            style={{
+              backgroundColor: '#FF9800',
+              borderRadius: 30,
+              height: 50,
+              paddingHorizontal: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={showModal}
+          >
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>🔔 แจ้งเตือน</Text>
+          </Button>
+        </View>
+      )}
 
       <Button
-        onPress={async () => {
-          await updateCurrentSongService(eventId)
-          emitSocketEvent()
-          // queryClient.invalidateQueries({ queryKey: ['currentSong'] })
-        }}
         style={{
           position: 'absolute',
-          bottom: 10,
-          flexDirection: 'row',
+          bottom: 20,
+          left: 20,
+          backgroundColor: '#2196F3',
+          borderRadius: 30,
+          height: 60,
+          paddingHorizontal: 24,
+          justifyContent: 'center',
           alignItems: 'center',
         }}
+        onPress={async () => {
+          await updateCurrentSongService(eventId);
+          emitSocketEvent();
+        }}
       >
-        <Text>Next Song</Text>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>⏭️ เพลงต่อไป</Text>
       </Button>
 
-      <React.Fragment>
-            <Portal>
-                <RnModal
-                    dismissable={false}
-                    visible={openModal}
-                    onDismiss={confirmCloseModal}
-                    contentContainerStyle={{
-                        backgroundColor: 'white',
-                        margin: 10,
-                        height: '80%',
-                    }}
-                >
-                    <CloseButton
-                        onPress={confirmCloseModal}
-                        style={{ alignSelf: 'flex-end' }}
-                        width={60}
-                        height={60}
-                    />
-                    <KeyboardAvoidingView
-                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    >
-                        <ScrollView
-                            keyboardShouldPersistTaps='handled'
-                        >
-                            <TextInput placeholder='ข้อความแจ้งเตือน (optional)'/>
-                            <Button onPress={async () => await notificationService(eventId, songId)}> แจ้งเตือน </Button>
-                        </ScrollView>
-                    </KeyboardAvoidingView>
-                </RnModal>
-            </Portal>
+      {/* Modal แจ้งเตือน */}
+      <Portal>
+        <RnModal
+          dismissable={false}
+          visible={openModal}
+          onDismiss={confirmCloseModal}
+          contentContainerStyle={{
+            backgroundColor: 'white',
+            margin: 20,
+            padding: 16,
+            borderRadius: 16,
+            height: '60%',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <CloseButton onPress={confirmCloseModal} style={{ alignSelf: 'flex-end' }} width={48} height={48} />
 
-            {isUserBackstage ?
-                (
-                    <Button
-                        style={{
-                            flex: 1,
-                            position: 'absolute',
-                            bottom: 10,
-                            right: 5,
-                            alignItems: 'center',
-                            backgroundColor: theme.colors.mainButton,
-                            borderRadius: 30,
-                            height: 60,
-                            width: 40,
-                        }}
-                        onPress={showModal}
-                    >
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                height: '100%',
-                            }}>
-
-
-                            <Text
-                                style={{
-                                    fontSize: 40,
-                                    lineHeight: 40,
-                                    textAlignVertical: 'center',
-                                    height: '100%',
-                                }}>
-                                +
-                            </Text>
-                        </View>
-                    </Button>
-                ) :
-                null
-            }
-
-
-        </React.Fragment>
-
-
-
-
+          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <ScrollView keyboardShouldPersistTaps="handled">
+              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 8 }}>แจ้งเตือนสมาชิก</Text>
+              <TextInput placeholder="ข้อความแจ้งเตือน (optional)" />
+              <Button
+                onPress={async () => await notificationService(eventId, songId)}
+                style={{ marginTop: 12 }}
+              >
+                ส่งแจ้งเตือน
+              </Button>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </RnModal>
+      </Portal>
     </Background>
-  )
+  );
 }
 
-export default Run
+export default Run;

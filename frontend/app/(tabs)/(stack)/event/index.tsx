@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ScrollView, View, ImageBackground } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { Snackbar } from 'react-native-paper'
 import { useQuery } from '@tanstack/react-query'
 import EventCard from '@/components/event/card'
@@ -27,11 +27,7 @@ const Index = () => {
   const onDismissSnackBar = () => seteErorSnackbarVisible(false)
 
   return (
-    <ImageBackground
-      source={require('@/assets/images/bg.jpg')} // ✅ เปลี่ยน path ตามของคุณ
-      resizeMode="cover"
-      style={{ flex: 1, padding: 20 }}
-    >
+    <View style={{ flex: 1, padding: 20, backgroundColor: '#f5f5f5' }}>
       <ScrollView
         contentContainerStyle={{
           flexDirection: 'row',
@@ -43,7 +39,7 @@ const Index = () => {
       >
         {events?.length === 0 ? (
           <View style={{ width: '100%', alignItems: 'center', marginTop: 40 }}>
-            <Text variant="titleLarge" style={{ color: 'white' }}>
+            <Text variant="titleLarge" style={{ color: '#999' }}>
               ไม่มี Event ขณะนี้
             </Text>
           </View>
@@ -77,7 +73,7 @@ const Index = () => {
           เกิดข้อผิดพลาดขณะโหลดข้อมูล
         </Snackbar>
       )}
-    </ImageBackground>
+    </View>
   )
 }
 

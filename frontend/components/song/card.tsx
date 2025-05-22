@@ -112,22 +112,26 @@ export default function Card({ currentSongId }: CardPropsType) {
 
 const styles = StyleSheet.create({
   rowItem: {
-    height: 100,
-    width: '90%',
+    height: 80,
+    width: '92%',
     alignSelf: 'center',
-    alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'blue',
-    borderRadius: 10,
-    marginBottom: 10,
+    paddingHorizontal: 16,
+    backgroundColor: '#EFEAFF',
+    borderRadius: 12,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
   },
   activeRowItem: {
-    backgroundColor: 'purple',
+    backgroundColor: '#e0f7fa', // light cyan when active
   },
   text: {
-    color: 'white',
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: '#111',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
