@@ -1,29 +1,51 @@
-import { View, Text, Alert } from 'react-native'
+import { View, Alert, StyleSheet } from 'react-native'
 import React from 'react'
 import Button from '../ui/button'
+import Text from '../ui/text'
 import axios from '@/libs/axios'
 
 const ActivateAccount = () => {
-    const addNewAccount = async () => {
-        try {
-            
-            await axios.get('/google-sheets/read')
-            Alert.alert('เพิ่มบัญชีสำเร็จ')
-        } catch (error) {
-            console.error(error)
-        }
-
+  const addNewAccount = async () => {
+    try {
+      await axios.get('/google-sheets/read')
+      Alert.alert('เพิ่มบัญชีสำเร็จ')
+    } catch (error) {
+      console.error(error)
     }
+  }
 
-    return (
-        <View>
-            <Text>เพิ่มบัญชีครับ (header)</Text>
-            <Button onPress={() => addNewAccount()}>
-
-                <Text>Add New Account</Text>
-            </Button>
-        </View>
-    )
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>เพิ่มบัญชีผู้ใช้ใหม่</Text>
+      <Button onPress={addNewAccount}>
+        <Text style={styles.buttonText}>เพิ่มบัญชี</Text>
+      </Button>
+    </View>
+  )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    borderRadius: 16,
+    backgroundColor: '#f0f0f0',
+    marginBottom: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  header: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+})
 
 export default ActivateAccount

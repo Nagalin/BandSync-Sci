@@ -73,7 +73,7 @@ export default function LoginScreen() {
         <Text style={styles.title}>SCI BAND</Text>
         <Text style={styles.subtitle}>Music Event Manager</Text>
 
-        <Button onPress={onPress}>Login with Discord 🎶</Button>
+        <Button onPress={onPress}>Login with Discord</Button>
       </View>
     </ImageBackground>
   );

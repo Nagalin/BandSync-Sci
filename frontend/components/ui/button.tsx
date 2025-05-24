@@ -15,11 +15,11 @@ const Button = ({ variant = 'primary', children, style, ...props }: ButtonPropsT
   const variantStyle = {
     primary: {
       backgroundColor: theme.colors.mainButton,
-      textColor: 'black',
+      textColor: '#000',
     },
     danger: {
       backgroundColor: theme.colors.dangerButton, 
-      textColor: 'black',
+      textColor: '#000',
     },
   }
 

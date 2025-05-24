@@ -1,57 +1,127 @@
-import { View } from 'react-native'
-import React, {  useState } from 'react'
+import { View, StyleSheet, Alert } from 'react-native'
+import React, { useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Checkbox } from 'react-native-paper'
 import Button from '@/components/ui/button'
 import axios from '@/libs/axios'
 import { useEventDataStore } from '@/zustand/store'
 import Text from '../ui/text'
+
 type UsersType = {
-    discordId:       string;
-    discordUsername: string;
-    firstName:       string;
-    isActive:        boolean;
-    lastName:        string;
-    nickName:        string;
-    userId:          string;
+  userId: string
+  nickName: string
+  isActive: boolean
 }
+
 const DeactivateAccount = () => {
-    const { playerType } = useEventDataStore()
-    const { data: users, isFetching } = useQuery<UsersType[]>({
-        queryKey: ['users'],
-        queryFn: async () => (await axios.get('/user')).data
-    })
+  const { data: users, isFetching } = useQuery<UsersType[]>({
+    queryKey: ['users'],
+    queryFn: async () => (await axios.get('/user')).data,
+  })
 
-    const [selectedUsers, setSelectedUsers] = useState<Record<string, boolean>>({})
-    const { mutate } = useMutation({
-        mutationFn: async () => (await axios.patch('/user/deactivate', {
-            userId: Object.keys(selectedUsers).filter(userId => selectedUsers[userId])
-        }))
-    })
+  const [selectedUsers, setSelectedUsers] = useState<Record<string, boolean>>({})
+  const { mutate } = useMutation({
+    mutationFn: async () =>
+      await axios.patch('/user/deactivate', {
+        userId: Object.keys(selectedUsers).filter((userId) => selectedUsers[userId]),
+      }),
+    onSuccess: () => {
+      Alert.alert('สำเร็จ', 'ปิดบัญชีสำเร็จแล้ว')
+    },
+  })
 
+  const handleToggle = (userId: string) => {
+    setSelectedUsers((prev) => ({
+      ...prev,
+      [userId]: !prev[userId],
+    }))
+  }
 
-    if (isFetching) return null
+  if (isFetching) return null
 
-    const handleToggle = (userId: string) => {
-        setSelectedUsers(prev => ({
-            ...prev,
-            [userId]: !prev[userId]
-        }))
-    }
   return (
-    <View>
-        <Text>ปิดบัญชีครับ (header)</Text>
-            {users?.map(user => (
-                <Checkbox.Item
-                    key={user.userId}
-                    label={user.nickName}
-                    status={selectedUsers[user.userId] ? 'checked' : 'unchecked'}
-                    onPress={() => handleToggle(user.userId)}
-                />
-            ))}
-            <Button onPress={() => mutate()}> ปิดบัญชี </Button>
-        </View>
+    <View style={styles.card}>
+      <Text style={styles.header}>เลือกผู้ใช้ที่ต้องการปิดบัญชี</Text>
+
+      {users
+        ?.filter((user) => user.isActive) // โชว์เฉพาะคนที่ยังไม่ถูกลบ
+        .map((user) => (
+          <View key={user.userId} style={styles.userRow}>
+            <Text style={styles.userText}>{user.nickName}</Text>
+            <Checkbox
+              status={selectedUsers[user.userId] ? 'checked' : 'unchecked'}
+              onPress={() => handleToggle(user.userId)}
+            />
+          </View>
+        ))}
+
+      <Button
+        onPress={() => {
+          const confirmedUsers = Object.keys(selectedUsers).filter(
+            (userId) => selectedUsers[userId]
+          )
+
+          if (confirmedUsers.length === 0) {
+            Alert.alert('แจ้งเตือน', 'กรุณาเลือกผู้ใช้ก่อนปิดบัญชี')
+            return
+          }
+
+          Alert.alert(
+            'ยืนยันการปิดบัญชี',
+            'คุณต้องการปิดบัญชีผู้ใช้ที่เลือกหรือไม่',
+            [
+              { text: 'ยกเลิก', style: 'cancel' },
+              {
+                text: 'ยืนยัน',
+                onPress: () => mutate(),
+              },
+            ]
+          )
+        }}
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>ปิดบัญชี</Text>
+      </Button>
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  card: {
+    padding: 16,
+    borderRadius: 16,
+    backgroundColor: '#f4f4f5',
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+    marginBottom: 24,
+  },
+  header: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  userRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  userText: {
+    fontSize: 18,
+    color: '#333',
+  },
+  button: {
+    marginTop: 12,
+    borderRadius: 16,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '600',
+  },
+})
 
 export default DeactivateAccount

@@ -175,7 +175,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
             }}
             >
 
-                {isBackstage ?
+                 {isBackstage ?
                     (
                         <>
 
@@ -192,7 +192,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                         </>
 
                     ) : null
-                }
+                } 
 
             </View>
         </View>

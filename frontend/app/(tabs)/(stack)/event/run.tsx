@@ -1,75 +1,109 @@
-import React, { useState, useEffect } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Modal as RnModal, Portal } from 'react-native-paper';
-import { useQuery } from '@tanstack/react-query';
-import { MaterialIcons } from '@expo/vector-icons';
-import Background from '@/components/ui/background';
-import Button from '@/components/ui/button';
-import Text from '@/components/ui/text';
-import TextInput from '@/components/ui/text-input';
-import CloseButton from '@/assets/icons/close-square';
-import { checkBackstageRole } from '@/utils/check-user-role';
-import { getCurrentSongService, updateCurrentSongService } from '@/services/event';
-import { getSongListService, notificationService } from '@/services/song';
-import { useAppTheme } from '@/hooks/use-theme';
-import { emitSocketEvent } from '@/hooks/use-socket-query';
-import { useEventDataStore } from '@/zustand/store';
+import React, { useState } from 'react'
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
+import { useRouter } from 'expo-router'
+import { Modal as RnModal, Portal } from 'react-native-paper'
+import { useQuery } from '@tanstack/react-query'
+import { MaterialIcons } from '@expo/vector-icons'
+import Background from '@/components/ui/background'
+import Button from '@/components/ui/button'
+import Text from '@/components/ui/text'
+import TextInput from '@/components/ui/text-input'
+import CloseButton from '@/assets/icons/close-square'
+import { checkBackstageRole } from '@/utils/check-user-role'
+import {
+  getCurrentSongService,
+  updateCurrentSongService,
+  getEventInfoService,
+} from '@/services/event'
+import { getSongListService, notificationService } from '@/services/song'
+import { useAppTheme } from '@/hooks/use-theme'
+import { emitSocketEvent } from '@/hooks/use-socket-query'
+import { useEventDataStore } from '@/zustand/store'
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('th-TH', {
+    day: '2-digit',
+    month: '2-digit',
+    year: '2-digit',
+  })
+
+const formatTime = (date: Date) =>
+  date.toLocaleTimeString('th-TH', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  })
 
 function Run() {
-  const theme = useAppTheme();
-  const { eventId, songId, setSongId } = useEventDataStore();
-  const router = useRouter();
-  const isUserBackstage = checkBackstageRole();
+  const theme = useAppTheme()
+  const { eventId, songId, setSongId } = useEventDataStore()
+  const router = useRouter()
+  const isUserBackstage = checkBackstageRole()
 
-  const [openModal, setOpenModal] = useState(false);
-  const showModal = () => setOpenModal(true);
+  const [openModal, setOpenModal] = useState(false)
+  const showModal = () => setOpenModal(true)
   const confirmCloseModal = () => {
     Alert.alert('คำเตือน', 'คุณต้องการยกเลิกการสร้าง event หรือไม่', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'OK', onPress: () => setOpenModal(false) },
-    ]);
-  };
+    ])
+  }
 
   const { data: currentSong, isPending: loadingCurrent, isError } = useQuery({
     queryKey: ['currentSong'],
     queryFn: async () => {
-      const song = await getCurrentSongService(eventId);
-      setSongId(song.songId);
-      return song;
+      const song = await getCurrentSongService(eventId)
+      setSongId(song.songId)
+      return song
     },
-  });
+  })
 
   const { data: songs = [] } = useQuery({
     queryKey: ['songs', eventId],
     queryFn: async () => await getSongListService(eventId),
-  });
+  })
 
-  if (isError || loadingCurrent) return null;
+  const { data: event } = useQuery({
+    queryKey: ['event-detail', eventId],
+    queryFn: () => getEventInfoService(eventId),
+    enabled: !!eventId,
+  })
+
+  const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined
+  const startTime = event?.startTime ? new Date(event.startTime) : undefined
+  const endTime = event?.endTime ? new Date(event.endTime) : undefined
+
+  if (isError || loadingCurrent) return null
 
   return (
     <Background>
       {/* Header */}
       <View style={{ paddingHorizontal: 20, paddingTop: 16 }}>
         <Text style={{ fontSize: 14, color: '#777' }}>รายการเพลงทั้งหมด</Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, gap: 8 }}>
-          <MaterialIcons name="event" size={24} color="#4CAF50" />
-          <View>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>
-              งานเปิดบ้าน
-            </Text>
-            <Text style={{ fontSize: 14, color: '#555' }}>
-              01/12/24 | 01:00 - 05:00
-            </Text>
+
+        {event && (
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, gap: 8 }}>
+            <MaterialIcons name="event" size={24} color="#4CAF50" />
+            <View>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>
+                {event.eventName}
+              </Text>
+              <Text style={{ fontSize: 14, color: '#555' }}>
+                {eventDate ? formatDate(eventDate) : '-'} |{' '}
+                {startTime ? formatTime(startTime) : '-'} -{' '}
+                {endTime ? formatTime(endTime) : '-'}
+              </Text>
+            </View>
           </View>
-        </View>
+        )}
+
         <View style={{ height: 1, backgroundColor: '#eee', marginTop: 12 }} />
       </View>
 
       {/* Current Song List */}
       <ScrollView style={{ marginTop: 10 }}>
-        {songs.map(item => {
-          const isCurrent = item.songId === currentSong.songId;
+        {songs.map((item) => {
+          const isCurrent = item.songId === currentSong.songId
           return (
             <View
               key={item.songId}
@@ -108,7 +142,7 @@ function Run() {
                 </View>
               </View>
             </View>
-          );
+          )
         })}
       </ScrollView>
 
@@ -117,25 +151,9 @@ function Run() {
         <View style={{ position: 'absolute', bottom: 20, right: 20, gap: 12 }}>
           <Button
             style={{
-              backgroundColor: '#4CAF50',
-              borderRadius: 30,
-              height: 50,
-              paddingHorizontal: 20,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => router.navigate('/song/create')}
-          >
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
-              ➕ เพิ่มเพลง
-            </Text>
-          </Button>
-
-          <Button
-            style={{
               backgroundColor: '#FF9800',
               borderRadius: 30,
-              height: 50,
+              height: 60,
               paddingHorizontal: 20,
               justifyContent: 'center',
               alignItems: 'center',
@@ -160,11 +178,28 @@ function Run() {
           alignItems: 'center',
         }}
         onPress={async () => {
-          await updateCurrentSongService(eventId);
-          emitSocketEvent();
+          const now = new Date()
+          const eventStart = event?.startTime ? new Date(event.startTime) : null
+          console.log('eventStart', eventStart)
+          console.log('now', now)
+          if (eventStart && now < eventStart) {
+            Alert.alert('ไม่สามารถเริ่ม Event ได้', 'ยังไม่ถึงเวลาเริ่มงาน')
+            return
+          }
+
+          Alert.alert('ยืนยัน', 'คุณต้องการเลื่อนไปเพลงถัดไปหรือไม่', [
+            { text: 'ยกเลิก', style: 'cancel' },
+            {
+              text: 'ยืนยัน',
+              onPress: async () => {
+                await updateCurrentSongService(eventId)
+                emitSocketEvent()
+              },
+            },
+          ])
         }}
       >
-        <Text style={{ color: 'white', fontWeight: 'bold' }}>⏭️ เพลงต่อไป</Text>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>⏭️ เพลงถัดไป</Text>
       </Button>
 
       {/* Modal แจ้งเตือน */}
@@ -182,11 +217,20 @@ function Run() {
             justifyContent: 'flex-start',
           }}
         >
-          <CloseButton onPress={confirmCloseModal} style={{ alignSelf: 'flex-end' }} width={48} height={48} />
+          <CloseButton
+            onPress={confirmCloseModal}
+            style={{ alignSelf: 'flex-end' }}
+            width={48}
+            height={48}
+          />
 
-          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          >
             <ScrollView keyboardShouldPersistTaps="handled">
-              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 8 }}>แจ้งเตือนสมาชิก</Text>
+              <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 8 }}>
+                แจ้งเตือนสมาชิก
+              </Text>
               <TextInput placeholder="ข้อความแจ้งเตือน (optional)" />
               <Button
                 onPress={async () => await notificationService(eventId, songId)}
@@ -199,7 +243,7 @@ function Run() {
         </RnModal>
       </Portal>
     </Background>
-  );
+  )
 }
 
-export default Run;
+export default Run
