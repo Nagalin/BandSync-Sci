@@ -7,10 +7,29 @@ import Background from '@/components/ui/background'
 import { useRouter } from 'expo-router'
 import Button from '@/components/ui/button'
 import { checkBackstageRole } from '@/utils/check-user-role'
+import { useQuery } from '@tanstack/react-query'
+import { getEventInfoService } from '@/services/event'
+import { useEventDataStore } from '@/zustand/store'
 
 function Index() {
+  const { eventId } = useEventDataStore()
+  const { data: eventInfo, isFetching } = useQuery({
+    queryKey: ['eventInfo'],
+    queryFn: async () => {
+      const data = await getEventInfoService(eventId)
+      // Parse dates from strings to Date objects
+      return {
+        ...data,
+        eventDate: new Date(data.eventDate),
+        startTime: new Date(data.startTime),
+        endTime: new Date(data.endTime)
+      }
+    }
+  })
   const router = useRouter()
   const isUserBackstage = checkBackstageRole()
+
+  if(isFetching) return
 
   return (
     <Background>
@@ -28,10 +47,10 @@ function Index() {
     <MaterialIcons name="event" size={24} color="#4CAF50" />
     <View>
       <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>
-        งานเปิดบ้าน
+        {eventInfo?.eventName}
       </Text>
       <Text style={{ fontSize: 14, color: '#555' }}>
-        01/12/24 | 01:00 - 05:00
+        {eventInfo?.eventDate?.toLocaleDateString('en-GB')} | {eventInfo?.startTime?.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} - {eventInfo?.endTime?.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
       </Text>
     </View>
   </View>
