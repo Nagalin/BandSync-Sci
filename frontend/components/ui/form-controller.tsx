@@ -58,6 +58,7 @@ const FormController = <T extends FieldValues>({
 
                             <TextInput
                                 keyboardType={keyboardType}
+                                style={style}
                                 label={label}
                                 editable={isBackstage}
                                 onBlur={onBlur}

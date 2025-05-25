@@ -76,7 +76,8 @@ export class GoogleSheetsService {
         }) 
         const existingUser = await this.prisma.user.findFirst({
             where: {
-                discordUsername: currNewMember[1]
+                discordUsername: currNewMember[1],
+                isActive: true
             }
         })
 

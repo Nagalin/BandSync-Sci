@@ -8,6 +8,7 @@ export class UserService {
     async findAll(discordId: string) {
         return await this.prisma.user.findMany({
             where: {
+                isActive: true,
                 NOT: {
                     discordId
                 }
@@ -34,6 +35,7 @@ export class UserService {
     async deactivateUsers(userId: string[]) {
         return await this.prisma.user.updateMany({
             where: {
+                isActive: true,
                 userId: {
                     in: userId
                 },

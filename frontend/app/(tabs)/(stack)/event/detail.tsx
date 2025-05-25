@@ -1,5 +1,5 @@
 import React from 'react'
-import { Pressable, View } from 'react-native'
+import { Alert, Pressable, View } from 'react-native'
 import { Link, useRouter } from 'expo-router'
 import { Skeleton } from 'moti/skeleton'
 import { useQuery } from '@tanstack/react-query'
@@ -58,6 +58,7 @@ const Index = () => {
 
                         <Button
                             onPress={() => {
+                                if(!isEventDay) return Alert.alert('คำเตือน', 'ไม่สามารถเริ่ม Event ได้เนื่องจากยังไม่ถึงวันกำหนดการ')
                                 startEventService(eventId)
                                 router.push('/event/run')
                             }}

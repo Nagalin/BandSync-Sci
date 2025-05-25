@@ -178,6 +178,7 @@ export class SongService {
   async notification(songId: string) {
     const players = await this.prisma.user.findMany({
       where: {
+        isActive: true,
         songs: {
           some: {
             songId: songId

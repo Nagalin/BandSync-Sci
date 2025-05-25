@@ -13,7 +13,7 @@ export class AdminService {
         if (!adminRole) throw new Error('Admin role not found');
 
         await this.prisma.user.update({
-            where: { userId: newAdminId },
+            where: { userId: newAdminId , isActive: true},
             data: {
                 roles: {
                     connect: { roleId: adminRole.roleId },
@@ -22,7 +22,7 @@ export class AdminService {
         });
 
         await this.prisma.user.update({
-            where: { userId: currentAdminId },
+            where: { userId: currentAdminId, isActive: true },
             data: {
                 roles: {
                     disconnect: { roleId: adminRole.roleId },

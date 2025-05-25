@@ -11,6 +11,7 @@ export class PlayerService {
     async findAll(songId: string, playerType: PlayerType) {
         return await this.prisma.user.findMany({
             where: {
+                isActive: true,
                 songs: {
                     some: {
                         songId
@@ -34,6 +35,7 @@ export class PlayerService {
 
         const players = await this.prisma.user.findMany({
             where: {
+                isActive: true,
                 songs: {
                     some: {
                         songId
@@ -90,6 +92,7 @@ export class PlayerService {
     async findUnassignedPlayer(songId: string, playerType: PlayerType) {
         return await this.prisma.user.findMany({
             where: {
+                isActive: true,
                 songs: {
                     none: {
                         songId
@@ -116,7 +119,7 @@ export class PlayerService {
 
         for (const userId of playerIds) {
             const user = await this.prisma.user.findFirst({
-                where: { userId },
+                where: { userId, isActive: true },
                 include: { roles: true }
             })
 
@@ -162,7 +165,7 @@ export class PlayerService {
     async unassignPlayer(songId: string, playerIds: string[]) {
         for (const userId of playerIds) {
             const user = await this.prisma.user.findFirst({
-                where: { userId },
+                where: { userId, isActive: true },
                 include: { roles: true }
             })
 
