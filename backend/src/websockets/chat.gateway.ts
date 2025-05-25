@@ -10,7 +10,7 @@ import { Logger } from '@nestjs/common';
 
 @WebSocketGateway({
   cors: {
-    origin: '*', // In production, specify your frontend URL
+    origin: '*'
   },
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {

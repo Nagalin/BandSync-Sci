@@ -43,7 +43,7 @@ export class SongService {
     }).then(songs => songs.map(song => ({
       ...song,
       isAssigned: song.users.length > 0,
-      users: undefined // Remove the users array from the response
+      users: undefined
     })))
   }
 

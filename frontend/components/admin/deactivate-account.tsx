@@ -44,7 +44,7 @@ const DeactivateAccount = () => {
       <Text style={styles.header}>เลือกผู้ใช้ที่ต้องการปิดบัญชี</Text>
 
       {users
-        ?.filter((user) => user.isActive) // โชว์เฉพาะคนที่ยังไม่ถูกลบ
+        ?.filter((user) => user.isActive)
         .map((user) => (
           <View key={user.userId} style={styles.userRow}>
             <Text style={styles.userText}>{user.nickName}</Text>

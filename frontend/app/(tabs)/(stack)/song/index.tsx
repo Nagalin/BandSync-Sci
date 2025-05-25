@@ -17,7 +17,6 @@ function Index() {
     queryKey: ['eventInfo'],
     queryFn: async () => {
       const data = await getEventInfoService(eventId)
-      // Parse dates from strings to Date objects
       return {
         ...data,
         eventDate: new Date(data.eventDate),

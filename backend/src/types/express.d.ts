@@ -1,7 +1,4 @@
-// src/types/express.d.ts
-
 import { Prisma } from "@prisma/client";
-
 
 type UserType ={
     userId: string,
@@ -22,7 +19,7 @@ type RolesType = {
 declare global {
   namespace Express {
     interface Request {
-      user?: UserType;  // Add the `user` property to the Request object
+      user?: UserType;
     }
   }
 }

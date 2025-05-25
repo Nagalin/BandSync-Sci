@@ -6,7 +6,7 @@ import { getSongListService, SongList } from '@/services/song';
 import { useEventDataStore } from '@/zustand/store';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import axios from '@/libs/axios';
-import { checkBackstageRole } from '@/utils/check-user-role';
+import { checkBackstageRole, checkPlayerRole } from '@/utils/check-user-role';
 import { Alert } from 'react-native';
 
 type CardPropsType = {
@@ -15,6 +15,7 @@ type CardPropsType = {
 
 export default function Card({ currentSongId }: CardPropsType) {
   const router = useRouter();
+  const isPlayer = checkPlayerRole()
   const { setSongId, eventId } = useEventDataStore();
   const { data: songsData = [], isLoading } = useQuery({
     queryKey: ['songs', eventId],
@@ -77,45 +78,49 @@ export default function Card({ currentSongId }: CardPropsType) {
 
   return (
     <View>
-      <View>
-        <Text onPress={filterSong}>แสดงเฉพาะเพลงของฉัน</Text>
-      </View>
+      {isPlayer ?
+        <View>
+          <Text onPress={filterSong}>แสดงเฉพาะเพลงของฉัน</Text>
+        </View>
+        : null
+      }
 
-    <DraggableFlatList
-      data={songs}
-      onDragEnd={({ data }) => {
-        if (JSON.stringify(data) === JSON.stringify(songs)) return;
 
-        if (!isUserBackstage) return;
+      <DraggableFlatList
+        data={songs}
+        onDragEnd={({ data }) => {
+          if (JSON.stringify(data) === JSON.stringify(songs)) return;
 
-        Alert.alert(
-          'ยืนยันการจัดลำดับ',
-          'คุณต้องการย้ายลำดับเพลงหรือไม่?',
-          [
-            {
-              text: 'ยกเลิก',
-              style: 'cancel',
-            },
-            {
-              text: 'ยืนยัน',
-              onPress: async () => {
-                setSongs(data);
-                try {
-                  await updateOrder(data);
-                  Alert.alert('สำเร็จ', 'จัดลำดับเพลงใหม่เรียบร้อยแล้ว');
-                } catch {
-                  Alert.alert('เกิดข้อผิดพลาด', 'ไม่สามารถอัปเดตลำดับเพลงได้');
-                }
+          if (!isUserBackstage) return;
+
+          Alert.alert(
+            'ยืนยันการจัดลำดับ',
+            'คุณต้องการย้ายลำดับเพลงหรือไม่?',
+            [
+              {
+                text: 'ยกเลิก',
+                style: 'cancel',
               },
-            },
-          ],
-          { cancelable: true }
-        );
-      }}
-      keyExtractor={(item) => item.songId.toString()}
-      renderItem={renderItem}
-      activationDistance={10}
-    />
+              {
+                text: 'ยืนยัน',
+                onPress: async () => {
+                  setSongs(data);
+                  try {
+                    await updateOrder(data);
+                    Alert.alert('สำเร็จ', 'จัดลำดับเพลงใหม่เรียบร้อยแล้ว');
+                  } catch {
+                    Alert.alert('เกิดข้อผิดพลาด', 'ไม่สามารถอัปเดตลำดับเพลงได้');
+                  }
+                },
+              },
+            ],
+            { cancelable: true }
+          );
+        }}
+        keyExtractor={(item) => item.songId.toString()}
+        renderItem={renderItem}
+        activationDistance={10}
+      />
     </View>
 
   );

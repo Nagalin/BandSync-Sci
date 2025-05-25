@@ -14,7 +14,7 @@ import { SongService } from 'src/song/song.service';
 import { SongDto } from 'src/song/dto/song.dto';
 import { BackstageGuard } from 'src/guard/auth.guard';
 import { ConflictException, NotFoundException } from 'src/exception/custom-exception';
-import { ReorderSongDto } from 'src/song/dto/song.dto'; // <-- เพิ่ม import DTO สำหรับ reorder
+import { ReorderSongDto } from 'src/song/dto/song.dto';
 import { Request as ExpressRequest } from 'express'
 
 @Controller('events/:eventId/songs')
@@ -62,7 +62,7 @@ export class SongController {
   }
 
   @Patch('reorder')
-  @UseGuards(BackstageGuard) // ใช้ Guard เพื่อให้ reorder ได้เฉพาะ backstage
+  @UseGuards(BackstageGuard)
   async reorderSongs(
     @Param('eventId') eventId: string,
     @Body() reorderSongDto: ReorderSongDto,

@@ -61,7 +61,6 @@ const Index = () => {
                                 startEventService(eventId)
                                 router.push('/event/run')
                             }}
-                            // disabled={!isEventDay}
                             style={{ width: '90%' }}
                         >
                             เริ่ม Event

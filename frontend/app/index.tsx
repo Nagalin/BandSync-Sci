@@ -14,7 +14,7 @@ import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import axios from '@/libs/axios';
 import { useSocketQuery } from '@/hooks/use-socket-query';
-import Button from '@/components/ui/button'; // ปุ่มที่ออกแบบไว้ให้ดูสวยขึ้น
+import Button from '@/components/ui/button'
 
 WebBrowser.maybeCompleteAuthSession();
 

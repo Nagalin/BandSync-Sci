@@ -12,7 +12,6 @@ export class GoogleSheetsService {
   private auth;
 
   constructor(private readonly prisma: PrismaService,private readonly client: Client) {
-    // Initialize the Google Sheets API
     this.sheets = google.sheets('v4');
     this.auth = new google.auth.GoogleAuth({
       credentials: key,
@@ -41,23 +40,20 @@ export class GoogleSheetsService {
         'นักร้อง': UserRole.vocalist,
         'กีตาร์': UserRole.guitarist
     }
-    // try {
-    //   First get the sheet names
+    
       const sheetNames = await this.getSheetNames(spreadsheetId);
       if (sheetNames.length === 0) {
         throw new Error('No sheets found in the spreadsheet');
       }
 
-      // Use the first sheet if no sheet name is specified in the range
       const sheetName = range.includes('!') ? range.split('!')[0] : sheetNames[0];
       const cellRange = range.includes('!') ? range.split('!')[1] : range;
 
-      // Validate sheet name
       if (!sheetNames.includes(sheetName)) {
         throw new Error(`Sheet "${sheetName}" not found. Available sheets: ${sheetNames.join(', ')}`);
       }
       const guild = this.client.guilds.cache.get(discordServerId)
-      await guild.members.fetch(); // populates guild.members.cache
+      await guild.members.fetch();
 
       let discordMember: Record<string,string> = {}
 
@@ -75,7 +71,6 @@ export class GoogleSheetsService {
         const discordId = discordMember[currNewMember[1]]
         const playerRole = roleMapping[currNewMember[2]]
         
-        // First find or create the role
         const role = await this.prisma.role.findFirst({
           where: { role: playerRole }
         }) 
@@ -106,32 +101,5 @@ export class GoogleSheetsService {
         }
 
       })
-
-     
-      
-    //   // Process each member and get their Discord ID
-    //   const processedMembers = await Promise.all(response.data.values.map(async currMember => {
-    //     const username = currMember[1];
-    //     try {
-    //       // Search for the user in all guilds the bot has access to
-    //       const user = await this.client.users.fetch('V_Unknown_V');
-    //       if (user) {
-    //         return {
-    //           ...currMember,
-    //           discordId: user.id
-    //         };
-    //       }
-    //     } catch (error) {
-    //     }
-    //     return {
-    //       ...currMember,
-    //       discordId: null
-    //     };
-    //   }));
-
-    //   return processedMembers;
-    // } catch (error) {
-    //   throw new Error(`Failed to read Google Sheet: ${error.message}`);
-    // }
   }
 } 

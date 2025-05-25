@@ -11,7 +11,6 @@ type ButtonPropsType = {
 const Button = ({ variant = 'primary', children, style, ...props }: ButtonPropsType) => {
   const theme = useAppTheme()
 
-  // Define styles for each variant
   const variantStyle = {
     primary: {
       backgroundColor: theme.colors.mainButton,

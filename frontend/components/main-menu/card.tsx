@@ -14,7 +14,6 @@ const Card = ({  children }: CardPropsType) => {
     
     style={{
       borderStyle: 'solid',
-    //   width: '45%',
       marginTop: 15,
       height: 150,
       display: 'flex',

@@ -46,7 +46,6 @@ const TransferAdminScreen = () => {
             try {
               await axios.patch('/admin/transfer', { newAdminId: selectedUserId })
 
-              // ลบ role admin ออกจาก SecureStore
               const storedRoles = await SecureStore.getItemAsync('roles')
               if (storedRoles) {
                 const parsedRoles = JSON.parse(storedRoles)

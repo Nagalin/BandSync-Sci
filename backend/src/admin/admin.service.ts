@@ -12,7 +12,6 @@ export class AdminService {
 
         if (!adminRole) throw new Error('Admin role not found');
 
-        // เพิ่ม role admin ให้ user ใหม่
         await this.prisma.user.update({
             where: { userId: newAdminId },
             data: {
@@ -22,7 +21,6 @@ export class AdminService {
             },
         });
 
-        // ลบ role admin จาก user เดิม
         await this.prisma.user.update({
             where: { userId: currentAdminId },
             data: {
