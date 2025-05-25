@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
-import { Text, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text, Pressable, StyleSheet, ActivityIndicator, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { getSongListService, SongList } from '@/services/song';
 import { useEventDataStore } from '@/zustand/store';
@@ -22,6 +22,10 @@ export default function Card({ currentSongId }: CardPropsType) {
   });
 
   const [songs, setSongs] = useState<SongList[]>([]);
+  const filterSong = () => {
+    setSongs(prev => prev.filter(curr => curr.isAssigned))
+  }
+
   const isUserBackstage = checkBackstageRole();
 
   useEffect(() => {
@@ -72,6 +76,11 @@ export default function Card({ currentSongId }: CardPropsType) {
   }
 
   return (
+    <View>
+      <View>
+        <Text onPress={filterSong}>แสดงเฉพาะเพลงของฉัน</Text>
+      </View>
+
     <DraggableFlatList
       data={songs}
       onDragEnd={({ data }) => {
@@ -107,6 +116,8 @@ export default function Card({ currentSongId }: CardPropsType) {
       renderItem={renderItem}
       activationDistance={10}
     />
+    </View>
+
   );
 }
 

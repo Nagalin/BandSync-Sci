@@ -8,20 +8,23 @@ import {
   Param,
   Body,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { SongService } from 'src/song/song.service';
 import { SongDto } from 'src/song/dto/song.dto';
 import { BackstageGuard } from 'src/guard/auth.guard';
 import { ConflictException, NotFoundException } from 'src/exception/custom-exception';
 import { ReorderSongDto } from 'src/song/dto/song.dto'; // <-- เพิ่ม import DTO สำหรับ reorder
+import { Request as ExpressRequest } from 'express'
 
 @Controller('events/:eventId/songs')
 export class SongController {
   constructor(private readonly songService: SongService) {}
 
   @Get()
-  async findAll(@Param('eventId') eventId: string) {
-    const songs = await this.songService.findAll(eventId);
+  async findAll(@Param('eventId') eventId: string, @Request() req: ExpressRequest) {
+    console.log(req.user.userId)
+    const songs = await this.songService.findAll(eventId, req.user.userId);
     return songs;
   }
 

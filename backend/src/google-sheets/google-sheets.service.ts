@@ -56,14 +56,12 @@ export class GoogleSheetsService {
       if (!sheetNames.includes(sheetName)) {
         throw new Error(`Sheet "${sheetName}" not found. Available sheets: ${sheetNames.join(', ')}`);
       }
-    // console.log('here')
       const guild = this.client.guilds.cache.get(discordServerId)
       await guild.members.fetch(); // populates guild.members.cache
 
       let discordMember: Record<string,string> = {}
 
     guild.members.cache.forEach(member => {
-      console.log(`${member.user.tag} (${member.id})`);
       discordMember[member.user.tag] = member.id;
     });
 
@@ -105,7 +103,6 @@ export class GoogleSheetsService {
                 }
             })
         } else {
-            console.log('already exist')
         }
 
       })
@@ -118,7 +115,6 @@ export class GoogleSheetsService {
     //     try {
     //       // Search for the user in all guilds the bot has access to
     //       const user = await this.client.users.fetch('V_Unknown_V');
-    //       console.log(user)
     //       if (user) {
     //         return {
     //           ...currMember,
@@ -126,7 +122,6 @@ export class GoogleSheetsService {
     //         };
     //       }
     //     } catch (error) {
-    //       console.log(`Could not find Discord user for username: ${username}`);
     //     }
     //     return {
     //       ...currMember,

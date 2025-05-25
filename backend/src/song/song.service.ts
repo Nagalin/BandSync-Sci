@@ -20,18 +20,31 @@ export class SongService {
     this.logger.warn(message);
   }
 
-  async findAll(eventId: string) {
+  async findAll(eventId: string, userId: string) {
     return await this.prisma.song.findMany({
       select: {
         songId: true,
         songName: true,
         songKey: true,
+        songOrder: true,
+        users: {
+          where: {
+            userId: userId
+          },
+          select: {
+            userId: true
+          }
+        }
       },
       orderBy: {
         songOrder: 'asc'
       },
       where: { eventId }
-    })
+    }).then(songs => songs.map(song => ({
+      ...song,
+      isAssigned: song.users.length > 0,
+      users: undefined // Remove the users array from the response
+    })))
   }
 
   async findOne(songId: string, eventId: string) {
@@ -174,7 +187,6 @@ export class SongService {
     })
 
     players.map(async curr => {
-      console.log("debugging: ",curr)
       const user = await this.client.users.fetch(curr.discordId)
       await user.send('Hello! This is an automatic DM from the bot.')
     })

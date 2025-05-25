@@ -180,8 +180,6 @@ function Run() {
         onPress={async () => {
           const now = new Date()
           const eventStart = event?.startTime ? new Date(event.startTime) : null
-          console.log('eventStart', eventStart)
-          console.log('now', now)
           if (eventStart && now < eventStart) {
             Alert.alert('ไม่สามารถเริ่ม Event ได้', 'ยังไม่ถึงเวลาเริ่มงาน')
             return

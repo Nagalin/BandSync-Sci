@@ -29,34 +29,34 @@ function Index() {
   const router = useRouter()
   const isUserBackstage = checkBackstageRole()
 
-  if(isFetching) return
+  if (isFetching) return
 
   return (
     <Background>
 
       {/* 🔼 Header */}
-   <View style={{ paddingHorizontal: 20, paddingTop: 16 }}>
-  <Text style={{ fontSize: 14, color: '#777' }}>รายการเพลงทั้งหมด</Text>
+      <View style={{ paddingHorizontal: 20, paddingTop: 16 }}>
+        <Text style={{ fontSize: 14, color: '#777' }}>รายการเพลงทั้งหมด</Text>
 
-  <View style={{
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 4,
-    gap: 8,
-  }}>
-    <MaterialIcons name="event" size={24} color="#4CAF50" />
-    <View>
-      <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>
-        {eventInfo?.eventName}
-      </Text>
-      <Text style={{ fontSize: 14, color: '#555' }}>
-        {eventInfo?.eventDate?.toLocaleDateString('en-GB')} | {eventInfo?.startTime?.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} - {eventInfo?.endTime?.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
-      </Text>
-    </View>
-  </View>
-
-  <View style={{ height: 1, backgroundColor: '#eee', marginTop: 12 }} />
-</View>
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 4,
+          gap: 8,
+        }}>
+          <MaterialIcons name="event" size={24} color="#4CAF50" />
+          <View>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>
+              {eventInfo?.eventName}
+            </Text>
+            <Text style={{ fontSize: 14, color: '#555' }}>
+              {eventInfo?.eventDate?.toLocaleDateString('en-GB')} | {eventInfo?.startTime?.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} - {eventInfo?.endTime?.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
+            </Text>
+          </View>
+        </View>
+       
+        <View style={{ height: 1, backgroundColor: '#eee', marginTop: 12 }} />
+      </View>
 
 
       {/* 🎵 Song Queue */}

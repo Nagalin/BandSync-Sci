@@ -25,7 +25,6 @@ export function useSocketQuery() {
 
   useEffect(() => {
     const listener = () => {
-      console.log('event received')
       queryClient.invalidateQueries({ queryKey: ['currentSong'] })
     }
 
