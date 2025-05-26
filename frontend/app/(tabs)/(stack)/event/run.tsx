@@ -44,7 +44,11 @@ function Run() {
   const isUserBackstage = checkBackstageRole()
 
   const [openModal, setOpenModal] = useState(false)
-  const showModal = () => setOpenModal(true)
+  const showModal = () => {
+    if(isLastSong) return Alert.alert('คำเตือน', 'ไม่สามารถแจ้งเตือนในเพลงถัดไปได้เนื่องจากเพลงนี้เป็นเพลงสุดท้ายแล้ว')
+  
+    setOpenModal(true)
+  }
   const confirmCloseModal = () => {
     Alert.alert('คำเตือน', 'คุณต้องการยกเลิกการสร้าง event หรือไม่', [
       { text: 'Cancel', style: 'cancel' },
@@ -59,6 +63,8 @@ function Run() {
   const { control, handleSubmit, register } = useForm<FormType>()
 
   const onSubmit = handleSubmit(async (data) => {
+    if(isLastSong) return Alert.alert('คำเตือน', 'ไม่สามารถไปเพลงถัดไปได้เนื่องจากเพลงนี้เป็นเพลงสุดท้ายแล้ว')
+
     await notificationService(eventId, songId, data.notiMessage)
   })
 
@@ -81,6 +87,9 @@ function Run() {
     queryFn: () => getEventInfoService(eventId),
     enabled: !!eventId,
   })
+  const lastIndex = songs.length - 1
+  const isLastSong = songs[lastIndex].songId === currentSong?.songId
+
 
   const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined
   const startTime = event?.startTime ? new Date(event.startTime) : undefined
@@ -163,6 +172,7 @@ function Run() {
       {isUserBackstage && (
         <View style={{ position: 'absolute', bottom: 20, right: 20, gap: 12 }}>
           <Button
+          
             style={{
               backgroundColor: '#FF9800',
               borderRadius: 30,
@@ -179,6 +189,7 @@ function Run() {
       )}
 
       <Button
+      // disabled={isLastSong}
         style={{
           position: 'absolute',
           bottom: 20,
@@ -191,6 +202,7 @@ function Run() {
           alignItems: 'center',
         }}
         onPress={async () => {
+          if(isLastSong) return Alert.alert('คำเตือน', 'ไม่สามารถไปเพลงถัดไปได้เนื่องจากเพลงนี้เป็นเพลงสุดท้ายแล้ว')
           const now = new Date()
           const eventStart = event?.startTime ? new Date(event.startTime) : null
           if (eventStart && now < eventStart) {
@@ -210,7 +222,7 @@ function Run() {
           ])
         }}
       >
-        <Text style={{ color: 'white', fontWeight: 'bold' }}>⏭️ เพลงถัดไป</Text>
+        <Text  style={{ color: 'white', fontWeight: 'bold' }}>⏭️ เพลงถัดไป</Text>
       </Button>
 
       {/* Modal แจ้งเตือน */}

@@ -95,7 +95,7 @@ export class EventService {
       data: eventData
     })
   }
-
+  
   async updateCurrentSong(eventId: string) {
     console.log('shoud updated')
     const songs = await this.prisma.song.findMany({
