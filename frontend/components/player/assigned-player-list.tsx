@@ -67,7 +67,7 @@ const AssignedPlayerList = () => {
 
                     {isBackstage ?
                         <Button onPress={() => unassignedPlayer(songId)}>
-                            unassigned player
+                            unassign player
                         </Button> :
                         null
                     }

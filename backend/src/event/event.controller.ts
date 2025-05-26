@@ -69,6 +69,7 @@ export class EventController {
   @Post(':eventId/start')
   @UseGuards(BackstageGuard)
   async start(@Param('eventId') eventId: string) {
+    console.log('tef: ', eventId)
     await this.eventService.start(eventId)
   }
 }
