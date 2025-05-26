@@ -104,7 +104,7 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                     <DateTimePicker
                         value={watch('startTime') || new Date()}
                         mode='time'
-                        display='default'
+                        display='spinner'
                         onChange={(_event, selectedTime) => {
                             setShowStartTime(false)
                             if (selectedTime) setValue('startTime', selectedTime)
@@ -179,12 +179,12 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                     (
                         <>
 
-                            <Button onPress={onSubmit} style={{ width: '90%' }}>
+                            <Button onPress={onSubmit} style={{ width: '95%' }}>
                                 {event ? 'อัปเดต' : 'สร้าง'}
                             </Button>
                             {event &&
                                 <Button
-                                    style={{ width: '90%' }}
+                                    style={{ width: '95%' }}
                                     variant='danger'
                                     onPress={() => deleteEvent()}>
                                     ลบ Event

@@ -6,6 +6,7 @@ import EventCard from '@/components/event/card'
 import Modal from '@/components/event/modal'
 import Text from '@/components/ui/text'
 import { getEventListService } from '@/services/event'
+import Background from '@/components/ui/background'
 
 const Index = () => {
   const [errorSnackbarVisible, seteErorSnackbarVisible] = useState(false)
@@ -27,7 +28,7 @@ const Index = () => {
   const onDismissSnackBar = () => seteErorSnackbarVisible(false)
 
   return (
-    <View style={{ flex: 1, padding: 20, backgroundColor: '#f5f5f5' }}>
+    <Background style={{ flex: 1, padding: 20}}>
       <ScrollView
         contentContainerStyle={{
           flexDirection: 'row',
@@ -74,7 +75,7 @@ const Index = () => {
           เกิดข้อผิดพลาดขณะโหลดข้อมูล
         </Snackbar>
       )}
-    </View>
+    </Background>
   )
 }
 

@@ -62,7 +62,7 @@ const Index = () => {
                                 startEventService(eventId)
                                 router.push('/event/run')
                             }}
-                            style={{ width: '90%' }}
+                            style={{ width: '90%', marginTop: -5 }}
                         >
                             เริ่ม Event
                         </Button>

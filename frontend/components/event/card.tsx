@@ -15,7 +15,7 @@ type EventCardPropsType = {
   eventDate: Date
   startTime: Date
   endTime: Date
-  status:  'UPCOMING' |
+  status: 'UPCOMING' |
   'ONGOING' |
   'COMPLETED'
 }
@@ -31,7 +31,7 @@ const EventCard = ({ eventId, eventName, eventDate, startTime, endTime, status }
     <Card
       onPress={() => {
         setEventId(eventId)
-        if(status === 'ONGOING') return router.push('/event/run')
+        if (status === 'ONGOING') return router.push('/event/run')
         router.push({
           pathname: '/event/detail'
         })
@@ -39,13 +39,17 @@ const EventCard = ({ eventId, eventName, eventDate, startTime, endTime, status }
       }
       style={{
         borderStyle: 'solid',
-        width: '45%',
+        width: '48%',
         marginTop: 15,
         height: 150,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: theme.colors.primary
+        aspectRatio: 1.2,
+        marginBottom: 16,
+        borderRadius: 16,
+        backgroundColor: 'white',
+        elevation: 4,
       }}
     >
       <Card.Content>

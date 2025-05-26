@@ -6,7 +6,7 @@ import { TextInput as RnTextInput } from 'react-native-paper'
 import useSongForm from '@/components/song/use-song-form'
 import { checkBackstageRole } from '@/utils/check-user-role'
 import { ScrollView } from 'react-native-gesture-handler'
-/*import { GestureHandlerRootView } from 'react-native-gesture-handler'*/
+import * as WebBrowser from 'expo-web-browser'
 import Controller from '@/components/ui/form-controller'
 import TotalPlayerInput from '@/components/song/total-player-input'
 import { Song } from '@/services/song'
@@ -107,7 +107,24 @@ const Form = ({ song }: FormPropsType) => {
                             control={control}
                             name='songReference'
                             rules={{ required: 'กรุณากรอก ref เพลง' }}
-
+                            render={({ field: { onChange, value } }) => (
+                                <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
+                                    <TextInput
+                                        label='ref เพลง'
+                                        onChangeText={onChange}
+                                        value={value}
+                                        style={{ flex: 1 }}
+                                    />
+                                    {value && (
+                                        <Button 
+                                            onPress={() => WebBrowser.openBrowserAsync(value)}
+                                            style={{ width: 100 }}
+                                        >
+                                            เปิดลิงก์
+                                        </Button>
+                                    )}
+                                </View>
+                            )}
                         />
                     </View>
 
