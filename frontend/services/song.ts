@@ -40,6 +40,8 @@ export const deleteSongService = async (songId: string, eventId: string) => {
     return await axios.delete(`/events/${eventId}/songs/${songId}`)
 }
 
-export const notificationService = async (eventId: string, songId: string) => {
-    return await axios.post(`/events/${eventId}/songs/${songId}/notification`)
+export const notificationService = async (eventId: string, songId: string, notiMessage: string) => {
+    return await axios.post(`/events/${eventId}/songs/${songId}/notification`, {
+        notiMessage: notiMessage
+    })
 }

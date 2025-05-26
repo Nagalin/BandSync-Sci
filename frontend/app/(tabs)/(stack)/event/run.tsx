@@ -19,6 +19,9 @@ import { getSongListService, notificationService } from '@/services/song'
 import { useAppTheme } from '@/hooks/use-theme'
 import { emitSocketEvent } from '@/hooks/use-socket-query'
 import { useEventDataStore } from '@/zustand/store'
+import { useForm } from 'react-hook-form'
+import Form from '../../../../components/event/form';
+import Controller from '@/components/ui/form-controller'
 
 const formatDate = (date: Date) =>
   date.toLocaleDateString('th-TH', {
@@ -48,6 +51,16 @@ function Run() {
       { text: 'OK', onPress: () => setOpenModal(false) },
     ])
   }
+
+  type FormType = {
+    notiMessage: string
+  }
+
+  const { control, handleSubmit, register } = useForm<FormType>()
+
+  const onSubmit = handleSubmit(async (data) => {
+    await notificationService(eventId, songId, data.notiMessage)
+  })
 
   const { data: currentSong, isPending: loadingCurrent, isError } = useQuery({
     queryKey: ['currentSong'],
@@ -227,13 +240,21 @@ function Run() {
           >
             <ScrollView keyboardShouldPersistTaps="handled">
               <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 8 }}>
-                แจ้งเตือนสมาชิก
+                แจ้งเตือน player เพลงถัดไป (เพลง {currentSong.songName})
               </Text>
-              <TextInput placeholder="ข้อความแจ้งเตือน (optional)" />
+
+              <Controller
+                            label='ข้อความแจ้งเตือน (optional)'
+                            control={control}
+                            name='notiMessage'
+                            style={{ minWidth: 170 }}
+                        />
               <Button
-                onPress={async () => await notificationService(eventId, songId)}
+    
+    onPress={onSubmit}
+                
                 style={{ marginTop: 12 }}
-              >
+                >
                 ส่งแจ้งเตือน
               </Button>
             </ScrollView>

@@ -43,7 +43,7 @@ export const startEventService = async (eventId: string) => {
 }
 
 export const getCurrentSongService = async (eventId: string) => {
-    const response = await axios.get<Pick<Song, 'songId'>>(`/events/${eventId}/current-song`)
+    const response = await axios.get<Pick<Song, 'songId'| 'songName'>>(`/events/${eventId}/current-song`)
     return response.data 
 }
 

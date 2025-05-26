@@ -57,12 +57,21 @@ export class EventService {
     const event =  await this.prisma.event.findUnique({
       where: { eventId },
       select: {
-        currentSongId: true
+        currentSongId: true,
+        currentSong: true
+      }
+    })
+
+    const nextSong = await this.prisma.song.findFirst({
+      where: {
+        songOrder: event.currentSong.songOrder + 1
+
       }
     })
 
     return {
-      songId: event.currentSongId
+      songId: event.currentSongId,
+      songName: nextSong.songName
     }
   }
 

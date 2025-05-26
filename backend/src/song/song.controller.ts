@@ -71,8 +71,9 @@ export class SongController {
   }
 
   @Post(':songId/notification')
-  async notification(@Param('eventId') eventId: string, @Param('songId') songId: string) {
-    await this.songService.notification(songId)
+  async notification(@Param('eventId') eventId: string, @Param('songId') songId: string, @Body('notiMessage') notiMessage: string) {
+    console.log(notiMessage)
+    await this.songService.notification(songId, notiMessage)
    
   }
 }

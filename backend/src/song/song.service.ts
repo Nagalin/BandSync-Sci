@@ -175,7 +175,7 @@ export class SongService {
     return { success: true };
   }
 
-  async notification(songId: string) {
+  async notification(songId: string, notiMessage: string) {
     const players = await this.prisma.user.findMany({
       where: {
         isActive: true,
@@ -187,17 +187,22 @@ export class SongService {
       }
     })
 
-    const songInfo = await this.prisma.song.findFirst({
+    const currentSong = await this.prisma.song.findFirst({
       where: {
         songId: songId
+      }
+    })
+    const nextSong = await this.prisma.song.findFirst({
+      where: {
+        songOrder: currentSong.songOrder + 1
       }
     })
 
     players.map(async curr => {
       const user = await this.client.users.fetch(curr.discordId)
-      await user.send(`🎶 สวัสดี! เพลงถัดไปเป็นคิวแสดงของคุณ
+      await user.send(notiMessage ?? `🎶 สวัสดี! เพลงถัดไปเป็นคิวแสดงของคุณ
 
-🕒 เพลง: ${songInfo.songName}
+🕒 เพลง: ${nextSong.songName}
 
 กรุณาเตรียมตัวให้พร้อมและขึ้นเวทีตรงเวลา!
 

@@ -30,8 +30,8 @@ const EventCard = ({ eventId, eventName, eventDate, startTime, endTime, status }
   return (
     <Card
       onPress={() => {
-        if(status === 'ONGOING') return router.push('/event/run')
         setEventId(eventId)
+        if(status === 'ONGOING') return router.push('/event/run')
         router.push({
           pathname: '/event/detail'
         })
