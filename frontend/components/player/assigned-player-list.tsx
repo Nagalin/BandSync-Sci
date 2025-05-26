@@ -39,7 +39,8 @@ const AssignedPlayerList = () => {
 
     return (
         <View style={{ padding: 10 }}>
-            <Text style={{ fontSize: 20, marginBottom: 10 }}>
+            <Text style={{color: '#737070'}}> Player ที่ถูก assigned </Text>
+            <Text style={{marginLeft: 20, fontSize: 18, marginBottom: 10 }}>
                 {playerType} {playersList!.currentPlayer} / {playersList!.totalPlayer}
             </Text>
 
@@ -57,7 +58,7 @@ const AssignedPlayerList = () => {
                                 marginBottom: 10
                             }}
                             key={curr.userId}
-                            label={curr.nickName}
+                            label={`${curr.firstName} ${curr.lastName} (${curr.nickName})`}
                             disabled={!isBackstage}
                             status={selectedUsers[curr.userId] ? 'checked' : 'unchecked'}
                             onPress={() => handleToggle(curr.userId)}
@@ -66,7 +67,7 @@ const AssignedPlayerList = () => {
 
                     {isBackstage ?
                         <Button onPress={() => unassignedPlayer(songId)}>
-                            Confirm
+                            unassigned player
                         </Button> :
                         null
                     }

@@ -26,22 +26,31 @@ const UnassignedPlayerList = () => {
 
     
     return (
-        <View>
+        <View style={{padding: 10}}>
             {playersList?.length === 0 ? (
                 <Text>No { playerType } found</Text>
             ) : (
                 <>
-                <Text style={{fontSize: 20}}>Unassigned {playerType}</Text>
+            <Text style={{color: '#737070'}}> Player ที่ยังไม่ถูก assigned </Text>
+
+                <Text style={{fontSize: 18, marginLeft: 20, marginBottom: 10}}>{playerType}</Text>
                     {playersList?.map(curr => (
                         <Checkbox.Item
+                        style={{
+                            backgroundColor: 'white',
+                            borderRadius: 10,
+                            height: 40,
+                            width: '100%',
+                            marginBottom: 10
+                        }}
                             key={curr.userId}
-                            label={curr.nickName}
+                            label={`${curr.firstName} ${curr.lastName} (${curr.nickName})`}
                             status={selectedUsers[curr.userId] ? 'checked' : 'unchecked'}
                             onPress={() => handleToggle(curr.userId)}
                         />
                     ))}
                     <Button onPress={() => assignedPlayer(songId, playerType)}>
-                        Confirm
+                        assign player
                     </Button>
                 </>
             )}

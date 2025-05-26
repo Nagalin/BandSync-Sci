@@ -61,14 +61,12 @@ export class GoogleSheetsService {
     const guild = this.client.guilds.cache.get(discordServerId)
     const members = await guild.members.fetch()
 members.map(curr => {
-  console.log(curr.user.id)
 })
     let discordMemberMapper: Record<string, string> = {
       
     }
 
     members.map(member => {
-      console.log("debug@: ", member.user.tag)
       discordMemberMapper[member.user.tag] = member.id;
     });
 
@@ -80,10 +78,7 @@ members.map(curr => {
 
 
     response.data.values.map(async currNewMember => {
-      console.log("super: ",discordMemberMapper)
       const discordId = discordMemberMapper[currNewMember[0]]
-      
-      console.log('no: ', discordMemberMapper)
 
       const playerRole = roleMapping[currNewMember[1]]
 
@@ -97,8 +92,7 @@ members.map(curr => {
         }
       })
 
-      if (!false) {
-        console.log('here')
+      if (!existingUser) {
         const firstname = currNewMember[5].split(' ')[0]
         const lastname = currNewMember[5].split(' ')[1]
         const nickname = currNewMember[4]
