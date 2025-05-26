@@ -52,6 +52,7 @@ const Index = () => {
               eventDate={curr.eventDate}
               startTime={curr.startTime}
               endTime={curr.endTime}
+              status={curr.status}
             />
           ))
         )}

@@ -187,9 +187,21 @@ export class SongService {
       }
     })
 
+    const songInfo = await this.prisma.song.findFirst({
+      where: {
+        songId: songId
+      }
+    })
+
     players.map(async curr => {
       const user = await this.client.users.fetch(curr.discordId)
-      await user.send('Hello! This is an automatic DM from the bot.')
+      await user.send(`🎶 สวัสดี! เพลงถัดไปเป็นคิวแสดงของคุณ
+
+🕒 เพลง: ${songInfo.songName}
+
+กรุณาเตรียมตัวให้พร้อมและขึ้นเวทีตรงเวลา!
+
+หากคุณมีคำถามเพิ่มเติมกรุณาติดต่อผู้ดูแลวงดนตรี 🙏`)
     })
   }
 

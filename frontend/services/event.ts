@@ -8,7 +8,10 @@ export type Event = {
     startTime: Date
     endTime: Date
     dressCode: string
-    additionalDetails: string
+    additionalDetails: string,
+    status:  'UPCOMING' |
+    'ONGOING' |
+    'COMPLETED' 
 }
 
 type EventList = Omit<Event, 'dresscode' | 'additionalDetails'>

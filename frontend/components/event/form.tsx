@@ -13,7 +13,7 @@ import { Event } from '@/services/event'
 
 type FormPropsType = {
     closeModalImmediately?: () => void
-    event?: Event
+    event?: Omit<Event, 'status'>
 }
 
 const Form = ({ closeModalImmediately, event }: FormPropsType) => {

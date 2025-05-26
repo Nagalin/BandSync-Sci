@@ -4,9 +4,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { createEventService, deleteEventService, Event, updateEventService } from '@/services/event'
 
-type EventForm = Omit<Event, 'eventId'>
+type EventForm = Omit<Event, 'eventId' | 'staus'>
 
-const useCreateEvent = (closeModalImmediately?: () => void, event?: Event) => {
+const useCreateEvent = (closeModalImmediately?: () => void, event?: Omit<Event, 'status'>) => {
     const queryClient = useQueryClient()
     const {
         control,

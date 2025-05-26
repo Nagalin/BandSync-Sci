@@ -15,9 +15,12 @@ type EventCardPropsType = {
   eventDate: Date
   startTime: Date
   endTime: Date
+  status:  'UPCOMING' |
+  'ONGOING' |
+  'COMPLETED'
 }
 
-const EventCard = ({ eventId, eventName, eventDate, startTime, endTime }: EventCardPropsType) => {
+const EventCard = ({ eventId, eventName, eventDate, startTime, endTime, status }: EventCardPropsType) => {
   const theme = useAppTheme()
   const formattedDate = format(eventDate, 'dd/MM/yy')
   const formattedStartTime = format(new Date(startTime), 'HH:mm')
@@ -27,6 +30,7 @@ const EventCard = ({ eventId, eventName, eventDate, startTime, endTime }: EventC
   return (
     <Card
       onPress={() => {
+        if(status === 'ONGOING') return router.push('/event/run')
         setEventId(eventId)
         router.push({
           pathname: '/event/detail'
