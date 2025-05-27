@@ -43,8 +43,8 @@ export class GoogleSheetsService {
       'เบส': UserRole.bassist,
       'คีย์บอร์ด': UserRole.Keyboardist,
       'extra': UserRole.extra,
-      'percussion': UserRole.percussionist
-
+      'percussion': UserRole.percussionist,
+      'ผู้จัดการ': UserRole.backstage
     }
 
     const sheetNames = await this.getSheetNames(spreadsheetId);
@@ -81,18 +81,61 @@ members.map(curr => {
       const discordId = discordMemberMapper[currNewMember[0]]
 
       const playerRole = roleMapping[currNewMember[1]]
+      console.log('here: ', playerRole)
 
       const role = await this.prisma.role.findFirst({
         where: { role: playerRole }
       })
-      const existingUser = await this.prisma.user.findFirst({
+      const existingUserWithRole = await this.prisma.user.findFirst({
         where: {
-          discordUsername: currNewMember[1],
-          isActive: true
+          AND: [
+            {
+              discordUsername: currNewMember[0],
+              isActive: true,
+
+            },
+            
+             {
+                roles: {
+                  some: {
+                    role: playerRole
+                  }
+                
+              }
+            }
+
+            
+          ]
         }
       })
 
-      if (!existingUser) {
+      const existbutAddNewRole = await this.prisma.user.findFirst({
+        where: {
+          AND: [
+            {
+              discordUsername: currNewMember[0],
+              isActive: true},
+            {NOT: {roles: {
+              some: {
+                role: playerRole
+              }
+            }}}
+          ],
+          
+            
+            
+        },
+        
+        include: {
+          roles: true
+        }
+
+      })
+console.log(existingUserWithRole)
+
+console.log(existbutAddNewRole)
+
+      if (!existingUserWithRole && !existbutAddNewRole) {
         const firstname = currNewMember[5].split(' ')[0]
         const lastname = currNewMember[5].split(' ')[1]
         const nickname = currNewMember[4]
@@ -112,7 +155,30 @@ members.map(curr => {
             }
           }
         })
+      } else if(existbutAddNewRole) {
+        const newRoleInfo = await this.prisma.role.findFirst({
+          where: {
+            role: playerRole
+          }
+        })
+        await this.prisma.user.update({
+          where: {
+            userId: existbutAddNewRole.userId
+          },
+
+          data: {
+            roles: {
+              connect: {
+                roleId: newRoleInfo.roleId
+                
+              }
+
+            }
+
+          }
+        })
       } else {
+        console.log('this is conflict')
       }
 
     })
