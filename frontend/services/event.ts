@@ -52,5 +52,5 @@ export const updateCurrentSongService = async (eventId: string) => {
 }
 
 export const endEventService = async (eventId: string) => {
-    await axios.put(`/events/${eventId}/end`)
+    await axios.patch(`/events/${eventId}/end`)
 }

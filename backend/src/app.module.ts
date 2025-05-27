@@ -12,6 +12,7 @@ import { NecordModule } from 'necord';
 import { GatewayIntentBits, IntentsBitField } from 'discord.js';
 import { AdminModule } from './admin/admin.module';
 import { GoogleSheetsModule } from './google-sheets/google-sheets.module';
+import { DiscordModule } from './discord/discord.module';
 
 @Module({
   imports: [EventModule, SongModule, AuthModule, UserModule, PlayerModule, WebsocketsModule, AdminModule, GoogleSheetsModule,
@@ -19,7 +20,8 @@ import { GoogleSheetsModule } from './google-sheets/google-sheets.module';
       token: process.env.DISCORD_BOT_TOKEN,
       intents: [IntentsBitField.Flags.Guilds, GatewayIntentBits.GuildMembers],
       development: [process.env.DISCORD_BOT_TOKEN],
-    })
+    }),
+    DiscordModule
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -27,7 +29,7 @@ import { GoogleSheetsModule } from './google-sheets/google-sheets.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-    .apply(AuthMiddleware)
-    .forRoutes('*');
+    // .apply(AuthMiddleware)
+    // .forRoutes('*');
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { PrismaService } from 'src/prisma.service'
-import { EventDto } from 'src/event/dto/event.dto'
+import { PrismaService } from '../prisma.service'
+import { EventDto } from '../event/dto/event.dto'
 
 @Injectable()
 export class EventService {
@@ -41,7 +41,7 @@ export class EventService {
   }
 
   async findCurrentSong(eventId: string) {
-    const event =  await this.prisma.event.findUnique({
+    const event = await this.prisma.event.findUnique({
       where: { eventId },
       select: {
         currentSongId: true,
@@ -113,13 +113,10 @@ export class EventService {
 
     const currentIndex = songs.findIndex(song => song.songId === event.currentSongId)
 
-    if (currentIndex === songs.length - 1) 
+    if (currentIndex === songs.length - 1)
       return
 
-    
-    
     const nextIndex = currentIndex + 1
-    
     const nextSongId = songs[nextIndex].songId
 
     await this.prisma.event.update({
@@ -128,7 +125,7 @@ export class EventService {
         currentSongId: nextSongId
       }
     })
-    
+
     return { nextSongId }
   }
 

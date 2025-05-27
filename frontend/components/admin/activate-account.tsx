@@ -3,12 +3,17 @@ import React from 'react'
 import Button from '../ui/button'
 import Text from '../ui/text'
 import axios from '@/libs/axios'
+import { useQueryClient } from '@tanstack/react-query'
 
 const ActivateAccount = () => {
+  const queryClient = useQueryClient()
+
   const addNewAccount = async () => {
     try {
-      await axios.post('/google-sheets/read')
+      await axios.post('/user/activate')
       Alert.alert('สำเร็จ','เพิ่มบัญชีสำเร็จ')
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+
     } catch (error) {
       console.error(error)
     }

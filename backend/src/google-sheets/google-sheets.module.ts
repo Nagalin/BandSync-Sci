@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 import { GoogleSheetsService } from './google-sheets.service';
 import { GoogleSheetsController } from './google-sheets.controller';
 import { PrismaService } from 'src/prisma.service';
+import { DiscordService } from 'src/discord/discord.service';
+import { UserService } from 'src/user/user.service';
 
 @Module({
-  providers: [GoogleSheetsService, PrismaService],
+  providers: [GoogleSheetsService, PrismaService, DiscordService, UserService],
   controllers: [GoogleSheetsController],
   exports: [GoogleSheetsService],
 })

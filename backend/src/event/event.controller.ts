@@ -6,12 +6,13 @@ import {
   Delete,
   Param,
   Body,
-  UseGuards
+  UseGuards,
+  Patch
 } from '@nestjs/common'
-import { EventService } from 'src/event/event.service'
-import { EventDto } from 'src/event/dto/event.dto'
-import { BackstageGuard } from 'src/guard/auth.guard'
-import { ConflictException, NotFoundException } from 'src/exception/custom-exception'
+import { EventService } from './event.service'
+import { EventDto } from './dto/event.dto'
+import { BackstageGuard } from '../guard/auth.guard'
+import { ConflictException, NotFoundException } from '../exception/custom-exception'
 
 @Controller('events')
 export class EventController {
@@ -33,7 +34,6 @@ export class EventController {
   @Get(':eventId/current-song')
   async findCurrentSong(@Param('eventId') eventId: string) {
     const currentSong = await this.eventService.findCurrentSong(eventId)
-
     return currentSong
   }
 
@@ -41,7 +41,6 @@ export class EventController {
   @UseGuards(BackstageGuard)
   async updateCurrentSong(@Param('eventId') eventId: string) {
     await this.eventService.updateCurrentSong(eventId)
-    
   }
 
   @Post()
@@ -54,10 +53,9 @@ export class EventController {
     await this.eventService.create(eventDto)
   }
 
-  @Put(':eventId/end')
+  @Patch(':eventId/end')
   @UseGuards(BackstageGuard)
   async endEvent(@Param('eventId') eventId: string) {
-    console.log('reached')
     this.eventService.endEvent(eventId)
   }
 
@@ -76,7 +74,6 @@ export class EventController {
   @Post(':eventId/start')
   @UseGuards(BackstageGuard)
   async start(@Param('eventId') eventId: string) {
-    console.log('tef: ', eventId)
     await this.eventService.start(eventId)
   }
 }
