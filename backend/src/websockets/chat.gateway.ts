@@ -30,4 +30,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.log('event received');
     this.server.emit('run-event');
   }
+
+  @SubscribeMessage('end-event')
+  handleEndEvent(client: Socket): void {
+    this.logger.log('end event received');
+    this.server.emit('end-event');
+  }
 } 

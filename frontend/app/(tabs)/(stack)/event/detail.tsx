@@ -59,6 +59,8 @@ const Index = () => {
                         <Button
                             onPress={() => {
                                 if(!isEventDay) return Alert.alert('คำเตือน', 'ไม่สามารถเริ่ม Event ได้เนื่องจากยังไม่ถึงวันกำหนดการ')
+                                if(event?.status === 'COMPLETED') return Alert.alert('คำเตือน', 'ไม่สามารถเริ่ม Event ได้เนื่องจาก Event นี้ได้จบไปล้ว')
+
                                 startEventService(eventId)
                                 router.push('/event/run')
                             }}

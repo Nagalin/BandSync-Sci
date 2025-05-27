@@ -64,7 +64,7 @@ export class GoogleSheetsService {
       'percussion': UserRole.percussionist,
       'ผู้จัดการ': UserRole.backstage
     }
-    const playerRole = roleMapping[userPartFromGoogleSheet]
+    const playerRole = roleMapping[userPartFromGoogleSheet] ? roleMapping[userPartFromGoogleSheet] : 'staff'
     const existingUserWithSameRole = await this.prisma.user.findFirst({
       where: {
         AND: [
@@ -148,7 +148,9 @@ export class GoogleSheetsService {
     response.data.values.map(async currNewMember => {
 
       const discordId = discordMemberMapper[currNewMember[0]]
-      const playerRole = roleMapping[currNewMember[1]]
+      const playerRole = roleMapping[currNewMember[1]] ? roleMapping[currNewMember[1]] : 'staff'
+      console.log('fff: ', playerRole)
+      this.addNewUserToDiscordChannel(discordId, currNewMember[1])
 
       const role = await this.prisma.role.findFirst({
         where: { role: playerRole }
@@ -158,6 +160,10 @@ export class GoogleSheetsService {
         existingUserWithSameRole,
         existingUserWithDifferentRole
       } = await this.checkIfUserAlreadyExist(currNewMember[0],currNewMember[1])
+
+      console.log('first: ', existingUserWithSameRole)
+      console.log('first: ', existingUserWithDifferentRole)
+
 
       if (!existingUserWithSameRole && !existingUserWithDifferentRole) {
         const firstname = currNewMember[5].split(' ')[0]
@@ -179,6 +185,7 @@ export class GoogleSheetsService {
             }
           }
         })
+        this.addNewUserToDiscordChannel(discordId,currNewMember[1])
       } else if (existingUserWithDifferentRole) {
         const newRoleInfo = await this.prisma.role.findFirst({
           where: {
@@ -201,12 +208,40 @@ export class GoogleSheetsService {
 
           }
         })
+        this.addNewUserToDiscordChannel(discordId, currNewMember[1])
+
       } else {
         console.log('this is conflict')
       }
 
     })
 
+  }
+
+  async addNewUserToDiscordChannel(discordId: string, userRoleFromGoogleSheet: string) {
+    const guild = this.client.guilds.cache.get(this.discordServerId);
+    if (!guild) {
+      throw new Error(`Discord server with ID ${this.discordServerId} not found`);
+    }
+
+    const member = await guild.members.fetch(discordId);
+    if (!member) {
+      throw new Error(`Member with ID ${discordId} not found in the server`);
+    }
+
+    
+    const role = guild.roles.cache.find(r => r.name === userRoleFromGoogleSheet);
+
+    if (!role) {
+      throw new Error(`Discord role "${userRoleFromGoogleSheet}" not found in the server`);
+    }
+
+    try {
+      await member.roles.add(role);
+    } catch (error) {
+      console.error(`Failed to assign role to member ${discordId}:`, error);
+      throw new Error(`Failed to assign role "${userRoleFromGoogleSheet}" to member`);
+    }
   }
 
   async getDiscordMembersMapper() {
@@ -220,5 +255,43 @@ export class GoogleSheetsService {
       discordMemberMapper[member.user.tag] = member.id;
     });
     return discordMemberMapper
+  }
+
+  async removeUserFromDiscordServer(userId: string[]) {
+    for (const curr of userId) {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          userId: curr,
+          isActive: true
+        }
+      });
+
+      if (!user) {
+        console.log(`User ${curr} not found or already inactive`);
+        continue;
+      }
+
+      try {
+        // Get the Discord guild
+        const guild = this.client.guilds.cache.get(this.discordServerId);
+        if (!guild) {
+          throw new Error(`Discord server with ID ${this.discordServerId} not found`);
+        }
+
+        // Get the member from Discord
+        const member = await guild.members.fetch(user.discordId);
+        if (!member) {
+          console.log(`Member with ID ${user.discordId} not found in the server`);
+          continue;
+        }
+
+        // Kick the member from the server
+        await member.kick('Removed by BandSync system');
+
+        console.log(`Successfully removed user ${user.discordUsername} from the server`);
+      } catch (error) {
+        console.error(`Failed to remove user ${curr}:`, error);
+      }
+    }
   }
 } 

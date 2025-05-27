@@ -14,10 +14,11 @@ import {
   getCurrentSongService,
   updateCurrentSongService,
   getEventInfoService,
+  endEventService,
 } from '@/services/event'
 import { getSongListService, notificationService } from '@/services/song'
 import { useAppTheme } from '@/hooks/use-theme'
-import { emitSocketEvent } from '@/hooks/use-socket-query'
+import { emitEndEvent, emitSocketEvent } from '@/hooks/use-socket-query'
 import { useEventDataStore } from '@/zustand/store'
 import { useForm } from 'react-hook-form'
 import Form from '../../../../components/event/form';
@@ -205,7 +206,21 @@ function Run() {
           alignItems: 'center',
         }}
         onPress={async () => {
-          if(isLastSong) return Alert.alert('คำเตือน', 'ไม่สามารถไปเพลงถัดไปได้เนื่องจากเพลงนี้เป็นเพลงสุดท้ายแล้ว')
+          if(isLastSong) {
+            return Alert.alert('ยืนยัน', 'คุณต้องการจบ Event หรือไม่', [
+              { text: 'ยกเลิก', style: 'cancel' },
+              {
+                text: 'ยืนยัน',
+                onPress: async () => {
+                  await endEventService(event?.eventId!)
+                  emitEndEvent()
+
+                },
+              },
+            ])
+
+            // return Alert.alert('คำเตือน', 'ไม่สามารถไปเพลงถัดไปได้เนื่องจากเพลงนี้เป็นเพลงสุดท้ายแล้ว')
+          }
           const now = new Date()
           const eventStart = event?.startTime ? new Date(event.startTime) : null
           if (eventStart && now < eventStart) {
@@ -225,7 +240,7 @@ function Run() {
           ])
         }}
       >
-        <Text  style={{ color: 'white', fontWeight: 'bold' }}>⏭️ เพลงถัดไป</Text>
+        <Text  style={{ color: 'white', fontWeight: 'bold' }}>{isLastSong ? 'จบ Event' : '⏭️ เพลงถัดไป'}</Text>
       </Button>
 
       {/* Modal แจ้งเตือน */}

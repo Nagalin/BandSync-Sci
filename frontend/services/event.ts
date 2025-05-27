@@ -50,3 +50,7 @@ export const getCurrentSongService = async (eventId: string) => {
 export const updateCurrentSongService = async (eventId: string) => {
     return await axios.put(`/events/${eventId}/current-song`)
 }
+
+export const endEventService = async (eventId: string) => {
+    await axios.put(`/events/${eventId}/end`)
+}

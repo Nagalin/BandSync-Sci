@@ -76,6 +76,17 @@ export class EventService {
     })
   }
 
+  async endEvent(eventId: string) {
+    await this.prisma.event.update({
+      where: {
+        eventId
+      },
+      data: {
+        status: 'COMPLETED'
+      }
+    })
+  }
+
   async update(eventId: string, eventData: EventDto) {
     await this.prisma.event.update({
       where: { eventId },

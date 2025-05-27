@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { GoogleSheetsService } from 'src/google-sheets/google-sheets.service';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class UserService {
-    constructor(private prisma: PrismaService) { }
+    constructor(private prisma: PrismaService, private discordService: GoogleSheetsService) { }
 
     async findAll(discordId: string) {
         return await this.prisma.user.findMany({
@@ -33,6 +34,7 @@ export class UserService {
     }
 
     async deactivateUsers(userId: string[]) {
+            await this.discordService.removeUserFromDiscordServer(userId)
         return await this.prisma.user.updateMany({
             where: {
                 isActive: true,

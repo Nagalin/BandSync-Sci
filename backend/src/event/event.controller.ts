@@ -54,6 +54,13 @@ export class EventController {
     await this.eventService.create(eventDto)
   }
 
+  @Put(':eventId/end')
+  @UseGuards(BackstageGuard)
+  async endEvent(@Param('eventId') eventId: string) {
+    console.log('reached')
+    this.eventService.endEvent(eventId)
+  }
+
   @Put(':eventId')
   @UseGuards(BackstageGuard)
   async update(@Param('eventId') eventId: string, @Body() eventDto: EventDto) {
