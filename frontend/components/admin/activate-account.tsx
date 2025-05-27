@@ -7,8 +7,8 @@ import axios from '@/libs/axios'
 const ActivateAccount = () => {
   const addNewAccount = async () => {
     try {
-      await axios.get('/google-sheets/read')
-      Alert.alert('เพิ่มบัญชีสำเร็จ')
+      await axios.post('/google-sheets/read')
+      Alert.alert('สำเร็จ','เพิ่มบัญชีสำเร็จ')
     } catch (error) {
       console.error(error)
     }
