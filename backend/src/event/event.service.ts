@@ -29,26 +29,13 @@ export class EventService {
   }
 
   async findAll() {
-    await this.prisma.user.update({
-    where: {
-      userId: '827ac91b-6943-43e9-9c40-8098899573aa'
-    },
-    data: {
-      roles: {
-        connect: {
-          roleId: '6541e448-c2aa-49a3-94c0-e8c16e057210'
-        }
-      }
-    }
-    })
     return await this.prisma.event.findMany({
       select: {
         eventId: true,
         eventName: true,
         eventDate: true,
         startTime: true,
-        endTime: true,
-        status: true
+        endTime: true
       }
     })
   }
@@ -95,9 +82,8 @@ export class EventService {
       data: eventData
     })
   }
-  
+
   async updateCurrentSong(eventId: string) {
-    console.log('shoud updated')
     const songs = await this.prisma.song.findMany({
       where: { eventId },
       orderBy: { songOrder: 'asc' }
@@ -116,22 +102,14 @@ export class EventService {
 
     const currentIndex = songs.findIndex(song => song.songId === event.currentSongId)
 
-    if (currentIndex === songs.length ) 
+    if (currentIndex === songs.length - 1) 
       return
 
     
     
     const nextIndex = currentIndex + 1
-    console.log(nextIndex, songs.length )
     
     const nextSongId = songs[nextIndex].songId
-    console.log('before')
-    console.log("next index", nextIndex)
-    console.log("length", songs.length)
-
-    if(nextIndex === songs.length) return
-    console.log('after')
-
 
     await this.prisma.event.update({
       where: { eventId },

@@ -70,16 +70,16 @@ const Index = () => {
                 }
             </View>
 
-            <Link
-                href={{ pathname: '/song' }}
-                asChild
+            <View
                 style={{
                     flexDirection: 'row',
                     justifyContent: 'center'
                 }}
             >
-                <Pressable>
-                    <Button style={{ width: '90%' }}>
+                    <Button onPress={() => {
+                        if(event?.status == 'ONGOING') router.push('/event/run')
+                        router.push('/song')
+                    }} style={{ width: '90%' }}>
                         <View style={{
                             flexDirection: 'row',
                             justifyContent: 'center',
@@ -92,8 +92,7 @@ const Index = () => {
                             </Text>
                         </View>
                     </Button>
-                </Pressable>
-            </Link>
+            </View>
         </Background>
     )
 }

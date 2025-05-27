@@ -146,8 +146,6 @@ export class GoogleSheetsService {
     const discordMemberMapper = await this.getDiscordMembersMapper()
 
     response.data.values.map(async currNewMember => {
-      console.log('testt: ', discordMemberMapper)
-      console.log('testt: ', currNewMember[0])
 
       const discordId = discordMemberMapper[currNewMember[0]]
       const playerRole = roleMapping[currNewMember[1]]
@@ -160,11 +158,6 @@ export class GoogleSheetsService {
         existingUserWithSameRole,
         existingUserWithDifferentRole
       } = await this.checkIfUserAlreadyExist(currNewMember[0],currNewMember[1])
-
-      console.log('test1: ',existingUserWithSameRole)
-      console.log('test2: ', existingUserWithDifferentRole)
-      
-
 
       if (!existingUserWithSameRole && !existingUserWithDifferentRole) {
         const firstname = currNewMember[5].split(' ')[0]

@@ -55,6 +55,7 @@ function Run() {
       { text: 'OK', onPress: () => setOpenModal(false) },
     ])
   }
+  const closeModal = () => setOpenModal(false)
 
   type FormType = {
     notiMessage: string
@@ -66,6 +67,8 @@ function Run() {
     if(isLastSong) return Alert.alert('คำเตือน', 'ไม่สามารถไปเพลงถัดไปได้เนื่องจากเพลงนี้เป็นเพลงสุดท้ายแล้ว')
 
     await notificationService(eventId, songId, data.notiMessage)
+    Alert.alert('สำเร็จ', 'แจ้งเตือนสำเร็จ')
+    closeModal()
   })
 
   const { data: currentSong, isPending: loadingCurrent, isError } = useQuery({

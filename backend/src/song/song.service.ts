@@ -176,16 +176,7 @@ export class SongService {
   }
 
   async notification(songId: string, notiMessage: string) {
-    const players = await this.prisma.user.findMany({
-      where: {
-        isActive: true,
-        songs: {
-          some: {
-            songId: songId
-          }
-        }
-      }
-    })
+    
 
     const currentSong = await this.prisma.song.findFirst({
       where: {
@@ -195,6 +186,17 @@ export class SongService {
     const nextSong = await this.prisma.song.findFirst({
       where: {
         songOrder: currentSong.songOrder + 1
+      }
+    })
+
+    const players = await this.prisma.user.findMany({
+      where: {
+        isActive: true,
+        songs: {
+          some: {
+            songId: nextSong.songId
+          }
+        }
       }
     })
 

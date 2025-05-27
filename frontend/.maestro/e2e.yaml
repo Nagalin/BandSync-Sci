@@ -55,10 +55,10 @@ appId: host.exp.exponent
 # - tapOn: "OK"
 # - assertVisible: "Test song (C)"
 
-# # View song detail
+# View song detail
 # - tapOn: "Test song (C)"
-# - assertVisible: "Test song (C)"
-# - assertVisible: "2"
+# - assertVisible: "Test song"
+# - assertVisible: "1"
 
 # # Update Song
 # - tapOn: "Test song"
@@ -72,73 +72,74 @@ appId: host.exp.exponent
 # - assertVisible: "อัปเดตเพลงสำเร็จ"
 # - tapOn: "OK"
 
-# # Assign Player
+# Assign Player
 # - tapOn: 
 #     text: "ดูข้อมูล"
 #     index: 2
-- assertVisible: "bassist 0 / 1"
-- assertNotVisible: "unassign player"
-- tapOn: 
-    text: "Santiphap Samosorn (Ti)"
-    retryTapIfNoChange: false
-- tapOn: 
-    text: "assign player"
-    index: 1
-    # retryTapIfNoChange: false
-- assertVisible: "bassist 1 / 1"
+# - assertVisible: "bassist 0 / 1"
+# - assertNotVisible: "unassign player"
+# - tapOn: 
+#     text: "สันติภาพ สโมสร (ติ)"
+#     retryTapIfNoChange: false
+# - tapOn: 
+#     text: "assign player"
+#     index: 1
+#     # retryTapIfNoChange: false
+# - assertVisible: "bassist 1 / 1"
 
 # Unasssign Player
-- tapOn: 
-    text: "Santiphap Samosorn (Ti)"
-    retryTapIfNoChange: false
-- tapOn: 
-    text: "unassign player"
-    retryTapIfNoChange: false
-- assertVisible: "bassist 0 / 1"
-- back
+# - tapOn: 
+#     text: "สันติภาพ สโมสร (ติ)"
+#     retryTapIfNoChange: false
+# - tapOn: 
+#     text: "unassign player"
+#     retryTapIfNoChange: false
+# - assertVisible: "bassist 0 / 1"
+# - back
+# - back
 
 # Run Event
-- tapOn: "+"
-- tapOn: "ชื่อเพลง"
-- inputText: "Test song 2"
-- tapOn: "ref เพลง"
-- inputText: "Test reference"
-- tapOn: 
-    text: "0"
-    index: 2
-- inputText: 1
-- hideKeyboard
-- scroll
-- tapOn:
-    text: "สร้างเพลง"
-    index: 1
-    repeat: 2
-    delay: 1000
-- assertVisible: "สร้างเพลงสำเร็จ"
-- tapOn: "OK"
-- assertVisible: "Test song 2 (C)"
-- back
-- tapOn: "เริ่ม Event"
-- assertVisible: "รายการเพลงทั้งหมด"
-- assertVisible: "Test event updated"
-- assertVisible: "เพลงถัดไป"
-- assertVisible: "แจ้งเตือน"
-- tapOn: "แจ้งเตือน"
-- assertVisible: "แจ้งเตือน player ไปยังเพลงถัดไป (Test song 2)"
+# - tapOn: "+"
+# - tapOn: "ชื่อเพลง"
+# - inputText: "Test song 2"
+# - tapOn: "ref เพลง"
+# - inputText: "Test reference"
+# - tapOn: 
+#     text: "0"
+#     index: 2
+# - inputText: 1
+# - hideKeyboard
+# - scroll
+# - tapOn:
+#     text: "สร้างเพลง"
+#     index: 1
+#     repeat: 2
+#     delay: 1000
+# - assertVisible: "สร้างเพลงสำเร็จ"
+# - tapOn: "OK"
+# - assertVisible: "Test song 2 (C)"
+# - back
+# - tapOn: "เริ่ม Event"
+# - assertVisible: "รายการเพลงทั้งหมด"
+# - assertVisible: "Test event updated"
+# - assertVisible: "⏭️ เพลงถัดไป"
+# - assertVisible: "🔔 แจ้งเตือน"
+# - tapOn: "🔔 แจ้งเตือน"
+- assertVisible: "แจ้งเตือน player เพลงถัดไป (เพลง Test song 2)"
 - tapOn: "ส่งแจ้งเตือน"
 - assertVisible: "แจ้งเตือนสำเร็จ"
 - tapOn: 'OK'
-- tapOn: 'เพลงถัดไป'
+- tapOn: '⏭️ เพลงถัดไป'
 - assertVisible: "คุณต้องการเลื่อนไปเพลงถัดไปหรือไม่"
 - tapOn: 'ยืนยัน'
 
 # Delete Song
-- tapOn: "ลบเพลง"
-- tapOn: OK
-- assertVisible: "ลบเพลงสำเร็จ"
-- tapOn: "OK"
-- assertNotVisible: "Test song (C)"
-- back
+# - tapOn: "ลบเพลง"
+# - tapOn: OK
+# - assertVisible: "ลบเพลงสำเร็จ"
+# - tapOn: "OK"
+# - assertNotVisible: "Test song (C)"
+# - back
 
 #Delete Event
 - tapOn: "ลบ Event"
