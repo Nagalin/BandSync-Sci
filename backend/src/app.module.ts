@@ -29,7 +29,7 @@ import { DiscordModule } from './discord/discord.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-    // .apply(AuthMiddleware)
-    // .forRoutes('*');
+    .apply(AuthMiddleware)
+    .forRoutes('*');
   }
 }

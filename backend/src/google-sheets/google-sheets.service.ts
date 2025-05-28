@@ -57,96 +57,11 @@ export class GoogleSheetsService {
   
 
   async readSheet() {
-    const roleMapping: Record<string, UserRole> = {
-      'นักร้อง': UserRole.vocalist,
-      'กีตาร์': UserRole.guitarist,
-      'กลอง': UserRole.drummer,
-      'เบส': UserRole.bassist,
-      'คีย์บอร์ด': UserRole.Keyboardist,
-      'extra': UserRole.extra,
-      'percussion': UserRole.percussionist,
-      'ผู้จัดการ': UserRole.backstage
-    }
-
     const { sheetName, cellRange } = await this.getSheetName()
     return await this.sheets.spreadsheets.values.get({
       auth: this.auth,
       spreadsheetId: this.spreadsheetId,
       range: `${sheetName}!${cellRange}`,
     })
-
-    // const discordMemberMapper = await this.discordService.getDiscordMembersMapper()
-    // response.data.values.map(async currNewMember => {
-
-    //   const discordId = discordMemberMapper[currNewMember[0]]
-    //   const playerRole = roleMapping[currNewMember[1]] ? roleMapping[currNewMember[1]] : 'staff'
-    //   this.discordService.addNewUserToDiscordChannel(discordId, currNewMember[1])
-
-    //   const role = await this.prisma.role.findFirst({
-    //     where: { role: playerRole }
-    //   })
-
-    //   const {
-    //     existingUserWithSameRole,
-    //     existingUserWithDifferentRole
-    //   } = await this.userService.checkIfUserAlreadyExist(currNewMember[0], currNewMember[1])
-
-
-    //   if (!existingUserWithSameRole && !existingUserWithDifferentRole) {
-    //     const firstname = currNewMember[5].split(' ')[0]
-    //     const lastname = currNewMember[5].split(' ')[1]
-    //     const nickname = currNewMember[4]
-
-    //     await this.prisma.user.create({
-    //       data: {
-    //         discordId: discordId,
-    //         discordUsername: currNewMember[0],
-    //         firstName: firstname,
-    //         lastName: lastname,
-    //         nickName: nickname,
-    //         isActive: true,
-    //         roles: {
-    //           connect: {
-    //             roleId: role.roleId
-    //           }
-    //         }
-    //       }
-    //     })
-    //     this.discordService.addNewUserToDiscordChannel(discordId, currNewMember[1])
-    //   } else if (existingUserWithDifferentRole) {
-    //     const newRoleInfo = await this.prisma.role.findFirst({
-    //       where: {
-    //         role: playerRole
-    //       }
-    //     })
-    //     await this.prisma.user.update({
-    //       where: {
-    //         userId: existingUserWithDifferentRole.userId
-    //       },
-
-    //       data: {
-    //         roles: {
-    //           connect: {
-    //             roleId: newRoleInfo.roleId
-
-    //           }
-
-    //         }
-
-    //       }
-    //     })
-    //     this.discordService.addNewUserToDiscordChannel(discordId, currNewMember[1])
-
-    //   } else {
-    //     console.log('this is conflict')
-    //   }
-
-    // })
-
   }
-
-
-
-
- 
 } 

@@ -50,10 +50,9 @@ export class UserService {
       'คีย์บอร์ด': UserRole.Keyboardist,
       'extra': UserRole.extra,
       'percussion': UserRole.percussionist,
-      'ผู้จัดการ': UserRole.backstage
+      'backstage': UserRole.backstage
     }
     const playerRole = roleMapping[userRoleInGoogleSheet] ? roleMapping[userRoleInGoogleSheet] : 'staff'
-
     const role = await this.prisma.role.findFirst({
       where: { role: playerRole }
     })
@@ -62,6 +61,10 @@ export class UserService {
       existingUserWithSameRole,
       existingUserWithDifferentRole
     } = await this.checkIfUserAlreadyExist(discordUsername, userRoleInGoogleSheet)
+
+    console.log(existingUserWithSameRole)
+    console.log(existingUserWithDifferentRole)
+
 
 
     if (!existingUserWithSameRole && !existingUserWithDifferentRole) {
@@ -172,7 +175,7 @@ export class UserService {
       'คีย์บอร์ด': UserRole.Keyboardist,
       'extra': UserRole.extra,
       'percussion': UserRole.percussionist,
-      'ผู้จัดการ': UserRole.backstage
+      'backstage': UserRole.backstage
     }
     const playerRole = roleMapping[userPartFromGoogleSheet] ? roleMapping[userPartFromGoogleSheet] : 'staff'
     const existingUserWithSameRole = await this.prisma.user.findFirst({

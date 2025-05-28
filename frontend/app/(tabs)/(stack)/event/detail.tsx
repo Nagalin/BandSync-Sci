@@ -57,11 +57,11 @@ const Index = () => {
                     (
 
                         <Button
-                            onPress={() => {
+                            onPress={async () => {
                                 if(!isEventDay) return Alert.alert('คำเตือน', 'ไม่สามารถเริ่ม Event ได้เนื่องจากยังไม่ถึงวันกำหนดการ')
                                 if(event?.status === 'COMPLETED') return Alert.alert('คำเตือน', 'ไม่สามารถเริ่ม Event ได้เนื่องจาก Event นี้ได้จบไปล้ว')
 
-                                startEventService(eventId)
+                                await startEventService(eventId)
                                 router.push('/event/run')
                             }}
                             style={{ width: '90%', marginTop: -5 }}
