@@ -76,7 +76,10 @@ function Run() {
     queryKey: ['currentSong'],
     queryFn: async () => {
       const song = await getCurrentSongService(eventId)
-      setSongId(song.songId)
+      console.log("here: ",song)
+      if (song?.songId) {
+        setSongId(song.songId)
+      }
       return song
     },
   })
@@ -91,15 +94,23 @@ function Run() {
     queryFn: () => getEventInfoService(eventId),
     enabled: !!eventId,
   })
-  const lastIndex = songs.length - 1
-  const isLastSong = songs[lastIndex].songId === currentSong?.songId
 
+  if (isError || loadingCurrent || !currentSong?.songId) {
+    return (
+      <Background>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Loading...</Text>
+        </View>
+      </Background>
+    )
+  }
+
+  const lastIndex = songs.length - 1
+  const isLastSong = songs[lastIndex]?.songId === currentSong?.songId
 
   const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined
   const startTime = event?.startTime ? new Date(event.startTime) : undefined
   const endTime = event?.endTime ? new Date(event.endTime) : undefined
-
-  if (isError || loadingCurrent) return null
 
   return (
     <Background>

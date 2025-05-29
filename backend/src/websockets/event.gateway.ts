@@ -13,7 +13,7 @@ import { Logger } from '@nestjs/common';
     origin: '*'
   },
 })
-export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class EventGateWay implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
   private logger: Logger = new Logger('ChatGateway');
 

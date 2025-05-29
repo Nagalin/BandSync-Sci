@@ -35,7 +35,8 @@ export class EventService {
         eventName: true,
         eventDate: true,
         startTime: true,
-        endTime: true
+        endTime: true,
+        status: true
       }
     })
   }
