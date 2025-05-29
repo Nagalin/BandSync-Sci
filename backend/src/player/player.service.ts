@@ -42,7 +42,7 @@ export class PlayerService {
                     }
                 },
                 roles: {
-                    every: {
+                    some: {
                         role: playerType
                     }
                 }
@@ -99,7 +99,7 @@ export class PlayerService {
                     }
                 },
                 roles: {
-                    every: {
+                    some: {
                         role: playerType
                     }
                 }
@@ -114,7 +114,7 @@ export class PlayerService {
         const song = await this.prisma.song.findUnique({
             where: { songId }
         })
-
+    
         if (!song) return
 
         for (const userId of playerIds) {
@@ -125,7 +125,7 @@ export class PlayerService {
 
             if (!user || !user.roles.length) continue
 
-            const playerRole = user.roles[0].role
+            
 
             await this.prisma.song.update({
                 where: { songId },
@@ -133,13 +133,13 @@ export class PlayerService {
                     users: {
                         connect: { userId }
                     },
-                    ...(playerRole === PlayerType.VOCALIST && { currentVocalList: { increment: 1 } }),
-                    ...(playerRole === PlayerType.GUITARIST && { currentGuitarist: { increment: 1 } }),
-                    ...(playerRole === PlayerType.DRUMMER && { currentDrummer: { increment: 1 } }),
-                    ...(playerRole === PlayerType.BASSIST && { currentBassist: { increment: 1 } }),
-                    ...(playerRole === PlayerType.KEYBOARDIST && { currentKeyboardist: { increment: 1 } }),
-                    ...(playerRole === PlayerType.EXTRA && { currentExtra: { increment: 1 } }),
-                    ...(playerRole === PlayerType.PERCUSSIONIST && { currentPercussionist: { increment: 1 } })
+                    ...(playerType === PlayerType.VOCALIST && { currentVocalList: { increment: 1 } }),
+                    ...(playerType === PlayerType.GUITARIST && { currentGuitarist: { increment: 1 } }),
+                    ...(playerType === PlayerType.DRUMMER && { currentDrummer: { increment: 1 } }),
+                    ...(playerType === PlayerType.BASSIST && { currentBassist: { increment: 1 } }),
+                    ...(playerType === PlayerType.KEYBOARDIST && { currentKeyboardist: { increment: 1 } }),
+                    ...(playerType === PlayerType.EXTRA && { currentExtra: { increment: 1 } }),
+                    ...(playerType === PlayerType.PERCUSSIONIST && { currentPercussionist: { increment: 1 } })
                 },
             })
         }

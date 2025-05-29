@@ -39,6 +39,8 @@ const formatTime = (date: Date) =>
   })
 
 function Run() {
+  const queryClient = useQueryClient()
+
   const theme = useAppTheme()
   const { eventId, songId, setSongId } = useEventDataStore()
   const router = useRouter()
@@ -224,6 +226,8 @@ function Run() {
                 text: 'ยืนยัน',
                 onPress: async () => {
                   await endEventService(event?.eventId!)
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+
                   emitEndEvent()
 
                 },

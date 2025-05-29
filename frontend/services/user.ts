@@ -28,7 +28,9 @@ export const getUserService = async () => {
 }
 
 export const getAssignedPlayerListService = async (songId: string, playerType: string) => {
+    console.log("debug: ", songId, playerType)
     const response = await axios.get<AssignedPlayerListType>(`songs/${songId}/player/assigned/${playerType}`)
+    console.log(response.data)
     return response.data 
 }
 
