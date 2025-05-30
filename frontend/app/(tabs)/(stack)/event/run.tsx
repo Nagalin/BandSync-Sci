@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
 import { useRouter } from 'expo-router'
 import { Modal as RnModal, Portal } from 'react-native-paper'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { MaterialIcons } from '@expo/vector-icons'
 import Background from '@/components/ui/background'
 import Button from '@/components/ui/button'
@@ -40,16 +40,14 @@ const formatTime = (date: Date) =>
 
 function Run() {
   const queryClient = useQueryClient()
-
-  const theme = useAppTheme()
   const { eventId, songId, setSongId } = useEventDataStore()
   const router = useRouter()
   const isUserBackstage = checkBackstageRole()
 
   const [openModal, setOpenModal] = useState(false)
   const showModal = () => {
-    if(isLastSong) return Alert.alert('คำเตือน', 'ไม่สามารถแจ้งเตือนในเพลงถัดไปได้เนื่องจากเพลงนี้เป็นเพลงสุดท้ายแล้ว')
-  
+    if (isLastSong) return Alert.alert('คำเตือน', 'ไม่สามารถแจ้งเตือนในเพลงถัดไปได้เนื่องจากเพลงนี้เป็นเพลงสุดท้ายแล้ว')
+
     setOpenModal(true)
   }
   const confirmCloseModal = () => {
@@ -67,7 +65,7 @@ function Run() {
   const { control, handleSubmit, register } = useForm<FormType>()
 
   const onSubmit = handleSubmit(async (data) => {
-    if(isLastSong) return Alert.alert('คำเตือน', 'ไม่สามารถไปเพลงถัดไปได้เนื่องจากเพลงนี้เป็นเพลงสุดท้ายแล้ว')
+    if (isLastSong) return Alert.alert('คำเตือน', 'ไม่สามารถไปเพลงถัดไปได้เนื่องจากเพลงนี้เป็นเพลงสุดท้ายแล้ว')
 
     await notificationService(eventId, songId, data.notiMessage)
     Alert.alert('สำเร็จ', 'แจ้งเตือนสำเร็จ')
@@ -78,7 +76,7 @@ function Run() {
     queryKey: ['currentSong'],
     queryFn: async () => {
       const song = await getCurrentSongService(eventId)
-      console.log("here: ",song)
+      console.log("here: ", song)
       if (song?.songId) {
         setSongId(song.songId)
       }
@@ -189,7 +187,7 @@ function Run() {
       {isUserBackstage && (
         <View style={{ position: 'absolute', bottom: 20, right: 20, gap: 12 }}>
           <Button
-          
+
             style={{
               backgroundColor: '#FF9800',
               borderRadius: 30,
@@ -206,7 +204,7 @@ function Run() {
       )}
 
       <Button
-      // disabled={isLastSong}
+        // disabled={isLastSong}
         style={{
           position: 'absolute',
           bottom: 20,
@@ -219,15 +217,14 @@ function Run() {
           alignItems: 'center',
         }}
         onPress={async () => {
-          if(isLastSong) {
+          if (isLastSong) {
             return Alert.alert('ยืนยัน', 'คุณต้องการจบ Event หรือไม่', [
               { text: 'ยกเลิก', style: 'cancel' },
               {
                 text: 'ยืนยัน',
                 onPress: async () => {
                   await endEventService(event?.eventId!)
-      queryClient.invalidateQueries({ queryKey: ['users'] })
-
+                  queryClient.invalidateQueries({ queryKey: ['events'] })
                   emitEndEvent()
 
                 },
@@ -255,7 +252,7 @@ function Run() {
           ])
         }}
       >
-        <Text  style={{ color: 'white', fontWeight: 'bold' }}>{isLastSong ? 'จบ Event' : '⏭️ เพลงถัดไป'}</Text>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>{isLastSong ? 'จบ Event' : '⏭️ เพลงถัดไป'}</Text>
       </Button>
 
       {/* Modal แจ้งเตือน */}
@@ -289,17 +286,17 @@ function Run() {
               </Text>
 
               <Controller
-                            label='ข้อความแจ้งเตือน (optional)'
-                            control={control}
-                            name='notiMessage'
-                            style={{ minWidth: 170 }}
-                        />
+                label='ข้อความแจ้งเตือน (optional)'
+                control={control}
+                name='notiMessage'
+                style={{ minWidth: 170 }}
+              />
               <Button
-    
-    onPress={onSubmit}
-                
+
+                onPress={onSubmit}
+
                 style={{ marginTop: 12 }}
-                >
+              >
                 ส่งแจ้งเตือน
               </Button>
             </ScrollView>
