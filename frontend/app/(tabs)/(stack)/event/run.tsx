@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
 import { useRouter } from 'expo-router'
 import { Modal as RnModal, Portal } from 'react-native-paper'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { MaterialIcons } from '@expo/vector-icons'
 import Background from '@/components/ui/background'
 import Button from '@/components/ui/button'
@@ -226,7 +226,7 @@ function Run() {
                 text: 'ยืนยัน',
                 onPress: async () => {
                   await endEventService(event?.eventId!)
-      queryClient.invalidateQueries({ queryKey: ['users'] })
+      queryClient.invalidateQueries({ queryKey: ['events'] })
 
                   emitEndEvent()
 

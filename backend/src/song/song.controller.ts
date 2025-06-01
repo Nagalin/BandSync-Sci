@@ -41,8 +41,7 @@ export class SongController {
   async create(@Param('eventId') eventId: string, @Body() songData: SongDto) {
     const existingEvent = await this.songService.findBySongName(songData.songName, eventId);
     if (existingEvent) throw new ConflictException('ชื่อเพลงนี้มีอยู่แล้ว');
-
-    return await this.songService.create(songData, eventId);
+    else return await this.songService.create(songData, eventId);
   }
 
   @Put(':songId')

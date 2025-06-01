@@ -31,7 +31,7 @@ const UnassignedPlayerList = () => {
                 <Text>No { playerType } found</Text>
             ) : (
                 <>
-            <Text style={{color: '#737070'}}> Player ที่ยังไม่ถูก assigned </Text>
+            <Text style={{color: '#737070'}}> {playerType} ที่ยังไม่ถูก assigned </Text>
 
                 <Text style={{fontSize: 18, marginLeft: 20, marginBottom: 10}}>{playerType}</Text>
                     {playersList?.map(curr => (

@@ -12,7 +12,7 @@ const ActivateAccount = () => {
     try {
       await axios.post('/user/activate')
       Alert.alert('สำเร็จ','เพิ่มบัญชีสำเร็จ')
-      queryClient.invalidateQueries({ queryKey: ['users'] })
+      // queryClient.invalidateQueries({ queryKey: ['users'] })
 
     } catch (error) {
       console.error(error)

@@ -139,7 +139,8 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
                     <DateTimePicker
                         value={watch('endTime') || new Date()}
                         mode='time'
-                        display='default'
+                        display='spinner'
+
                         onChange={(_event, selectedTime) => {
                             setShowEndTime(false)
                             if (selectedTime) setValue('endTime', selectedTime)

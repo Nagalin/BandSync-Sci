@@ -49,7 +49,7 @@ export class EventController {
     const { eventName } = eventDto
     const existingEvent = await this.eventService.findOne(eventName)
     if (existingEvent) throw new ConflictException('Event already exists')
-
+      else 
     await this.eventService.create(eventDto)
   }
 

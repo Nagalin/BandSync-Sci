@@ -45,7 +45,7 @@ const AssignedPlayerList = () => {
             </Text>
 
             {playersList?.currentPlayer === 0 ? (
-                <Text>No {playerType} has been assigned</Text>
+                <Text>{playerType} ยังไม่ถูก assigned</Text>
             ) : (
                 <>
                     {playersList?.players.map(curr => (
