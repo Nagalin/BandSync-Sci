@@ -6,8 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
   const config = new DocumentBuilder()
-    .setTitle('API')
-    .setDescription('API description')
+    .setTitle('API specs')
+    .setDescription('API specs for Band-sync sci application')
     .setVersion('1.0')
     .addBearerAuth()
     .build()

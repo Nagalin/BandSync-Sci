@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
-import { SongDto } from 'src/song/dto/song.dto'
+import { CreateAndUpdateSongDto } from './dto/create-update-song.dto'
 
 @Injectable()
 export class SongService {
@@ -31,7 +31,6 @@ export class SongService {
     }).then(songs => songs.map(song => ({
       ...song,
       isAssigned: song.users.length > 0,
-      users: undefined
     })))
   }
 
@@ -67,7 +66,7 @@ export class SongService {
     })
   }
 
-  async create(createSongDto: SongDto, eventId: string) {
+  async create(createSongDto: CreateAndUpdateSongDto, eventId: string) {
     const {
       totalBassist,
       totalDrummer,
@@ -115,7 +114,7 @@ export class SongService {
     return newSong
   }
 
-  async update(songId: string, songdata: SongDto) {
+  async update(songId: string, songdata: CreateAndUpdateSongDto) {
     const {
       totalBassist,
       totalDrummer,
@@ -149,7 +148,6 @@ export class SongService {
   }
 
   async reorderSongs(songOrder: { songId: string, songOrder: number }[], eventId: string) {
-    console.log('here: ', songOrder)
     const updatePromises = songOrder.map((song) =>
       this.prisma.song.update({
         where: {

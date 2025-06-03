@@ -6,6 +6,7 @@ import { AdminGuard } from '../guard/admin.guard'
 import { UserService } from '../user/user.service'
 import { GoogleSheetsService } from 'src/google-sheets/google-sheets.service'
 import { DiscordService } from 'src/discord/discord.service'
+import { ApiResponse } from '@nestjs/swagger'
 
 @Controller('admin')
 export class AdminController {
@@ -16,6 +17,10 @@ export class AdminController {
     private readonly adminService: AdminService
   ) { }
 
+  @ApiResponse({
+    status: 201,
+    description: 'add new account by reading google sheets successfully'
+  })
   @Post('/activate-user')
   @UseGuards(AdminGuard)
   async activeUser() {
@@ -43,6 +48,11 @@ export class AdminController {
 
   }
 
+  
+  @ApiResponse({
+    status: 200,
+    description: 'transfer system admin privilege successfully'
+  })
   @Patch('transfer')
   @UseGuards(AdminGuard)
   async transferAdmin(
