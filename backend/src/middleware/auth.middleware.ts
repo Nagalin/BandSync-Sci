@@ -13,7 +13,7 @@ export class AuthMiddleware implements NestMiddleware {
             const sessionToken = authHeader?.split('Bearer ')[1];
             const discordId = await this.authService.getDiscordIdFromSessionToken(sessionToken);
            
-            const existingUser = await this.authService.checkIfUserExist(discordId);
+            const existingUser = await this.authService.checkIfUserExist(discordId)
             if (!existingUser) throw new UnauthorizedException('Your account does not have access to this application');
             (req as any).user = existingUser;
             next()

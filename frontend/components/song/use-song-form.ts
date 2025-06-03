@@ -1,14 +1,15 @@
 import { Alert, Keyboard } from 'react-native'
 import { useForm } from 'react-hook-form'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'expo-router'
-import { createSongService, deleteSongService, Song, updateSongService } from '@/services/song'
+import { createSongService, deleteSongService, updateSongService } from '@/services/song.service.'
 import { useEventDataStore } from '@/zustand/store'
 import { useCallback, useState } from 'react'
+import { SongType } from '@/types/song'
 
-type SongForm = Omit<Song, 'songId'>
+type SongForm = Omit<SongType, 'songId'>
 
-const useSong = (song?: Song) => {
+const useSong = (song?: SongType) => {
     const [showSongkeyPicker, setShowSongkeyPicker] = useState(false)
     const openSongKeyPicker = useCallback(
         () => {
@@ -33,7 +34,7 @@ const useSong = (song?: Song) => {
         handleSubmit,
         setValue,
         watch,
-        formState: { errors }
+        formState: { isSubmitting, errors }
     } = useForm<SongForm>({
         defaultValues: {
             songName: song?.songName || '',
@@ -50,75 +51,76 @@ const useSong = (song?: Song) => {
         }
     })
 
-    const { mutate: createSong } = useMutation({
-        mutationFn: async (data: SongForm) => {
-            try {
-                await createSongService(data, eventId as string)
-                Alert.alert('สำเร็จ', 'สร้างเพลงสำเร็จ', [
-                    { text: 'OK' },
-                ])
-                router.back()
-                queryClient.invalidateQueries({ queryKey: ['songs'] })
+    const createSong = handleSubmit(async data => {
 
-            } catch (error: any) {
-                console.error(error.response?.data?.message)
-            }
+        try {
+            await createSongService(data, eventId as string)
+            Alert.alert('สำเร็จ', 'สร้างเพลงสำเร็จ', [
+                { text: 'OK' },
+            ])
+            router.back()
+            queryClient.invalidateQueries({ queryKey: ['songs'] })
+
+        } catch (error: any) {
+            console.error(error.response?.data?.message)
         }
+
+    }
+    )
+
+
+    const updateSong = handleSubmit(async data => {
+
+
+
+        try {
+            await updateSongService(data, song?.songId as string, eventId as string)
+            Alert.alert('สำเร็จ', 'อัปเดตเพลงสำเร็จ', [
+                { text: 'OK' },
+            ])
+            queryClient.invalidateQueries({ queryKey: ['songs'] })
+        } catch (error: any) {
+            console.error(error.response?.data?.message)
+        }
+
+
     })
 
-    const { mutate: updateSong } = useMutation({
+    const deleteSong = handleSubmit(async data => {
 
-        mutationFn: async (data: SongForm ) => {
-            try {
-                await updateSongService(data, song?.songId as string, eventId as string)
-                Alert.alert('สำเร็จ', 'อัปเดตเพลงสำเร็จ', [
-                    { text: 'OK' },
-                ])
-                queryClient.invalidateQueries({queryKey: ['songs']})
-            } catch (error: any) {
-                console.error(error.response?.data?.message)
-            }
-        }
-    })
 
-    const { mutate: deleteSong } = useMutation({
-        mutationFn: async () => {
-            try {
-                Alert.alert('คำเตือน', 'ต้องการลบเพลงหรือไม่', [
-                    { text: 'cancel' },
-                    {
-                        text: 'ok', onPress: async () => {
-                            await deleteSongService(song?.songId as string, eventId as string)
-                            queryClient.invalidateQueries({ queryKey: ['songs'] })
-                            Alert.alert('สำเร็จ', 'ลบเพลงสำเร็จ')
-                            router.back()
-                        }
+        try {
+            Alert.alert('คำเตือน', 'ต้องการลบเพลงหรือไม่', [
+                { text: 'cancel' },
+                {
+                    text: 'ok', onPress: async () => {
+                        await deleteSongService(song?.songId as string, eventId as string)
+                        queryClient.invalidateQueries({ queryKey: ['songs'] })
+                        Alert.alert('สำเร็จ', 'ลบเพลงสำเร็จ')
+                        router.back()
                     }
-                ])
-            } catch (error: any) {
-                console.error(error.response?.data?.message)
-            }
+                }
+            ])
+        } catch (error: any) {
+            console.error(error.response?.data?.message)
         }
     })
 
-    const onSubmit = handleSubmit(data => {
-        if (song) {
-            updateSong(data)
-        } else {
-            createSong(data)
-        }
-    })
+
+
 
     return {
         control,
         setValue,
         watch,
         errors,
-        onSubmit,
+        createSong,
+        updateSong,
         deleteSong,
         showSongkeyPicker,
         openSongKeyPicker,
-        hideSongKeyPicker
+        hideSongKeyPicker,
+        isSubmitting
 
     }
 }

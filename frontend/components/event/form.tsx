@@ -9,11 +9,11 @@ import Text from '@/components/ui/text'
 import FormController from '@/components/ui/form-controller'
 import useEventForm from '@/components/event/use-event-form'
 import { checkBackstageRole } from '@/utils/check-user-role'
-import { Event } from '@/services/event'
+import { EventType } from '@/types/event'
 
 type FormPropsType = {
     closeModalImmediately?: () => void
-    event?: Omit<Event, 'status'>
+    event?: Omit<EventType, 'status'>
 }
 
 const Form = ({ closeModalImmediately, event }: FormPropsType) => {
@@ -25,7 +25,8 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
         control,
         setValue,
         watch,
-        onSubmit,
+        createEvent,
+        updateEvent,
         deleteEvent
     } = useEventForm(closeModalImmediately, event)
 
@@ -176,24 +177,30 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
             }}
             >
 
-                 {isBackstage ?
+                {isBackstage ?
                     (
                         <>
+                            {event ?
+                                <Button onPress={updateEvent} style={{ width: '95%' }}>
+                                    อัปเดต
+                                </Button> :
+                                <Button onPress={createEvent} style={{ width: '95%' }}>
+                                   สร้าง
+                                </Button>
+                            }
 
-                            <Button onPress={onSubmit} style={{ width: '95%' }}>
-                                {event ? 'อัปเดต' : 'สร้าง'}
-                            </Button>
+
                             {event &&
                                 <Button
                                     style={{ width: '95%' }}
                                     variant='danger'
-                                    onPress={() => deleteEvent()}>
+                                    onPress={deleteEvent}>
                                     ลบ Event
                                 </Button>}
                         </>
 
                     ) : null
-                } 
+                }
 
             </View>
         </View>
@@ -201,4 +208,3 @@ const Form = ({ closeModalImmediately, event }: FormPropsType) => {
 }
 
 export default Form
-

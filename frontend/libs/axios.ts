@@ -1,5 +1,5 @@
-import { getClerkInstance } from "@clerk/clerk-expo";
-import axiosInstance from "axios";
+import { getClerkInstance } from "@clerk/clerk-expo"
+import axiosInstance from "axios"
 
 const axios = axiosInstance.create({
     baseURL: process.env.EXPO_PUBLIC_API_BASE_URL,

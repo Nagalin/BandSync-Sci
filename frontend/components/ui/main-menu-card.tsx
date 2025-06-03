@@ -1,22 +1,22 @@
 import { View, Text, StyleProp, TextStyle, ViewStyle } from 'react-native'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Card } from 'react-native-paper'
 import { Href, useRouter } from 'expo-router'
-import { MaterialIcons } from '@expo/vector-icons'
 
 type MainMenuCardPropsType = {
-    menuName: string,
-    href: Href
+    children: ReactNode
+    href: Href,
+    colorStripBackground: string,
 }
 
-const MainMenuCard = ({ menuName, href }: MainMenuCardPropsType) => {
+const MainMenuCard = ({ children, href, colorStripBackground }: MainMenuCardPropsType) => {
     const router = useRouter()
     return (
         <Card onPress={() => router.push(href)} style={cardBaseStyle}>
             <Card.Content style={{ flexGrow: 1, flexShrink: 1, flexBasis: '100%' }}>
                 <View style={cardContentWrapper}>
-                    <View style={[colorStrip, { backgroundColor: '#4CAF50' }]} />
-                    <View style={[badgeStyle, { backgroundColor: '#4CAF50' }]}>
+                    <View style={[colorStrip, { backgroundColor: colorStripBackground }]} />
+                    <View style={[badgeStyle, { backgroundColor: colorStripBackground }]}>
                         <Text style={badgeText}>+</Text>
                     </View>
                     <View style={{
@@ -26,8 +26,7 @@ const MainMenuCard = ({ menuName, href }: MainMenuCardPropsType) => {
                         zIndex: 2,
                         overflow: 'visible',
                     }}>
-                        <MaterialIcons name="event" size={36} color="black" />
-                        <Text style={{ fontSize: 20, color: 'black', textAlign: 'center' }}>{menuName}</Text>
+                        {children}
                     </View>
                 </View>
             </Card.Content>

@@ -9,8 +9,8 @@ export enum PlayerType {
 }
 
 export class PlayerDto {
-    playerType: PlayerType;
-    playerId?: string[];
-    songId?: string;
+    playerType: PlayerType
+    playerId?: string[]
+    songId?: string
 }
 

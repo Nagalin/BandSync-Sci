@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { assignPlayerService } from '@/services/user'
+import { assignPlayerService } from '@/services/user.service'
 
 const useAssignPlayer = () => {
     const queryClient = useQueryClient()

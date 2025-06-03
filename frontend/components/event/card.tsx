@@ -4,24 +4,14 @@ import { Card } from 'react-native-paper'
 import { router } from 'expo-router'
 import { format } from 'date-fns'
 import Text from '@/components/ui/text'
-import { useAppTheme } from '@/hooks/use-theme'
 import Calender from '@/assets/icons/calender'
 import Clock from '@/assets/icons/clock'
 import { useEventDataStore } from '@/zustand/store'
+import { EventType } from '@/types/event'
 
-type EventCardPropsType = {
-  eventId: string
-  eventName: string
-  eventDate: Date
-  startTime: Date
-  endTime: Date
-  status: 'UPCOMING' |
-  'ONGOING' |
-  'COMPLETED'
-}
+type EventCardPropsType = Omit<EventType, 'additionalDetails' | 'dressCode'>
 
 const EventCard = ({ eventId, eventName, eventDate, startTime, endTime, status }: EventCardPropsType) => {
-  const theme = useAppTheme()
   const formattedDate = format(eventDate, 'dd/MM/yy')
   const formattedStartTime = format(new Date(startTime), 'HH:mm')
   const formattedEndTime = format(new Date(endTime), 'HH:mm')
@@ -40,13 +30,11 @@ const EventCard = ({ eventId, eventName, eventDate, startTime, endTime, status }
       style={{
         borderStyle: 'solid',
         width: '48%',
-        // marginTop: 15,
         height: 150,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         aspectRatio: 1.2,
-        // marginBottom: 16,
         borderRadius: 16,
         backgroundColor: 'white',
         elevation: 4,

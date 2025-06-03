@@ -6,8 +6,9 @@ import { Checkbox } from 'react-native-paper'
 import Button from '@/components/ui/button'
 import useUnassignPlayer from '@/components/player/use-unassign-player'
 import { useEventDataStore } from '@/zustand/store'
-import { getAssignedPlayerListService, AssignedPlayerListType } from '@/services/user'
+import { getAssignedPlayerListService } from '@/services/user.service'
 import { checkBackstageRole } from '@/utils/check-user-role'
+import { AssignedPlayerListType } from '@/types/user'
 
 const AssignedPlayerList = () => {
     const { songId, playerType } = useEventDataStore()

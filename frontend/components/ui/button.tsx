@@ -8,7 +8,7 @@ type ButtonPropsType = {
   variant?: 'primary' | 'danger'
 } & ButtonProps
 
-const Button = ({ variant = 'primary', children, style, ...props }: ButtonPropsType) => {
+const Button = ({ variant = 'primary', children, style, disabled, ...props }: ButtonPropsType) => {
   const theme = useAppTheme()
 
   const variantStyle = {
@@ -17,18 +17,25 @@ const Button = ({ variant = 'primary', children, style, ...props }: ButtonPropsT
       textColor: '#000',
     },
     danger: {
-      backgroundColor: theme.colors.dangerButton, 
+      backgroundColor: theme.colors.dangerButton,
       textColor: '#000',
+    },
+    disabled: {
+      backgroundColor: 'red', // or any color you want when disabled
+      textColor: '#fff',
     },
   }
 
-  const { backgroundColor, textColor } = variantStyle[variant]
+  const { backgroundColor, textColor } = disabled
+    ? variantStyle.disabled
+    : variantStyle[variant]
 
   return (
     <RnButton
-      mode='contained'
+      mode="contained"
       buttonColor={backgroundColor}
       textColor={textColor}
+      // disabled={disabled}
       style={[style]}
       {...props}
     >
@@ -38,4 +45,6 @@ const Button = ({ variant = 'primary', children, style, ...props }: ButtonPropsT
 }
 
 
+
 export default Button
+

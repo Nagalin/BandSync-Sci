@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { unassignPlayerService } from '@/services/user'
+import { unassignPlayerService } from '@/services/user.service'
 
 const useUnassignPlayer = () => {
     const queryClient = useQueryClient()
@@ -10,7 +10,6 @@ const useUnassignPlayer = () => {
         queryClient.invalidateQueries({ queryKey: ['assignedPlayerList'] })
         queryClient.invalidateQueries({ queryKey: ['unassignedPlayerList'] })
     }
-
 
     const handleToggle = (userId: string) => {
         setSelectedUsers(prev => ({

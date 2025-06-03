@@ -9,7 +9,7 @@ import {
     UseGuards
 } from '@nestjs/common'
 import { PlayerService } from 'src/player/player.service'
-import { BackstageGuard } from 'src/guard/auth.guard'
+import { BackstageGuard } from 'src/guard/backstage.guard'
 import { PlayerDto, PlayerType } from 'src/player/dto/player.dto'
 
 

@@ -1,37 +1,19 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import * as WebBrowser from 'expo-web-browser'
-
 import {
   View,
-  Alert,
   Text,
   StyleSheet,
   ImageBackground,
 } from 'react-native'
-import { useRouter } from 'expo-router'
-import * as SecureStore from 'expo-secure-store'
-import axios from '@/libs/axios'
-import { useSocketQuery } from '@/hooks/use-socket-query'
 import Button from '@/components/ui/button'
-import useLogin from './use-login'
+import useLogin from '@/components/login/use-login'
 
 WebBrowser.maybeCompleteAuthSession()
 
-async function storeRoles(user: any) {
-  try {
-    const rolesKey = 'user_roles'
-    const rolesData = JSON.stringify(user)
-    await SecureStore.setItemAsync(rolesKey, rolesData)
-  } catch (error) {
-    console.error('Error storing roles:', error)
-  }
-}
+export default function Login() {
+  const { login } = useLogin()
 
-export default function LoginScreen() {
-    const {
-        login
-    } = useLogin()
-  
   return (
     <ImageBackground
       source={require('@/assets/images/bg.jpg')}
@@ -70,5 +52,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#f4f6f7',
     marginBottom: 30,
-  },
+  }
 })

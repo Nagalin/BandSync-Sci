@@ -1,17 +1,17 @@
 import React from 'react'
 import { View } from 'react-native'
-import Text from '../ui/text'
+import Text from '@/components/ui/text'
 import { Checkbox } from 'react-native-paper'
-import Button from '../ui/button'
-import useAssignPlayer from './use-assign-player'
+import Button from '@/components/ui/button'
+import useAssignPlayer from '@/components/player/use-assign-player'
 import { useQuery } from '@tanstack/react-query'
-import axios from '@/libs/axios'
 import { useEventDataStore } from '@/zustand/store'
-import { getUnassignedPlayerListService, User } from '@/services/user'
+import { getUnassignedPlayerListService } from '@/services/user.service'
+import { UserType } from '@/types/user'
 
 const UnassignedPlayerList = () => {
     const { songId, playerType } = useEventDataStore()
-    const { data: playersList, isFetching } = useQuery<User[]>({
+    const { data: playersList, isFetching } = useQuery<UserType[]>({
         queryKey: ['unassignedPlayerList'],
         queryFn: async () => getUnassignedPlayerListService(songId, playerType)
     })

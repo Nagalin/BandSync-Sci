@@ -1,15 +1,5 @@
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from 'expo-secure-store'
 
-
-type PlayerType = 
-    'vocalist' |
-    'guitarist' |
-    'bassist' |
-    'drummer' |
-    'Keyboardist'|
-    'extra' |
-    'percussionist'
-    
 export const checkBackstageRole =  () => {
   const value = JSON.parse(SecureStore.getItem('user_roles') as string)
   return !!value.find((curr: any) => curr.role === 'backstage')

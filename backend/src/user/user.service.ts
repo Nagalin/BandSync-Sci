@@ -1,19 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { Prisma, UserRole } from '@prisma/client';
-import { DiscordService } from 'src/discord/discord.service';
-import { GoogleSheetsService } from 'src/google-sheets/google-sheets.service';
-import { PrismaService } from 'src/prisma.service';
+import { Injectable } from '@nestjs/common'
+import { UserRole } from '@prisma/client'
+import { DiscordService } from 'src/discord/discord.service'
+import { PrismaService } from 'src/prisma.service'
 
 type NewUserType = {
-
   discordId: string,
   discordUsername: string
   firstname: string,
   lastname: string,
   nickname: string,
   userRoleInGoogleSheet: string
-
 }
+
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService, private discordService: DiscordService) { }
@@ -29,8 +27,6 @@ export class UserService {
     })
 
   }
-
-
 
   async activateUser(newUser: NewUserType) {
     const {
@@ -52,7 +48,7 @@ export class UserService {
       'percussion': UserRole.percussionist,
       'backstage': UserRole.backstage
     }
-    const playerRole = roleMapping[userRoleInGoogleSheet] ? roleMapping[userRoleInGoogleSheet] : 'staff'
+    const playerRole = roleMapping[userRoleInGoogleSheet] ?? 'staff'
     const role = await this.prisma.role.findFirst({
       where: { role: playerRole }
     })
@@ -62,14 +58,7 @@ export class UserService {
       existingUserWithDifferentRole
     } = await this.checkIfUserAlreadyExist(discordUsername, userRoleInGoogleSheet)
 
-    console.log(existingUserWithSameRole)
-    console.log(existingUserWithDifferentRole)
-
-
-
     if (!existingUserWithSameRole && !existingUserWithDifferentRole) {
-
-
       await this.prisma.user.create({
         data: {
           discordId: discordId,
@@ -101,11 +90,8 @@ export class UserService {
           roles: {
             connect: {
               roleId: newRoleInfo.roleId
-
             }
-
           }
-
         }
       })
       this.discordService.addNewUserToDiscordChannel(discordId, userRoleInGoogleSheet)
@@ -125,7 +111,6 @@ export class UserService {
         nickName: 'first',
         isActive: true,
         roles: { connect: { roleId: '60338d55-b0b8-4930-b624-27c9f93644ae' } }
-
       }
     })
   }
@@ -157,12 +142,12 @@ export class UserService {
         firstName: true,
         lastName: true,
       }
-    });
+    })
 
     return users.map(user => ({
       userId: user.userId,
       fullName: `${user.firstName} ${user.lastName}`,
-    }));
+    }))
   }
 
   async checkIfUserAlreadyExist(discordUsername: string, userPartFromGoogleSheet: string) {

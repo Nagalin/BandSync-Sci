@@ -36,7 +36,6 @@ const FormController = <T extends FieldValues>({
     style,
     defaultValue,
     keyboardType = 'default',
-    editable = true,
     render,
 }: FormControllerProps<T>) => {
     const isBackstage = checkBackstageRole()

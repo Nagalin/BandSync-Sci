@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import AssignedPlayerList from '@/components/player/assigned-player-list'
 import UnassignedPlayerList from '@/components/player/unassigned-player-list'
 
-const Index = () => {
+const AssignPlayer = () => {
     return (
         <View>
             <AssignedPlayerList />
@@ -20,4 +20,4 @@ const Index = () => {
 }
 
 
-export default Index
+export default AssignPlayer

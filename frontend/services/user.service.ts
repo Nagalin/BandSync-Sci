@@ -1,41 +1,18 @@
 import axios from '@/libs/axios'
-
-export type User = {
-    discordId: string
-    discordUsername: string
-    firstName: string
-    isActive: boolean
-    lastName: string
-    nickName: string
-    roles: Roles[]
-    userId: string
-}
-
-type Roles = {
-    role: 'vocalist' | 'guitarist' | 'bassist' | 'drummer' | 'Keyboardist' | 'extra' | 'percussionist'
-    roleId: string
-}
-
-export type AssignedPlayerListType = {
-    totalPlayer: number
-    currentPlayer: number
-    players: User[]
-}
+import { AssignedPlayerListType, UserType } from '@/types/user'
 
 export const getUserService = async () => {
-    const response = await axios.get<User>('/auth/user')
+    const response = await axios.get<UserType>('/auth/user')
     return response.data
 }
 
 export const getAssignedPlayerListService = async (songId: string, playerType: string) => {
-    console.log("debug: ", songId, playerType)
     const response = await axios.get<AssignedPlayerListType>(`songs/${songId}/player/assigned/${playerType}`)
-    console.log(response.data)
     return response.data 
 }
 
 export const getUnassignedPlayerListService = async (songId: string, playerType: string) => {
-    const response = await axios.get<User[]>(`songs/${songId}/player/unassigned/${playerType}`)
+    const response = await axios.get<UserType[]>(`songs/${songId}/player/unassigned/${playerType}`)
     return response.data
 }
 

@@ -1,9 +1,9 @@
-import { View, Alert, StyleSheet } from 'react-native'
+import { View, StyleSheet, Alert } from 'react-native'
 import React from 'react'
-import Button from '../ui/button'
-import Text from '../ui/text'
-import axios from '@/libs/axios'
+import Button from '@/components/ui/button'
+import Text from '@/components/ui/text'
 import { useQueryClient } from '@tanstack/react-query'
+import axios from '@/libs/axios'
 
 const ActivateAccount = () => {
   const queryClient = useQueryClient()
@@ -12,7 +12,7 @@ const ActivateAccount = () => {
     try {
       await axios.post('/user/activate')
       Alert.alert('สำเร็จ','เพิ่มบัญชีสำเร็จ')
-      // queryClient.invalidateQueries({ queryKey: ['users'] })
+      queryClient.invalidateQueries({ queryKey: ['users'] })
 
     } catch (error) {
       console.error(error)
@@ -22,7 +22,7 @@ const ActivateAccount = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>เพิ่มบัญชีผู้ใช้ใหม่</Text>
-      <Button onPress={addNewAccount}>
+      <Button  onPress={addNewAccount}>
         <Text style={styles.buttonText}>เพิ่มบัญชี</Text>
       </Button>
     </View>

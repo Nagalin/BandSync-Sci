@@ -1,22 +1,15 @@
 import React from 'react'
-import { Alert, Pressable, View } from 'react-native'
-import { Link, useRouter } from 'expo-router'
+import { View } from 'react-native'
 import { Skeleton } from 'moti/skeleton'
 import { useQuery } from '@tanstack/react-query'
-import Button from '@/components/ui/button'
 import Background from '@/components/ui/background'
-import Text from '@/components/ui/text'
 import Form from '@/components/event/form'
-import ListIcon from '@/assets/icons/list'
-import { checkBackstageRole } from '@/utils/check-user-role'
-import { getEventInfoService, startEventService } from '@/services/event'
+import { getEventInfoService} from '@/services/event.service.'
 import { useEventDataStore } from '@/zustand/store'
-import { isSameDay } from 'date-fns'
+import EventActions from '@/components/event/event-action-buttons'
 
-const Index = () => {
-    const router = useRouter()
+const Detail = () => {
     const { eventId } = useEventDataStore()
-    const isBackstage = checkBackstageRole();
     const { data: event, isFetching } = useQuery({
         queryKey: ['event-detail', eventId],
         queryFn: async () => {
@@ -29,7 +22,7 @@ const Index = () => {
     const eventDate = event?.eventDate ? new Date(event.eventDate) : undefined
     const startTime = event?.startTime ? new Date(event.startTime) : undefined
     const endTime = event?.endTime ? new Date(event.endTime) : undefined
-    const isEventDay = isSameDay(eventDate!, new Date())
+
     return (
         <Background style={{
             flexDirection: 'column',
@@ -52,49 +45,12 @@ const Index = () => {
                 />
             </View>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                {isBackstage ?
-                    (
+            <EventActions
+                eventId={event?.eventId!}
+                eventDate={event?.eventDate!}
+                status={event?.status!}
+            />
 
-                        <Button
-                            onPress={async () => {
-                                if(!isEventDay) return Alert.alert('คำเตือน', 'ไม่สามารถเริ่ม Event ได้เนื่องจากยังไม่ถึงวันกำหนดการ')
-                                if(event?.status === 'COMPLETED') return Alert.alert('คำเตือน', 'ไม่สามารถเริ่ม Event ได้เนื่องจาก Event นี้ได้จบไปล้ว')
-
-                                await startEventService(eventId)
-                                router.push('/event/run')
-                            }}
-                            style={{ width: '90%', marginTop: -5 }}
-                        >
-                            เริ่ม Event
-                        </Button>
-                    ) : null
-                }
-            </View>
-
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center'
-                }}
-            >
-                    <Button onPress={() => {
-                        if(event?.status == 'ONGOING') router.push('/event/run')
-                        router.push('/song')
-                    }} style={{ width: '90%' }}>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            gap: 10,
-                            alignItems: 'center',
-                        }}>
-                            <ListIcon width={20} height={20} />
-                            <Text>
-                                ดูรายชื่อเพลง
-                            </Text>
-                        </View>
-                    </Button>
-            </View>
         </Background>
     )
 }
@@ -116,4 +72,4 @@ const DetailLoading = () => {
 }
 
 
-export default Index
+export default Detail

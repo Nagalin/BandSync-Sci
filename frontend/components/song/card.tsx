@@ -1,58 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'expo-router';
-import { Pressable, StyleSheet, ActivityIndicator, View } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
-import { getSongListService, SongList } from '@/services/song';
-import { useEventDataStore } from '@/zustand/store';
-import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
-import axios from '@/libs/axios';
-import { checkBackstageRole, checkPlayerRole } from '@/utils/check-user-role';
-import { Alert } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'expo-router'
+import { Pressable, StyleSheet, ActivityIndicator, View } from 'react-native'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { getSongListService } from '@/services/song.service.'
+import { useEventDataStore } from '@/zustand/store'
+import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist'
+import axios from '@/libs/axios'
+import { checkBackstageRole, checkPlayerRole } from '@/utils/check-user-role'
+import { Alert } from 'react-native'
 import { Checkbox } from 'react-native-paper'
-import Text from '../ui/text';
+import Text from '@/components/ui/text'
+import { SongListType } from '@/types/song'
 
 type CardPropsType = {
-  currentSongId?: string;
-};
+  currentSongId?: string
+}
 
 export default function Card({ currentSongId }: CardPropsType) {
-  const router = useRouter();
+  const queryClient = useQueryClient()
+  const router = useRouter()
   const isPlayer = checkPlayerRole()
-  const { setSongId, eventId } = useEventDataStore();
+  const { setSongId, eventId } = useEventDataStore()
   const { data: songsData = [], isLoading } = useQuery({
     queryKey: ['songs', eventId],
     queryFn: async () => await getSongListService(eventId)
-  });
+  })
   const [checkboxChecked, setCheckboxChecked] = useState(false)
 
-  const [songs, setSongs] = useState<SongList[]>([]);
+  const [songs, setSongs] = useState<SongListType[]>([])
   const filterSong = () => {
     setCheckboxChecked(curr => !curr)
     setSongs(prev => prev.filter(curr => curr.isAssigned))
   }
 
-  const isUserBackstage = checkBackstageRole();
+  const isUserBackstage = checkBackstageRole()
 
   useEffect(() => {
-    if (songsData.length > 0) {
-      setSongs((songsData as (SongList & { songOrder: number })[]).sort((a, b) => a.songOrder - b.songOrder));
-    }
-  }, [songsData]);
+    // if (songsData.length > 0) {
+      setSongs((songsData as (SongListType & { songOrder: number })[]).sort((a, b) => a.songOrder - b.songOrder))
+    // }
+  }, [songsData])
 
-  const updateOrder = async (newData: SongList[]) => {
+  const updateOrder = async (newData: SongListType[]) => {
     try {
       await axios.patch(`/events/${eventId}/songs/reorder`, {
         songOrder: newData.map((song, idx) => ({
           songId: song.songId,
-          songOrder: idx,
+          songOrder: idx + 1,
         })),
-      });
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['songs']
+      })
     } catch (error) {
-      console.error('Error updating song order:', error);
+      console.error('Error updating song order:', error)
     }
-  };
+  }
 
-  const renderItem = ({ item, drag, isActive }: RenderItemParams<SongList>) => (
+  const renderItem = ({ item, drag, isActive }: RenderItemParams<SongListType>) => (
     <Pressable
       onLongPress={isUserBackstage ? drag : undefined}
       disabled={!isUserBackstage}
@@ -64,20 +69,20 @@ export default function Card({ currentSongId }: CardPropsType) {
     >
       <Text
         onPress={() => {
-          setSongId(item.songId);
-          router.navigate({ pathname: '/song/detail' });
+          setSongId(item.songId)
+          router.navigate({ pathname: '/song/detail' })
         }}
         style={styles.text}
       >
-        {`${item.songName} (${item.songKey})`}
+        {`${item.songOrder}. ${item.songName} (${item.songKey})`}
       </Text>
     </Pressable>
-  );
+  )
 
   if (isLoading) {
     return (
       <ActivityIndicator size="large" style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
-    );
+    )
   }
 
   return (
@@ -118,9 +123,9 @@ export default function Card({ currentSongId }: CardPropsType) {
       <DraggableFlatList
       data={songs}
       onDragEnd={({ data }) => {
-        if (JSON.stringify(data) === JSON.stringify(songs)) return;
+        if (JSON.stringify(data) === JSON.stringify(songs)) return
         
-        if (!isUserBackstage) return;
+        if (!isUserBackstage) return
         
         Alert.alert(
           'ยืนยันการจัดลำดับ',
@@ -133,18 +138,18 @@ export default function Card({ currentSongId }: CardPropsType) {
             {
               text: 'ยืนยัน',
               onPress: async () => {
-                setSongs(data);
+                setSongs(data)
                 try {
-                  await updateOrder(data);
-                  Alert.alert('สำเร็จ', 'จัดลำดับเพลงใหม่เรียบร้อยแล้ว');
+                  await updateOrder(data)
+                  Alert.alert('สำเร็จ', 'จัดลำดับเพลงใหม่เรียบร้อยแล้ว')
                 } catch {
-                  Alert.alert('เกิดข้อผิดพลาด', 'ไม่สามารถอัปเดตลำดับเพลงได้');
+                  Alert.alert('เกิดข้อผิดพลาด', 'ไม่สามารถอัปเดตลำดับเพลงได้')
                 }
               },
             },
           ],
           { cancelable: true }
-        );
+        )
       }}
       keyExtractor={(item) => item.songId.toString()}
       renderItem={renderItem}
@@ -153,7 +158,7 @@ export default function Card({ currentSongId }: CardPropsType) {
     }
     </View>
 
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -180,4 +185,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-});
+})

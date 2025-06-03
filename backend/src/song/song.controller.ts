@@ -9,55 +9,55 @@ import {
   Body,
   UseGuards,
   Request,
-} from '@nestjs/common';
-import { SongService } from 'src/song/song.service';
-import { SongDto } from 'src/song/dto/song.dto';
-import { BackstageGuard } from 'src/guard/auth.guard';
-import { ConflictException, NotFoundException } from 'src/exception/custom-exception';
-import { ReorderSongDto } from 'src/song/dto/song.dto';
+} from '@nestjs/common'
+import { SongService } from 'src/song/song.service'
+import { SongDto } from 'src/song/dto/song.dto'
+import { BackstageGuard } from 'src/guard/backstage.guard'
+import { ConflictException, NotFoundException } from 'src/exception/custom-exception'
+import { ReorderSongDto } from 'src/song/dto/song.dto'
 import { Request as ExpressRequest } from 'express'
+import { DiscordService } from 'src/discord/discord.service'
 
 @Controller('events/:eventId/songs')
 export class SongController {
-  constructor(private readonly songService: SongService) {}
+  constructor(private readonly songService: SongService, private readonly  discordService: DiscordService) {}
 
   @Get()
   async findAll(@Param('eventId') eventId: string, @Request() req: ExpressRequest) {
-    console.log(req.user.userId)
-    const songs = await this.songService.findAll(eventId, req.user.userId);
-    return songs;
+    const songs = await this.songService.findAll(eventId, req.user.userId)
+    return songs
   }
 
   @Get(':songId')
   async findOne(@Param('eventId') eventId: string, @Param('songId') songId: string) {
-    const event = await this.songService.findOne(songId, eventId);
+    const event = await this.songService.findOne(songId, eventId)
 
-    if (!event) throw new NotFoundException('Song not found');
-    return event;
+    if (!event) throw new NotFoundException('Song not found')
+    return event
   }
 
   @Post()
   @UseGuards(BackstageGuard)
   async create(@Param('eventId') eventId: string, @Body() songData: SongDto) {
-    const existingEvent = await this.songService.findBySongName(songData.songName, eventId);
-    if (existingEvent) throw new ConflictException('ชื่อเพลงนี้มีอยู่แล้ว');
-    else return await this.songService.create(songData, eventId);
+    const existingEvent = await this.songService.findBySongName(songData.songName, eventId)
+    if (existingEvent) throw new ConflictException('ชื่อเพลงนี้มีอยู่แล้ว')
+
+    return await this.songService.create(songData, eventId)
   }
 
   @Put(':songId')
   @UseGuards(BackstageGuard)
   async update(
-    @Param('eventId') eventId: string,
     @Param('songId') songId: string,
     @Body() songData: SongDto,
   ) {
-    await this.songService.update(songId, songData);
+    await this.songService.update(songId, songData)
   }
 
   @Delete(':songId')
   @UseGuards(BackstageGuard)
   async remove(@Param('eventId') eventId: string, @Param('songId') songId: string) {
-    await this.songService.remove(songId, eventId);
+    await this.songService.remove(songId, eventId)
   }
 
   @Patch('reorder')
@@ -66,13 +66,11 @@ export class SongController {
     @Param('eventId') eventId: string,
     @Body() reorderSongDto: ReorderSongDto,
   ) {
-    return await this.songService.reorderSongs(reorderSongDto.songOrder, eventId);
+    return await this.songService.reorderSongs(reorderSongDto.songOrder, eventId)
   }
 
   @Post(':songId/notification')
-  async notification(@Param('eventId') eventId: string, @Param('songId') songId: string, @Body('notiMessage') notiMessage: string) {
-    console.log(notiMessage)
-    await this.songService.notification(songId, notiMessage)
-   
+  async notification(@Param('songId') songId: string, @Body('notiMessage') notiMessage: string) {
+    await this.discordService.notification(songId, notiMessage)
   }
 }

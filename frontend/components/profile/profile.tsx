@@ -5,9 +5,9 @@ import Button from '@/components/ui/button'
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
-import { getUserService } from '@/services/user'
+import { getUserService } from '@/services/user.service'
 
-const ReadOnlyField = ({ label, value }: { label: string; value: string }) => (
+const ReadOnlyField = ({ label, value }: { label: string, value: string }) => (
   <View style={styles.fieldContainer}>
     <Text style={styles.label}>{label}</Text>
     <View style={styles.readonlyBox}>

@@ -1,4 +1,3 @@
-
 import * as AuthSession from 'expo-auth-session'
 import { useSSO, useAuth } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
@@ -7,6 +6,7 @@ import axios from '@/libs/axios'
 import { useCallback } from 'react'
 import * as SecureStore from 'expo-secure-store'
 import { Alert } from 'react-native'
+import { RolesType, UserType } from '@/types/user'
 
 const useLogin = () => {
     useSocketQuery()
@@ -14,11 +14,11 @@ const useLogin = () => {
     const router = useRouter()
     const { startSSOFlow } = useSSO()
 
-    const storeRoles = async (user: any) => {
+    const storeRoles = async (role: RolesType[]) => {
         try {
-            const rolesKey = 'user_roles'
-            const rolesData = JSON.stringify(user)
-            await SecureStore.setItemAsync(rolesKey, rolesData)
+            const secureStoreKey = 'user_roles'
+            const rolesData = JSON.stringify(role)
+            await SecureStore.setItemAsync(secureStoreKey, rolesData)
         } catch (error) {
             console.error('Error storing roles:', error)
         }
@@ -36,7 +36,7 @@ const useLogin = () => {
                 await setActive?.({ session: createdSessionId })
 
                 const token = await getToken()
-                const res = await axios.get('/auth/user', {
+                const res = await axios.get<UserType>('/auth/user', {
                     headers: {
                         Authorization: 'Bearer ' + token,
                     },
@@ -53,9 +53,7 @@ const useLogin = () => {
         }
     }, [getToken, isSignedIn])
 
-    return {
-        login
-    }
+    return { login }
 }
 
 export default useLogin

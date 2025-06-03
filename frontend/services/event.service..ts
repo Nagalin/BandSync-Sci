@@ -1,36 +1,22 @@
 import axios from '@/libs/axios'
-import { Song } from './song'
-
-export type Event = {
-    eventId: string
-    eventName: string
-    eventDate: Date
-    startTime: Date
-    endTime: Date
-    dressCode: string
-    additionalDetails: string,
-    status:  'UPCOMING' |
-    'ONGOING' |
-    'COMPLETED' 
-}
-
-type EventList = Omit<Event, 'dresscode' | 'additionalDetails'>
+import { EventType, EventListType } from '@/types/event'
+import { SongType } from '@/types/song'
 
 export const getEventListService = async () => {
-    const response = await axios.get<EventList[]>('/events')
+    const response = await axios.get<EventListType[]>('/events')
     return response.data 
 }
 
 export const getEventInfoService = async (eventId: string) => {
-    const response = await axios.get<Event>(`/events/${eventId}`)
+    const response = await axios.get<EventType>(`/events/${eventId}`)
     return response.data 
 }
 
-export const createEventService = async (data: Omit<Event, 'eventId'>) => {
+export const createEventService = async (data: Omit<EventType, 'status' | 'eventId'>) => {
     return await axios.post('/events', data)
 }
 
-export const updateEventService = async (data: Omit<Event, 'eventId'>, eventId: string) => {
+export const updateEventService = async (data: Omit<EventType, 'status' | 'eventId'>, eventId: string) => {
     return await axios.put(`/events/${eventId}`, data)
 }
 
@@ -43,7 +29,7 @@ export const startEventService = async (eventId: string) => {
 }
 
 export const getCurrentSongService = async (eventId: string) => {
-    const response = await axios.get<Pick<Song, 'songId'| 'songName'>>(`/events/${eventId}/current-song`)
+    const response = await axios.get<Pick<SongType, 'songId'| 'songName'>>(`/events/${eventId}/current-song`)
     return response.data 
 }
 

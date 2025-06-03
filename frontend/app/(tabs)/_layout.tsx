@@ -15,8 +15,6 @@ const TabsLayout = () => {
         }}
       />
 
-
-
       <Tabs.Screen
         name='(stack)'
         options={{
@@ -36,8 +34,6 @@ const TabsLayout = () => {
         }}
       />
 
-
-
       <Tabs.Screen
         name='profile'
         options={{
@@ -47,7 +43,6 @@ const TabsLayout = () => {
         }}
 
       />
-
 
       <Tabs.Screen
         name="transfer"
@@ -66,8 +61,6 @@ const TabsLayout = () => {
 
         }}
       />
-     
-
 
     </Tabs>
   )

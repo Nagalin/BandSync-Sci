@@ -9,5 +9,4 @@ export class AuthController {
     async getUser(@Request() req: ExpressRequest) {
         return req.user
     }
-
 }

@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common'
 import { EventService } from './event.service'
 import { EventDto } from './dto/event.dto'
-import { BackstageGuard } from '../guard/auth.guard'
+import { BackstageGuard } from '../guard/backstage.guard'
 import { ConflictException, NotFoundException } from '../exception/custom-exception'
 
 @Controller('events')
@@ -47,7 +47,7 @@ export class EventController {
   @UseGuards(BackstageGuard)
   async create(@Body() eventDto: EventDto) {
     const { eventName } = eventDto
-    const existingEvent = await this.eventService.findOne(eventName)
+    const existingEvent = await this.eventService.findByEventName(eventName)
     if (existingEvent) throw new ConflictException('Event already exists')
       else 
     await this.eventService.create(eventDto)

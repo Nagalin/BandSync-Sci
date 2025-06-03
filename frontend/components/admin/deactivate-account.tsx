@@ -1,41 +1,19 @@
 import { View, StyleSheet, Alert } from 'react-native'
-import React, { useState } from 'react'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import React from 'react'
 import { Checkbox } from 'react-native-paper'
 import Button from '@/components/ui/button'
-import axios from '@/libs/axios'
-import { useEventDataStore } from '@/zustand/store'
-import Text from '../ui/text'
-
-type UsersType = {
-  userId: string
-  nickName: string
-  isActive: boolean
-}
+import Text from '@/components/ui/text'
+import useDeactivateAccount from './use-deactivate-account'
 
 const DeactivateAccount = () => {
-  const { data: users, isFetching } = useQuery<UsersType[]>({
-    queryKey: ['users'],
-    queryFn: async () => (await axios.get('/user')).data,
-  })
-
-  const [selectedUsers, setSelectedUsers] = useState<Record<string, boolean>>({})
-  const { mutate } = useMutation({
-    mutationFn: async () =>
-      await axios.patch('/user/deactivate', {
-        userId: Object.keys(selectedUsers).filter((userId) => selectedUsers[userId]),
-      }),
-    onSuccess: () => {
-      Alert.alert('สำเร็จ', 'ปิดบัญชีสำเร็จแล้ว')
-    },
-  })
-
-  const handleToggle = (userId: string) => {
-    setSelectedUsers((prev) => ({
-      ...prev,
-      [userId]: !prev[userId],
-    }))
-  }
+  const {
+    users,
+    isFetching,
+    handleToggle,
+    selectedUsers,
+    deactivate
+  } = useDeactivateAccount()
+  
 
   if (isFetching) return null
 
@@ -43,8 +21,7 @@ const DeactivateAccount = () => {
     <View style={styles.card}>
       <Text style={styles.header}>เลือกผู้ใช้ที่ต้องการปิดบัญชี</Text>
 
-      {users
-        ?.filter((user) => user.isActive)
+      {users!
         .map((user) => (
           <View key={user.userId} style={styles.userRow}>
             <Text style={styles.userText}>{user.nickName}</Text>
@@ -73,7 +50,7 @@ const DeactivateAccount = () => {
               { text: 'ยกเลิก', style: 'cancel' },
               {
                 text: 'ยืนยัน',
-                onPress: () => mutate(),
+                onPress: () => deactivate(),
               },
             ]
           )

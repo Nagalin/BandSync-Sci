@@ -1,24 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
 import { SongDto } from 'src/song/dto/song.dto'
-import { Client } from 'discord.js';
-import { Context, On, Once, ContextOf } from 'necord';
 
 @Injectable()
 export class SongService {
-  constructor(private prisma: PrismaService,private readonly client: Client) { }
+  constructor(private prisma: PrismaService) { }
 
-  private readonly logger = new Logger();
 
-  @Once('ready')
-  public onReady(@Context() [client]: ContextOf<'ready'>) {
-    this.logger.log(`Bot logged in as ${client.user.username}`);
-  }
-
-  @On('warn')
-  public onWarn(@Context() [message]: ContextOf<'warn'>) {
-    this.logger.warn(message);
-  }
 
   async findAll(eventId: string, userId: string) {
     return await this.prisma.song.findMany({
@@ -102,6 +90,9 @@ export class SongService {
     }
 
     const lastSong = await this.prisma.song.findFirst({
+      where: {
+        eventId
+      },
       orderBy: {
         songOrder: 'desc'
       },
@@ -157,7 +148,8 @@ export class SongService {
     })
   }
 
-  async reorderSongs(songOrder: { songId: string; songOrder: number }[], eventId: string) {
+  async reorderSongs(songOrder: { songId: string, songOrder: number }[], eventId: string) {
+    console.log('here: ', songOrder)
     const updatePromises = songOrder.map((song) =>
       this.prisma.song.update({
         where: {
@@ -168,48 +160,11 @@ export class SongService {
           songOrder: song.songOrder,
         },
       })
-    );
+    )
   
-    await Promise.all(updatePromises);
+    await Promise.all(updatePromises)
   
-    return { success: true };
-  }
-
-  async notification(songId: string, notiMessage: string) {
-    
-
-    const currentSong = await this.prisma.song.findFirst({
-      where: {
-        songId: songId
-      }
-    })
-    const nextSong = await this.prisma.song.findFirst({
-      where: {
-        songOrder: currentSong.songOrder + 1
-      }
-    })
-
-    const players = await this.prisma.user.findMany({
-      where: {
-        isActive: true,
-        songs: {
-          some: {
-            songId: nextSong.songId
-          }
-        }
-      }
-    })
-
-    players.map(async curr => {
-      const user = await this.client.users.fetch(curr.discordId)
-      await user.send(notiMessage ?? `🎶 สวัสดี! เพลงถัดไปเป็นคิวแสดงของคุณ
-
-🕒 เพลง: ${nextSong.songName}
-
-กรุณาเตรียมตัวให้พร้อมและขึ้นเวทีตรงเวลา!
-
-หากคุณมีคำถามเพิ่มเติมกรุณาติดต่อผู้ดูแลวงดนตรี 🙏`)
-    })
+    return { success: true }
   }
 
 }

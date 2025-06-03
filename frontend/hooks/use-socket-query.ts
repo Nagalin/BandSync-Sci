@@ -1,23 +1,23 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
-import { io, Socket } from 'socket.io-client';
-import { Alert } from 'react-native';
-import { useRouter } from 'expo-router';
+import { io, Socket } from 'socket.io-client'
+import { Alert } from 'react-native'
+import { useRouter } from 'expo-router'
 
-let socket: Socket | null = null;
+let socket: Socket | null = null
 const URL = process.env.EXPO_PUBLIC_API_BASE_URL
 
 const getSocket = () => {
   if (!socket) {
-    socket = io(URL);
+    socket = io(URL)
   }
-  return socket;
-};
+  return socket
+}
 
 export const emitSocketEvent = () => {
-  const socketInstance = getSocket();
-  socketInstance.emit('run-event');
-};
+  const socketInstance = getSocket()
+  socketInstance.emit('run-event')
+}
 
 export const emitEndEvent = () => {
   const socketInstance = getSocket()
@@ -26,7 +26,7 @@ export const emitEndEvent = () => {
 
 export function useSocketQuery() {
   const queryClient = useQueryClient()
-  const socketInstance = getSocket();
+  const socketInstance = getSocket()
   const router = useRouter()
   useEffect(() => {
     const listener = () => {
