@@ -16,18 +16,7 @@ type NewUserType = {
 export class UserService {
   constructor(private prisma: PrismaService, private discordService: DiscordService) { }
 
-  async findAll(discordId: string) {
-    return await this.prisma.user.findMany({
-      where: {
-        isActive: true,
-        NOT: {
-          discordId
-        }
-      }
-    })
-
-  }
-
+  
   async activateUser(newUser: NewUserType) {
     const {
       discordId,
@@ -101,19 +90,6 @@ export class UserService {
     }
   }
 
-  async createUser() {
-    await this.prisma.user.create({
-      data: {
-        discordId: '1326177826277294173',
-        discordUsername: 'bass',
-        firstName: 'bassist',
-        lastName: 'something',
-        nickName: 'first',
-        isActive: true,
-        roles: { connect: { roleId: '60338d55-b0b8-4930-b624-27c9f93644ae' } }
-      }
-    })
-  }
 
   async deactivateUsers(userId: string[]) {
     await this.discordService.removeUserFromDiscordServer(userId)
@@ -132,7 +108,7 @@ export class UserService {
 
   }
 
-  async findAllForAdminTransfer() {
+  async findAll() {
     const users = await this.prisma.user.findMany({
       where: {
         isActive: true,

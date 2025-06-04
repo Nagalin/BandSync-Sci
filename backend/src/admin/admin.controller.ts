@@ -48,7 +48,7 @@ export class AdminController {
 
   }
 
-  
+
   @ApiResponse({
     status: 200,
     description: 'transfer system admin privilege successfully'
@@ -61,5 +61,14 @@ export class AdminController {
   ) {
     const currentAdminId = req.user.userId
     return await this.adminService.transferAdminPrivileges(dto.newAdminId, currentAdminId)
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: 'successfully deactivate user account'
+  })
+  @Patch('/deactivate')
+  async deactivateUsers(@Body() body: { userId: string[] }) {
+    await this.userService.deactivateUsers(body.userId)
   }
 }

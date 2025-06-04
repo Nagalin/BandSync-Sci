@@ -6,7 +6,7 @@ import { Alert } from 'react-native'
 
 type UsersType = {
   userId: string
-  nickName: string
+  fullName: string
   isActive: boolean
 }
 
@@ -20,7 +20,7 @@ const useDeactivateAccount = () => {
   
   const deactivateMutation = useMutation({
     mutationFn: async () =>
-      await axios.patch('/user/deactivate', {
+      await axios.patch('/admin/deactivate', {
         userId: Object.keys(selectedUsers).filter((userId) => selectedUsers[userId]),
       }),
     onSuccess: () => {

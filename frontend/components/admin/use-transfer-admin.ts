@@ -12,9 +12,7 @@ const useTransferAdmin = () => {
     useEffect(() => {
       const fetchUsers = async () => {
         try {
-          const response = await axios.get<{ userId: string, fullName: string }[]>(
-            '/user/admin-transfer-list'
-          )
+          const response = await axios.get<{ userId: string, fullName: string }[]>('/user')
           const currentUserId = await SecureStore.getItemAsync('userId')
           const filteredUsers = response.data.filter(
             (user) => user.userId !== currentUserId

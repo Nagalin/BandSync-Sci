@@ -24,7 +24,7 @@ const DeactivateAccount = () => {
       {users!
         .map((user) => (
           <View key={user.userId} style={styles.userRow}>
-            <Text style={styles.userText}>{user.nickName}</Text>
+            <Text style={styles.userText}>{user.fullName}</Text>
             <Checkbox
               status={selectedUsers[user.userId] ? 'checked' : 'unchecked'}
               onPress={() => handleToggle(user.userId)}
