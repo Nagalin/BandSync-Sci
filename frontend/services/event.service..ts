@@ -25,7 +25,7 @@ export const deleteEventService = async (eventId: string) => {
 }
 
 export const startEventService = async (eventId: string) => {
-    await axios.post(`/events/${eventId}/start`)
+    await axios.patch(`/events/${eventId}/start`)
 }
 
 export const getCurrentSongService = async (eventId: string) => {

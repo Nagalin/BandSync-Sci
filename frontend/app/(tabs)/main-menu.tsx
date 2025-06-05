@@ -47,7 +47,7 @@ const MainMenu = () => {
       {isAdmin && (
         <>
           <MainMenuCard
-            href='/account-config'
+            href='/admin/account-config'
             colorStripBackground='#E91E63'
           >
             <MaterialIcons name="verified-user" size={36} color="black" />
@@ -55,7 +55,7 @@ const MainMenu = () => {
           </MainMenuCard>
 
           <MainMenuCard
-            href='/transfer'
+            href='/admin/transfer-privilege'
             colorStripBackground='#673AB7'
           >
             <MaterialIcons name="admin-panel-settings" size={36} color="black" />
