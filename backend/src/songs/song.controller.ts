@@ -10,9 +10,9 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common'
-import { SongService } from 'src/song/song.service'
+import { SongService } from 'src/songs/song.service'
 import { BackstageGuard } from 'src/guards/backstage.guard'
-import { ConflictException, NotFoundException } from 'src/exceptions/custom-exception'
+import { NotFoundException } from 'src/exceptions/custom-exception'
 import { Request as ExpressRequest } from 'express'
 import { DiscordService } from 'src/discord/discord.service'
 import { CreateAndUpdateSongRequestDto } from './dto/create-update-song.dto'
