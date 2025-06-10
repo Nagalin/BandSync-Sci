@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import EventCard from '@/components/event/card'
 import Modal from '@/components/event/modal'
 import Text from '@/components/ui/text'
-import { getEventListService } from '@/services/event.service.'
+import { getEventListService } from '@/services/event.service'
 import Background from '@/components/ui/background'
 
 const Index = () => {

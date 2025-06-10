@@ -4,7 +4,7 @@ import { Skeleton } from 'moti/skeleton'
 import { useQuery } from '@tanstack/react-query'
 import Background from '@/components/ui/background'
 import Form from '@/components/event/form'
-import { getEventInfoService} from '@/services/event.service.'
+import { getEventInfoService} from '@/services/event.service'
 import { useEventDataStore } from '@/zustand/store'
 import EventActions from '@/components/event/event-action-buttons'
 

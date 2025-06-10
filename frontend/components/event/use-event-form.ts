@@ -2,7 +2,7 @@ import { Alert } from 'react-native'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
-import { createEventService, deleteEventService, updateEventService } from '@/services/event.service.'
+import { createEventService, deleteEventService, updateEventService } from '@/services/event.service'
 import { AxiosError } from 'axios'
 import { EventType } from '@/types/event'
 

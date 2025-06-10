@@ -8,7 +8,7 @@ import {
   getCurrentSongService,
   updateCurrentSongService,
   endEventService,
-} from '@/services/event.service.'
+} from '@/services/event.service'
 import { getSongListService } from '@/services/song.service.'
 import { emitEndEvent, emitSocketEvent } from '@/hooks/use-socket-query'
 import { useEventDataStore } from '@/zustand/store'

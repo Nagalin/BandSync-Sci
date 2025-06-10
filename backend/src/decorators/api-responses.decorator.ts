@@ -5,13 +5,13 @@ export const UnauthorizedResponse = () => {
   return applyDecorators(
     ApiResponse({
       status: 401,
-      description: 'Unauthorized - Either missing authorization header or account has no permission',
+      description: 'Unauthorized - Multiple possible causes: missing authorization header, invalid access token, or insufficient permissions',
       schema: {
         type: 'object',
         properties: {
           message: {
             type: 'string',
-            example: 'Missing authorization header or your account does not have access to this application'
+            example: 'Missing authorization header, invalid access token or your discord account does not have access to this application'
           }
         }
       }

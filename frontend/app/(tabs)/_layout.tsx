@@ -45,7 +45,7 @@ const TabsLayout = () => {
       />
 
       <Tabs.Screen
-        name="transfer"
+        name="admin/transfer-privilege"
         options={{
           href: null,
           title: 'Transfer System Admin Privileges',
@@ -55,7 +55,7 @@ const TabsLayout = () => {
       />
 
       <Tabs.Screen
-        name="account-config"
+        name="admin/account-config"
         options={{
           href: null,
 

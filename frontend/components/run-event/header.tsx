@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
-import { getEventInfoService } from '@/services/event.service.'
+import { getEventInfoService } from '@/services/event.service'
 import { useQuery } from '@tanstack/react-query'
 import { useEventDataStore } from '@/zustand/store'
 

@@ -8,7 +8,7 @@ import { useRouter } from 'expo-router'
 import Button from '@/components/ui/button'
 import { checkBackstageRole } from '@/utils/check-user-role'
 import { useQuery } from '@tanstack/react-query'
-import { getEventInfoService } from '@/services/event.service.'
+import { getEventInfoService } from '@/services/event.service'
 import { useEventDataStore } from '@/zustand/store'
 
 function Index() {
